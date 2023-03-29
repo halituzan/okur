@@ -8,23 +8,26 @@ export default function HomeMain() {
   return (
     <>
       <header className="bg-slate-200 rounded-t-md -m-2 p-5 flex justify-between border-b border-rose-500">
-        <div className="search-button flex justify-center items-center">
-          <AiOutlineSearch
-            className="search-icon text-l text-rose-500 cursor-pointer"
-            onClick={() => {
-              document.getElementById("search").classList.toggle("active");
-            }}
-          />
-          <input
-            type="text"
-            name="search"
-            id="search"
-            className="search "
-            placeholder="Kitap Ara"
-            onBlur={() => {
-              document.getElementById("search").classList.remove("active");
-            }}
-          />
+        <div className="h-left flex ">
+         
+          <div className="search-button ml-3 flex justify-center items-center">
+            <AiOutlineSearch
+              className="search-icon text-l text-rose-500 cursor-pointer"
+              onClick={() => {
+                document.getElementById("search").classList.toggle("active");
+              }}
+            />
+            <input
+              type="text"
+              name="search"
+              id="search"
+              className="search "
+              placeholder="Kitap Ara"
+              onBlur={() => {
+                document.getElementById("search").classList.remove("active");
+              }}
+            />
+          </div>
         </div>
         <div className="h-right flex">
           <Link
@@ -37,7 +40,7 @@ export default function HomeMain() {
         </div>
       </header>
 
-      <main className="p-5 grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 ">
+      <main className="p-5 grid grid-cols-1 sm:grid-cols-3 gap-4 ">
         {books.length > 0
           ? books?.map((book, index) => {
               return (
