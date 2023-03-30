@@ -1,5 +1,5 @@
 import Register from "@/pages/register";
-import HomePage from "../components/HomePage"
+import HomePage from "../components/home/HomePage"
 import Head from "next/head";
 export default function Home() {
   return (

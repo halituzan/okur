@@ -73,10 +73,10 @@ export default function login() {
           <div className="flex items-center border-2 py-2 px-3 rounded-2xl mb-4">
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              className="h-5 w-5 text-gray-400"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
+              className={!login.email ?"h-5 w-5 text-gray-400" : "h-5 w-5"}
             >
               <path
                 strokeLinecap="round"
@@ -105,7 +105,7 @@ export default function login() {
                 y="0px"
                 viewBox="0 0 20 20"
                 fill="currentColor"
-                className="h-5 w-5 text-gray-400"
+                className="h-5 w-5"
               >
                 <g>
                   <path
@@ -122,7 +122,7 @@ export default function login() {
             ) : (
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                className="h-5 w-5 text-gray-400"
+                className={!login.password ?"h-5 w-5 text-gray-400" : "h-5 w-5"}
                 viewBox="0 0 20 20"
                 fill="currentColor"
               >
@@ -144,7 +144,11 @@ export default function login() {
               onChange={(e) => loginHandler(e)}
             />
             <div id="show-password" onClick={() => showPassword()}>
-              {showPass ? <AiFillEye /> : <AiFillEyeInvisible />}
+              {showPass ? (
+                <AiFillEye className="h-5 w-5 text-gray-400" />
+              ) : (
+                <AiFillEyeInvisible className="h-5 w-5" />
+              )}
             </div>
           </div>
 

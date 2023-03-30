@@ -1,3 +1,4 @@
+import Head from "next/head";
 import Image from "next/image";
 import Link from "next/link";
 import React, { useState } from "react";
@@ -13,11 +14,14 @@ export default function Register() {
     fullName: "",
   });
   const [passwordCheck, setPasswordCheck] = useState(true);
+  const [emailCheck, setEmailCheck] = useState(true);
   const [isPassCorrect, setIsPassCorrect] = useState(true);
   const [PassFocus, setPassFocus] = useState(false);
 
   const registerHandler = (e) => {
     setRegisterValues({ ...registerValues, [e.target.name]: e.target.value });
+    const emailRP = /\S+@\S+\.\S+/
+
     const regexP =
       /^(?=.*[-\#\$\.\%\&\@\!\+\=\<\>\*])(?=.*[a-zA-Z])(?=.*\D).{8,12}$/;
     if (e.target.name === "password") {
@@ -29,6 +33,12 @@ export default function Register() {
         ? setIsPassCorrect(true)
         : setIsPassCorrect(false);
     }
+
+    e.target.name === "email"
+      ? e.target.name.match(emailRP)
+        ? setEmailCheck(true)
+        : setEmailCheck(false)
+      : "";
   };
 
   const registerSender = () => {
@@ -58,13 +68,16 @@ export default function Register() {
   };
   return (
     <div className="h-screen md:flex">
+      <Head>
+        <title>Booky Üye Kayıt Sayfası - booky.com.tr</title>
+      </Head>
       <div className="relative overflow-hidden md:flex w-1/2 bg-gradient-to-tr from-rose-500 to-purple-700 i justify-around items-center hidden book-auth">
         <div className="w-1/2">
           <Link href="/" className="flex justify-center">
             <Image src="/images/logo.svg" alt="logo" width={200} height={30} />
             <h1 className="text-white font-bold text-4xl ml-2 font-sans"></h1>
           </Link>
-          
+
           <p className="text-white mt-1 text-xl">Kayıt Sayfası</p>
 
           {/* <button type="submit" className="block w-28 bg-white text-indigo-800 mt-4 py-2 rounded-2xl font-bold mb-2">Anasayfa</button> */}
@@ -92,7 +105,9 @@ export default function Register() {
           <div className="flex items-center border-2 py-2 px-3 rounded-2xl mb-4">
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              className="h-5 w-5 text-gray-400"
+              className={
+                !registerValues.fullName ? "h-5 w-5 text-gray-400" : "h-5 w-5"
+              }
               viewBox="0 0 20 20"
               fill="currentColor"
             >
@@ -114,7 +129,9 @@ export default function Register() {
           <div className="flex items-center border-2 py-2 px-3 rounded-2xl mb-4">
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              className="h-5 w-5 text-gray-400"
+              className={
+                !registerValues.studentId ? "h-5 w-5 text-gray-400" : "h-5 w-5"
+              }
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
@@ -141,10 +158,18 @@ export default function Register() {
               onChange={(e) => registerHandler(e)}
             />
           </div>
-          <div className="flex items-center border-2 py-2 px-3 rounded-2xl mb-4">
+          <div
+            className={
+              emailCheck
+                ? "flex items-center border-2 py-2 px-3 rounded-2xl mb-4"
+                : "flex items-center border-2 py-2 px-3 rounded-2xl mb-4 border-rose-500"
+            }
+          >
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              className="h-5 w-5 text-gray-400"
+              className={
+                !registerValues.email ? "h-5 w-5 text-gray-400" : "h-5 w-5"
+              }
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
@@ -157,7 +182,7 @@ export default function Register() {
               />
             </svg>
             <input
-              className="pl-2 outline-none border-none"
+              className={"pl-2 outline-none border-none"}
               type="text"
               name="email"
               placeholder="E-posta"
@@ -175,7 +200,9 @@ export default function Register() {
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              className="h-5 w-5 text-gray-400"
+              className={
+                !registerValues.password ? "h-5 w-5 text-gray-400" : "h-5 w-5"
+              }
               viewBox="0 0 20 20"
               fill="currentColor"
             >
@@ -208,7 +235,11 @@ export default function Register() {
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              className="h-5 w-5 text-gray-400"
+              className={
+                !registerValues.passwordConfirm
+                  ? "h-5 w-5 text-gray-400"
+                  : "h-5 w-5"
+              }
               viewBox="0 0 20 20"
               fill="currentColor"
             >

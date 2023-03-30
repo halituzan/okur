@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { AiOutlineSearch } from "react-icons/ai";
 import { BiLogIn } from "react-icons/bi";
-import { books } from "./fakeBookData.js";
+import { books } from "../fakeBookData.js";
 import Image from "next/image";
 import Link from "next/link";
 export default function HomeMain() {

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import Login from "./Login";
+import Login from "../Login";
 import HomeTitle from "./HomeTitle";
 import HomeMain from "./HomeMain";
 
@@ -18,3 +18,4 @@ export default function HomePage() {
     </div>
   );
 }
+

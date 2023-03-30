@@ -8,6 +8,7 @@ import Home from "../components/dashboard/Home";
 import Notification from "../components/dashboard/Notification";
 import BookRequest from "../components/dashboard/BookRequest";
 import BookCase from "../components/dashboard/BookCase";
+import Head from "next/head";
 
 export default function Dashboard() {
   const [buttonList, setButtonList] = useState([
@@ -15,6 +16,7 @@ export default function Dashboard() {
       icon: <AiOutlineHome />,
       title: "Anasayfa",
       name: "home",
+      badge: false,
       isClicked: true,
       component: <Home />,
     },
@@ -28,15 +30,17 @@ export default function Dashboard() {
     },
     {
       icon: <GiBookPile />,
-      title: "Kitap İstekleri",
+      title: "Kitaplar",
       name: "bookrequest",
+      badge: false,
       isClicked: false,
       component: <BookRequest />,
     },
     {
       icon: <GiBookshelf />,
-      title: "Kitaplık",
+      title: "Kitaplığım",
       name: "bookcase",
+      badge: false,
       isClicked: false,
       component: <BookCase />,
     },
@@ -55,6 +59,9 @@ export default function Dashboard() {
 
   return (
     <div>
+      <Head>
+        <title>Kullanıcı Sayfası - booky.com.tr</title>
+      </Head>
       <nav className="fixed top-0 z-50 w-full bg-rose-500 border-b border-gray-200 dark:bg-gray-800 dark:border-gray-700">
         <div className="px-3 py-3 lg:px-5 lg:pl-3">
           <div className="flex items-center justify-between">
@@ -84,7 +91,12 @@ export default function Dashboard() {
               <Link href="/" className="flex ml-2 md:mr-24">
                 {/* <Image src="https://flowbite.com/docs/images/logo.svg" className="h-8 mr-3" alt="FlowBite Logo" width={50} height={50}/> */}
                 <span className="self-center text-xl font-semibold sm:text-2xl whitespace-nowrap dark:text-white">
-                  OkurNET
+                  <Image
+                    src="/images/logo.svg"
+                    alt="logo"
+                    width={50}
+                    height={42}
+                  />
                 </span>
               </Link>
             </div>
@@ -172,15 +184,15 @@ export default function Dashboard() {
               l.badge ? (
                 <li
                   className="aside-buttons"
-                  key={l.name}
+                  key={index}
                   onClick={(e) => sidebarHandler(e, l, index)}
                 >
                   <Link
                     href="#"
                     className={
                       l.isClicked
-                        ? "flex items-center p-2 text-gray-900 bg-rose-500 rounded-lg dark:text-white hover:bg-rose-500 dark:hover:bg-gray-700"
-                        : "flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-rose-500 dark:hover:bg-gray-700"
+                        ? "flex items-center p-2 text-white bg-rose-500 rounded-lg dark:text-white hover:bg-rose-500 dark:hover:bg-gray-700"
+                        : "flex items-center p-2 text-gray-900 rounded-lg hover:text-white   dark:text-white hover:bg-rose-500 dark:hover:bg-gray-700"
                     }
                   >
                     {l.icon}
@@ -202,8 +214,8 @@ export default function Dashboard() {
                     href="#"
                     className={
                       l.isClicked
-                        ? "flex items-center p-2 bg-rose-500 text-gray-900 rounded-lg dark:text-white hover:bg-rose-500 dark:hover:bg-gray-700"
-                        : "flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-rose-500 dark:hover:bg-gray-700"
+                        ? "flex items-center p-2 bg-rose-500 text-white rounded-lg dark:text-white hover:bg-rose-500 hover:text-white dark:hover:bg-gray-700"
+                        : "flex items-center p-2 text-gray-900 rounded-lg hover:text-white dark:text-white hover:bg-rose-500 dark:hover:bg-gray-700"
                     }
                   >
                     {l.icon}
@@ -216,8 +228,9 @@ export default function Dashboard() {
         </div>
       </aside>
       <div className="p-4 sm:ml-64">
-        {buttonList.map((i) => (i.isClicked ? i.component : ""))}
-        
+        {buttonList.map((i) =>
+          i.isClicked ? <div key={i.name}>{i.component}</div> : ""
+        )}
       </div>
     </div>
   );
