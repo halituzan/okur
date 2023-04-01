@@ -44,4 +44,21 @@ export const books = [
     author: "Halil İnancık",
     image: "https://i.dr.com.tr/cache/500x400-0/originals/0002007375001-1.jpg",
   },
+  {
+    name: "Şeker Portakalı",
+    author: "Jose Mauro De Vasconcelos",
+    image: "https://i.dr.com.tr/cache/500x400-0/originals/0000000064031-1.jpg",
+  },
+  {
+    name: "Simyacı",
+    author: "Paulo Coelho",
+    image: "https://i.dr.com.tr/cache/500x400-0/originals/0000000064552-1.jpg",
+  },
+  {
+    name: "Hayvan Çiftliği",
+    author: "George Orwell",
+    image: "https://i.dr.com.tr/cache/500x400-0/originals/0000000105409-1.jpg",
+  },
 ];
+
+

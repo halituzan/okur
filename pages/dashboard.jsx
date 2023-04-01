@@ -6,9 +6,9 @@ import { GiBookshelf, GiBookPile } from "react-icons/gi";
 import Link from "next/link";
 import Home from "../components/dashboard/Home";
 import Notification from "../components/dashboard/Notification";
-import BookRequest from "../components/dashboard/BookRequest";
 import BookCase from "../components/dashboard/BookCase";
 import Head from "next/head";
+import Books from "../components/dashboard/Books";
 
 export default function Dashboard() {
   const [buttonList, setButtonList] = useState([
@@ -34,7 +34,7 @@ export default function Dashboard() {
       name: "bookrequest",
       badge: false,
       isClicked: false,
-      component: <BookRequest />,
+      component: <Books />,
     },
     {
       icon: <GiBookshelf />,

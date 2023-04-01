@@ -1,25 +1,35 @@
 import React, { useEffect, useState } from "react";
-import { AiFillDelete, AiOutlineAppstoreAdd, AiFillBook,AiFillEdit } from "react-icons/ai";
+import {
+  AiFillDelete,
+  AiOutlineAppstoreAdd,
+  AiFillBook,
+  AiFillEdit,
+} from "react-icons/ai";
 
-export default function BookTable({ bookList, addBook, removeBook }) {
+export default function BookCaseTable({ userData, addBook, removeBook }) {
   const [showModal, setShowModal] = React.useState(false);
+  const [addBookValue, setAddBookValue] = useState({
+    bookName: "",
+    bookWriter: "",
+  });
 
+  const addBookHandler = (e) => {
+    setAddBookValue({ ...addBookValue, [e.target.name]: e.target.value });
+  };
+  const userBooks = userData;
+  console.log(userData);
   return (
     <div className="relative overflow-x-auto flex flex-col">
-      {addBook ? (
-        <button
-          data-modal-target="addBookModal"
-          data-modal-toggle="addBookModal"
-          type="button"
-          className="block w-auto px-3 bg-rose-500 text-white text-l mt-4 py-2  font-bold mb-2 flex justify-center items-center self-end"
-          onClick={() => setShowModal(true)}
-        >
-          <AiOutlineAppstoreAdd className="text-2xl mr-2" />
-          Kitap Ekle
-        </button>
-      ) : (
-        ""
-      )}
+      <button
+        data-modal-target="addBookModal"
+        data-modal-toggle="addBookModal"
+        type="button"
+        className="block w-auto px-3 bg-rose-500 text-white text-l mt-4 py-2  font-bold mb-2 flex justify-center items-center self-end"
+        onClick={() => setShowModal(true)}
+      >
+        <AiOutlineAppstoreAdd className="text-2xl mr-2" />
+        Kitap Ekle
+      </button>
       <div className="modals">
         {showModal ? (
           <>
@@ -48,16 +58,20 @@ export default function BookTable({ bookList, addBook, removeBook }) {
                         type="text"
                         name="bookName"
                         placeholder="Kitap Adı"
+                        value={addBookValue.bookName}
+                        onChange={(e) => addBookHandler(e)}
                       />
                     </div>
                     <div className="flex items-center border-2 mx-2 py-2 px-3 rounded-2xl mb-4 sm:w-2/5 w-full">
                       {/* Yazar İconu */}
-                      <AiFillEdit className="text-2xl"/>
+                      <AiFillEdit className="text-2xl" />
                       <input
                         className="pl-2 outline-none border-none w-full"
                         type="text"
-                        name="authorName"
+                        name="bookWriter"
                         placeholder="Yazar Adı"
+                        value={addBookValue.bookWriter}
+                        onChange={(e) => addBookHandler(e)}
                       />
                     </div>
                   </div>
@@ -73,7 +87,10 @@ export default function BookTable({ bookList, addBook, removeBook }) {
                     <button
                       className="bg-rose-500 text-white active:bg-rose-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
                       type="button"
-                      onClick={() => setShowModal(false)}
+                      onClick={() => {
+                        setShowModal(false);
+                        addBook(addBookValue, userData[0].id);
+                      }}
                     >
                       Kaydet
                     </button>
@@ -99,7 +116,7 @@ export default function BookTable({ bookList, addBook, removeBook }) {
           </tr>
         </thead>
         <tbody>
-          {bookList?.map((book, index) => (
+          {userBooks?.map((book, index) => (
             <tr
               className="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
               key={index}
@@ -108,10 +125,10 @@ export default function BookTable({ bookList, addBook, removeBook }) {
                 scope="row"
                 className="px-2  font-medium text-gray-900  dark:text-white"
               >
-                {book.name}
+                {book.bookName}
               </th>
 
-              <td className="px-2">{book.author}</td>
+              <td className="px-2">{book.bookWriter}</td>
               <td className="px-2 flex justify-end items-center pr-0">
                 <button
                   type="button"
