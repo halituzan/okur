@@ -1,23 +1,42 @@
 import React, { useState, useEffect } from "react";
 import Pagination from "./booktable/Pagination";
 import BooksTable from "./booktable/BooksTable";
-
-import { books } from "../fakeBookData.js";
 import axios from "axios";
 export default function Books() {
+  const [pagination, setPagination] = useState({
+    totalPage: 10,
+    currentPage: 0,
+  });
   const [bookList, setBooks] = useState([]);
   const fetchApi = async () => {
+    const { data } = await axios(
+      `https://${
+        process.env.NEXT_PUBLIC_BOOKY_MOCK_API
+      }.mockapi.io/bookApi/booky?page=${pagination.currentPage + 1}&limit=10`
+    );
+
+    setBooks(data);
+  };
+
+  const fetchAllData = async () => {
     const { data } = await axios(
       `https://${process.env.NEXT_PUBLIC_BOOKY_MOCK_API}.mockapi.io/bookApi/booky`
     );
 
-    setBooks(data);
+    setPagination({ ...pagination, totalPage: Math.ceil(data.length / 10) });
+    console.log(data.length);
   };
   useEffect(() => {
     fetchApi();
 
     // HTTP - Get request for all Book
+  }, [pagination.currentPage]);
+  useEffect(() => {
+    fetchAllData();
+
+    // HTTP - Get request for all Book
   }, []);
+  console.log(pagination);
   const kitapIste = () => {};
   return (
     <div>
@@ -49,7 +68,11 @@ export default function Books() {
           </div>
         </div>
         <div className="pagination mt-2 flex lg:justify-end justify-center">
-          <Pagination />
+          <Pagination
+            pagination={pagination}
+            setPagination={setPagination}
+            bookList={bookList}
+          />
         </div>
       </div>
 

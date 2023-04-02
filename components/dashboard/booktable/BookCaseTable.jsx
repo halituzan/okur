@@ -116,30 +116,63 @@ export default function BookCaseTable({ userData, addBook, removeBook }) {
           </tr>
         </thead>
         <tbody>
-          {userBooks?.map((book, index) => (
-            <tr
-              className="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
-              key={index}
-            >
-              <th
-                scope="row"
-                className="px-2  font-medium text-gray-900  dark:text-white"
+          {userBooks
+            ?.filter((i) => i.status === true)
+            .map((book, index) => (
+              <tr
+                className="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
+                key={index}
               >
-                {book.bookName}
-              </th>
-
-              <td className="px-2">{book.bookWriter}</td>
-              <td className="px-2 flex justify-end items-center pr-0">
-                <button
-                  type="button"
-                  className="block px-3 bg-rose-500 text-white text-l mt-4 py-2  font-bold mb-2 flex justify-center items-center "
-                  onClick={() => removeBook(book)}
+                <th
+                  scope="row"
+                  className="px-2  font-medium text-gray-900  dark:text-white"
                 >
-                  <AiFillDelete /> Sil
-                </button>
-              </td>
-            </tr>
-          ))}
+                  {book.bookName}
+                </th>
+
+                <td className="px-2">{book.bookWriter}</td>
+                <td className="px-2 flex justify-end items-center pr-0">
+                  <button
+                    type="button"
+                    className="block px-3 bg-rose-500 text-white text-l mt-4 py-2  font-bold mb-2 flex justify-center items-center "
+                    onClick={() => removeBook(book)}
+                  >
+                    <AiFillDelete /> Sil
+                  </button>
+                </td>
+              </tr>
+            ))}
+          <tr className="border-b border-t border-rose-500" >
+            Onay aşamasında olanlar &#x21E3;
+          </tr>
+          {userBooks
+            ?.filter((i) => i.status === false)
+            .map((booky, index) => {
+              return (
+                <tr
+                  className="bg-slate-100	 border-b dark:bg-gray-800 dark:border-gray-700"
+                  key={index}
+                >
+                  <th
+                    scope="row"
+                    className="px-2  font-medium text-gray-900  dark:text-white"
+                  >
+                    {booky.bookName}
+                  </th>
+
+                  <td className="px-2">{booky.bookWriter}</td>
+                  <td className="px-2 flex justify-end items-center pr-0">
+                    <button
+                      type="button"
+                      className="block px-3 bg-rose-500 text-white text-l mt-4 py-2  font-bold mb-2 flex justify-center items-center "
+                      onClick={() => removeBook(booky)}
+                    >
+                      <AiFillDelete /> Sil
+                    </button>
+                  </td>
+                </tr>
+              );
+            })}
         </tbody>
       </table>
     </div>

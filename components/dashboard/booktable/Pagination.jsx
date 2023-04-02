@@ -1,6 +1,8 @@
 import React from "react";
 
-export default function Pagination() {
+export default function Pagination({ pagination, setPagination }) {
+  const { currentPage, totalPage } = pagination;
+
   return (
     <nav aria-label="Page navigation example">
       <ul className="inline-flex items-center -space-x-px">
@@ -8,8 +10,13 @@ export default function Pagination() {
           <a
             href="#"
             className="block px-3 py-2 ml-0 leading-tight text-gray-500 bg-white border border-gray-300 rounded-l-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+            onClick={() => {
+              if (currentPage > 0) {
+                setPagination({ ...pagination, currentPage: currentPage - 1 });
+              }
+            }}
           >
-            <span className="sr-only">Previous</span>
+            <span className="sr-only">Öncesi</span>
             <svg
               aria-hidden="true"
               className="w-5 h-5"
@@ -25,53 +32,36 @@ export default function Pagination() {
             </svg>
           </a>
         </li>
-        <li>
-          <a
-            href="#"
-            className="px-3 py-2 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
-          >
-            1
-          </a>
-        </li>
-        <li>
-          <a
-            href="#"
-            className="px-3 py-2 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
-          >
-            2
-          </a>
-        </li>
-        <li>
-          <a
-            href="#"
-            aria-current="page"
-            className="z-10 px-3 py-2 leading-tight text-blue-600 border border-blue-300 bg-blue-50 hover:bg-blue-100 hover:text-blue-700 dark:border-gray-700 dark:bg-gray-700 dark:text-white"
-          >
-            3
-          </a>
-        </li>
-        <li>
-          <a
-            href="#"
-            className="px-3 py-2 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
-          >
-            4
-          </a>
-        </li>
-        <li>
-          <a
-            href="#"
-            className="px-3 py-2 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
-          >
-            5
-          </a>
-        </li>
+        {Array.from(Array(pagination.totalPage)).map((items, index) => {
+          return (
+            <li key={index}>
+              <a
+                href="#"
+                className={
+                  pagination.currentPage === index
+                    ? "px-3 py-2 leading-tight text-white bg-rose-500 border border-gray-300 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+                    : "px-3 py-2 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+                }
+                onClick={() =>
+                  setPagination({ ...pagination, currentPage: index })
+                }
+              >
+                {index + 1}
+              </a>
+            </li>
+          );
+        })}
         <li>
           <a
             href="#"
             className="block px-3 py-2 leading-tight text-gray-500 bg-white border border-gray-300 rounded-r-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+            onClick={() => {
+              if (currentPage < totalPage - 1) {
+                setPagination({ ...pagination, currentPage: currentPage + 1 });
+              }
+            }}
           >
-            <span className="sr-only">Next</span>
+            <span className="sr-only">Sonrası</span>
             <svg
               aria-hidden="true"
               className="w-5 h-5"

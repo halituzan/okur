@@ -14,9 +14,10 @@ export default function BookCase() {
   useEffect(() => {
     fetchUserBook();
   }, []);
-  console.log(`https://${process.env.NEXT_PUBLIC_USERS_MOCK_API}.mockapi.io/users/1/userBooks/`)
+
   const removeBook = async (book) => {
     // HTTP - PUT request with (bookID,userID)
+    console.log(book);
   };
   const addBook = async (bookValue, id) => {
     // HTTP - POST request with (bookID,userID)
@@ -30,7 +31,6 @@ export default function BookCase() {
       }
     );
     await fetchUserBook(id);
-    
   };
 
   return (
