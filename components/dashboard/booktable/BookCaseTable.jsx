@@ -17,7 +17,6 @@ export default function BookCaseTable({ userData, addBook, removeBook }) {
     setAddBookValue({ ...addBookValue, [e.target.name]: e.target.value });
   };
   const userBooks = userData;
-  console.log(userData);
   return (
     <div className="relative overflow-x-auto flex flex-col">
       <button
