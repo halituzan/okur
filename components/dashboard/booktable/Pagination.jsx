@@ -32,7 +32,7 @@ export default function Pagination({ pagination, setPagination }) {
             </svg>
           </a>
         </li>
-        {Array.from(Array(pagination.totalPage)).map((items, index) => {
+        {Array.from(Array(pagination.totalPage)).map((i, index) => {
           return (
             <li key={index}>
               <a

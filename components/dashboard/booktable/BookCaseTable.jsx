@@ -1,3 +1,4 @@
+import axios from "axios";
 import React, { useEffect, useState } from "react";
 import {
   AiFillDelete,
@@ -6,17 +7,30 @@ import {
   AiFillEdit,
 } from "react-icons/ai";
 
-export default function BookCaseTable({ userData, addBook, removeBook }) {
+export default function BookCaseTable({
+  userData,
+  addBook,
+  removeBook,
+  fetchUserBook,
+  userBookList,
+}) {
   const [showModal, setShowModal] = React.useState(false);
   const [addBookValue, setAddBookValue] = useState({
     bookName: "",
     bookWriter: "",
   });
 
+  useEffect(() => {
+    if (userData.length > 0) {
+      fetchUserBook(userData[0]?.id);
+    }
+  }, [userData]);
+
   const addBookHandler = (e) => {
     setAddBookValue({ ...addBookValue, [e.target.name]: e.target.value });
   };
   const userBooks = userData;
+
   return (
     <div className="relative overflow-x-auto flex flex-col">
       <button
@@ -88,7 +102,7 @@ export default function BookCaseTable({ userData, addBook, removeBook }) {
                       type="button"
                       onClick={() => {
                         setShowModal(false);
-                        addBook(addBookValue, userData[0].id);
+                        addBook(addBookValue, userData[0]?.id);
                       }}
                     >
                       Kaydet
@@ -115,7 +129,7 @@ export default function BookCaseTable({ userData, addBook, removeBook }) {
           </tr>
         </thead>
         <tbody>
-          {userBooks
+          {userBookList
             ?.filter((i) => i.status === true)
             .map((book, index) => (
               <tr
@@ -141,10 +155,14 @@ export default function BookCaseTable({ userData, addBook, removeBook }) {
                 </td>
               </tr>
             ))}
-          <tr className="border-b border-t border-rose-500" >
-            Onay aşamasında olanlar &#x21E3;
-          </tr>
-          {userBooks
+          {userBookList.length > 0 ? (
+            <tr className="border-b border-t border-rose-500">
+              Onay aşamasında olanlar &#x21E3;
+            </tr>
+          ) : (
+            ""
+          )}
+          {userBookList
             ?.filter((i) => i.status === false)
             .map((booky, index) => {
               return (

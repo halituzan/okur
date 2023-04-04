@@ -4,15 +4,24 @@ import BookCaseTable from "./booktable/BookCaseTable.jsx";
 import axios from "axios";
 export default function BookCase() {
   const [userData, setUserData] = useState([]);
+  const [userBookList, setUserBookList] = useState([]);
 
-  const fetchUserBook = async (id) => {
+  const fetchUserData = async () => {
     const { data } = await axios(
-      `https://${process.env.NEXT_PUBLIC_USERS_MOCK_API}.mockapi.io/users/1/userBooks`
+      `https://${process.env.NEXT_PUBLIC_USERS_MOCK_API}.mockapi.io/users/`
     );
     setUserData(data);
   };
+
+  const fetchUserBook = async (id) => {
+    const { data } = await axios(
+      `https://${process.env.NEXT_PUBLIC_USERS_MOCK_API}.mockapi.io/users/${id}/userBooks/`
+    );
+    setUserBookList(data);
+  };
+
   useEffect(() => {
-    fetchUserBook();
+    fetchUserData();
   }, []);
 
   const removeBook = async (book) => {
@@ -30,7 +39,18 @@ export default function BookCase() {
         status: false,
       }
     );
-    await fetchUserBook(id);
+
+    await axios.post(
+      `https://${process.env.NEXT_PUBLIC_BOOKY_MOCK_API}.mockapi.io/bookApi/booky`,
+      {
+        bookID: bookValue.bookID,
+        bookName: bookValue.bookName,
+        bookWriter: bookValue.bookWriter,
+        userId: id,
+        status: false,
+      }
+    );
+    await fetchUserBook(userData[0].id);
   };
 
   return (
@@ -39,6 +59,8 @@ export default function BookCase() {
         userData={userData}
         removeBook={removeBook}
         addBook={addBook}
+        fetchUserBook={fetchUserBook}
+        userBookList={userBookList}
       />
     </div>
   );
