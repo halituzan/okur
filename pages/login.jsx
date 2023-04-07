@@ -29,7 +29,13 @@ export default function login() {
       <div className="relative overflow-hidden md:flex w-1/2 bg-gradient-to-tr from-rose-500 to-purple-700 i justify-around items-center hidden book-auth">
         <div className="w-1/2">
           <Link href="/" className="flex justify-center">
-            <Image src="/images/logo.svg" alt="logo" width={200} height={30} />
+            <Image
+              src="/images/logo.svg"
+              alt="logo"
+              width={200}
+              height={30}
+              style={{ width: "auto", height: "auto" }}
+            />
             <h1 className="text-white font-bold text-4xl ml-2 font-sans"></h1>
           </Link>
 
@@ -54,13 +60,23 @@ export default function login() {
       <div className="flex flex-col md:w-1/2 justify-center py-10 items-center bg-white">
         <div className="worm">
           {showPass ? (
-            <Image src="/images/worm.svg" alt="Worm" width={300} height={300} />
-          ) : (
             <Image
-              src="/images/worm1.svg"
+              src="/images/worm.svg"
               alt="Worm"
               width={300}
               height={300}
+              placeholder="blur"
+              blurDataURL={"/images/worm.svg"}
+            />
+          ) : (
+            <Image
+              src={"/images/worm1.svg"}
+              alt="Worm"
+              width={300}
+              height={300}
+              placeholder="blur"
+              blurDataURL={"/images/worm1.svg"}
+              
             />
           )}
         </div>
@@ -76,7 +92,7 @@ export default function login() {
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
-              className={!login.email ?"h-5 w-5 text-gray-400" : "h-5 w-5"}
+              className={!login.email ? "h-5 w-5 text-gray-400" : "h-5 w-5"}
             >
               <path
                 strokeLinecap="round"
@@ -122,7 +138,9 @@ export default function login() {
             ) : (
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                className={!login.password ?"h-5 w-5 text-gray-400" : "h-5 w-5"}
+                className={
+                  !login.password ? "h-5 w-5 text-gray-400" : "h-5 w-5"
+                }
                 viewBox="0 0 20 20"
                 fill="currentColor"
               >

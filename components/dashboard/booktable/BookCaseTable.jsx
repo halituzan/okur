@@ -157,7 +157,7 @@ export default function BookCaseTable({
             ))}
           {userBookList.length > 0 ? (
             <tr className="border-b border-t border-rose-500">
-              Onay aşamasında olanlar &#x21E3;
+              <td>Onay aşamasında olanlar &#x21E3;</td>
             </tr>
           ) : (
             ""
