@@ -20,7 +20,7 @@ export default function Register() {
 
   const registerHandler = (e) => {
     setRegisterValues({ ...registerValues, [e.target.name]: e.target.value });
-    const emailRP = /\S+@\S+\.\S+/
+    const emailRP = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
 
     const regexP =
       /^(?=.*[-\#\$\.\%\&\@\!\+\=\<\>\*])(?=.*[a-zA-Z])(?=.*\D).{8,12}$/;
@@ -35,7 +35,7 @@ export default function Register() {
     }
 
     e.target.name === "email"
-      ? e.target.name.match(emailRP)
+      ? e.target.value.match(emailRP)
         ? setEmailCheck(true)
         : setEmailCheck(false)
       : "";
@@ -57,9 +57,10 @@ export default function Register() {
         toast.error("Lütfen tüm bilgileri doldurun");
       }
     } else {
-      toast.error("Şifrenizi istenen şekilde Girin");
+      toast.error("Şifrenizi istenen şekilde girin.");
     }
   };
+
   const passFocus = () => {
     setPassFocus(true);
   };
@@ -160,7 +161,7 @@ export default function Register() {
           </div>
           <div
             className={
-              emailCheck
+              emailCheck || registerValues.email === ""
                 ? "flex items-center border-2 py-2 px-3 rounded-2xl mb-4"
                 : "flex items-center border-2 py-2 px-3 rounded-2xl mb-4 border-rose-500"
             }
@@ -193,7 +194,7 @@ export default function Register() {
 
           <div
             className={
-              passwordCheck
+              passwordCheck || registerValues.password === ""
                 ? "flex items-center border-2 py-2 px-3 rounded-2xl mb-4 relative"
                 : "flex items-center border-2 py-2 px-3 rounded-2xl mb-4 border-rose-500 relative"
             }
@@ -223,12 +224,11 @@ export default function Register() {
               onFocus={() => passFocus()}
               onBlur={() => passFocusOut}
             />
-            {/* <div className={PassFocus && registerValues.password === "" ? 'pass-check' : "hidden"}> Şifreniz 8-12 karakterden oluşmalı, en az 1'er büyük harf, küçük harf,rakam ve özel karakter içermelidir.</div> */}
           </div>
 
           <div
             className={
-              isPassCorrect
+              isPassCorrect || registerValues.passwordConfirm === ""
                 ? "flex items-center border-2 py-2 px-3 rounded-2xl"
                 : "flex items-center border-2 py-2 px-3 rounded-2xl border-rose-500"
             }

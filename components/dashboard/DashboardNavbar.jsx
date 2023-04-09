@@ -9,8 +9,8 @@ export default function DashboardNavbar({ buttonList, setButtonList }) {
   const router = useRouter();
   const logOut = () => {
     localStorage.clear("bookyId");
-    if (localStorage.getItem("bookyId")) {
-      router.back("/dashboard");
+    if (localStorage.getItem("bookyId") === null) {
+      router.back("/");
     }
   };
 
@@ -124,7 +124,7 @@ export default function DashboardNavbar({ buttonList, setButtonList }) {
                   <ul className="py-1" role="none">
                     <li>
                       <Link
-                        href="#"
+                        href="/dashboard"
                         className="block px-4 py-2 text-sm text-gray-700 hover:bg-rose-500 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white"
                         role="menuitem"
                       >
@@ -133,7 +133,7 @@ export default function DashboardNavbar({ buttonList, setButtonList }) {
                     </li>
                     <li>
                       <Link
-                        href="#"
+                        href="/dashboard"
                         className="block px-4 py-2 text-sm text-gray-700 hover:bg-rose-500 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white"
                         role="menuitem"
                       >
@@ -141,11 +141,12 @@ export default function DashboardNavbar({ buttonList, setButtonList }) {
                       </Link>
                     </li>
 
-                    <li onClick={() => logOut()}>
+                    <li >
                       <Link
-                        href="#"
+                        href="/dashboard"
                         className="block px-4 py-2 text-sm text-gray-700 hover:bg-rose-500 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white"
                         role="menuitem"
+                        onClick={() => logOut()}
                       >
                         Çıkış Yap
                       </Link>
@@ -172,7 +173,7 @@ export default function DashboardNavbar({ buttonList, setButtonList }) {
               l.badge ? (
                 <li className="aside-buttons" key={index}>
                   <Link
-                    href="#"
+                    href="/dashboard"
                     className={
                       l.isClicked
                         ? "flex items-center p-2 text-white bg-rose-500 rounded-lg dark:text-white hover:bg-rose-500 dark:hover:bg-gray-700"
@@ -194,7 +195,7 @@ export default function DashboardNavbar({ buttonList, setButtonList }) {
               ) : (
                 <li className="aside-buttons" key={l.name}>
                   <Link
-                    href="#"
+                    href="/dashboard"
                     className={
                       l.isClicked
                         ? "flex items-center p-2 bg-rose-500 text-white rounded-lg dark:text-white hover:bg-rose-500 hover:text-white dark:hover:bg-gray-700"

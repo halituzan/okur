@@ -1,16 +1,32 @@
 import Link from "next/link";
+import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
-import { ToastContainer } from "react-toastify";
+import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 import Image from "next/image";
 import Head from "next/head";
+
 export default function login() {
+  const router = useRouter();
+  const [stroage, setStroage] = useState(null);
+  const [showPass, setShowPass] = useState(true);
   const [login, setLogin] = useState({
     password: "",
     email: "",
   });
-  const [showPass, setShowPass] = useState(true);
+
+  useEffect(() => {
+    setStroage(localStorage.getItem("bookyId"));
+  }, []);
+
+  useEffect(() => {
+    if (stroage !== null) {
+      router.push("/dashboard");
+      toast.success(`Giriş Başarılı`);
+    }
+  }, [stroage]);
+
   const loginHandler = (e) => {
     setLogin({
       ...login,
@@ -26,6 +42,7 @@ export default function login() {
       <Head>
         <title>Booky Üye Giriş Sayfası - booky.com.tr</title>
       </Head>
+
       <div className="relative overflow-hidden md:flex w-1/2 bg-gradient-to-tr from-rose-500 to-purple-700 i justify-around items-center hidden book-auth">
         <div className="w-1/2">
           <Link href="/" className="flex justify-center">
@@ -76,7 +93,6 @@ export default function login() {
               height={300}
               placeholder="blur"
               blurDataURL={"/images/worm1.svg"}
-              
             />
           )}
         </div>
