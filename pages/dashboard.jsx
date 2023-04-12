@@ -16,6 +16,40 @@ import Redirection from "../components/Redirection";
 
 export default function Dashboard() {
   const router = useRouter();
+  const [notifications, setNotifications] = useState([
+    {
+      userId: "1",
+      bookID: "asdsad",
+      bookName: "Dinozorlar Ülkesinde Çürümüş Bal Kabağı",
+      bookWriter: "Halit Uzan",
+      type: "delivery",
+      typeStatus: true,
+    },
+    {
+      userId: "1",
+      bookID: "123124123",
+      bookName: "Aşk",
+      bookWriter: "Elif Şafak",
+      type: "pickUp",
+      typeStatus: true,
+    },
+    {
+      userId: "1",
+      bookID: "asdafasd",
+      bookName: "Yarınsız Yarın",
+      bookWriter: "Nazan Öncel",
+      type: "pickUp",
+      typeStatus: true,
+    },
+    {
+      userId: "1",
+      bookID: "12asd",
+      bookName: "Kuyucaklı Yusuf",
+      bookWriter: "Sabahattin Ali",
+      type: "delivery",
+      typeStatus: true,
+    },
+  ]);
   const [buttonList, setButtonList] = useState([
     {
       icon: <AiOutlineHome />,
@@ -31,7 +65,7 @@ export default function Dashboard() {
       name: "notification",
       badge: true,
       isClicked: false,
-      component: <Notification />,
+      component: <Notification notifications={notifications} />,
     },
     {
       icon: <GiBookPile />,
@@ -74,7 +108,11 @@ export default function Dashboard() {
       <Head>
         <title>Kullanıcı Sayfası - booky.com.tr</title>
       </Head>
-      <DashboardNavbar buttonList={buttonList} setButtonList={setButtonList} />
+      <DashboardNavbar
+        buttonList={buttonList}
+        setButtonList={setButtonList}
+        notifications={notifications}
+      />
 
       <div className="p-4 sm:ml-64">
         {buttonList.map((i) =>

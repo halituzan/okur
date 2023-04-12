@@ -75,13 +75,20 @@ export default function Register() {
       <div className="relative overflow-hidden md:flex w-1/2 bg-gradient-to-tr from-rose-500 to-purple-700 i justify-around items-center hidden book-auth">
         <div className="w-1/2">
           <Link href="/" className="flex justify-center">
-            <Image src="/images/logo.svg" alt="logo" width={200} height={30} />
+            <Image
+              src="/images/logo.svg"
+              alt="logo"
+              width={200}
+              height={170}
+              placeholder="blur"
+              blurDataURL={"/images/logo.svg"}
+              
+            />
             <h1 className="text-white font-bold text-4xl ml-2 font-sans"></h1>
           </Link>
 
           <p className="text-white mt-1 text-xl">Kayıt Sayfası</p>
 
-          {/* <button type="submit" className="block w-28 bg-white text-indigo-800 mt-4 py-2 rounded-2xl font-bold mb-2">Anasayfa</button> */}
           <p className="text-white">
             Lorem Ipsum is simply dummy text of the printing and typesetting
             industry.

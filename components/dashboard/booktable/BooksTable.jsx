@@ -1,11 +1,8 @@
 import React from "react";
 
-
 export default function BooksTable({ bookList, listBookFunc }) {
-
   return (
     <div className="relative overflow-x-auto flex flex-col">
-     
       <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
         <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
           <tr>
@@ -29,7 +26,7 @@ export default function BooksTable({ bookList, listBookFunc }) {
                 scope="row"
                 className="px-2  font-medium text-gray-900  dark:text-white"
               >
-                {book.bookName}
+                {book.bookName} - {book.status ? "onaylı" : "onaysız"}
               </th>
 
               <td className="px-2">{book.bookWriter}</td>

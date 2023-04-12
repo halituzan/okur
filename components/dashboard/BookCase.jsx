@@ -3,15 +3,11 @@ import React, { useEffect, useState } from "react";
 import BookCaseTable from "./booktable/BookCaseTable.jsx";
 import axios from "axios";
 export default function BookCase() {
-  const [userData, setUserData] = useState([]);
+  const [userData, setUserData] = useState(
+    JSON.parse(localStorage.getItem("bookyId"))
+  );
   const [userBookList, setUserBookList] = useState([]);
 
-  const fetchUserData = async () => {
-    const { data } = await axios(
-      `https://${process.env.NEXT_PUBLIC_USERS_MOCK_API}.mockapi.io/users/`
-    );
-    setUserData(data);
-  };
 
   const fetchUserBook = async (id) => {
     const { data } = await axios(
@@ -20,9 +16,6 @@ export default function BookCase() {
     setUserBookList(data);
   };
 
-  useEffect(() => {
-    fetchUserData();
-  }, []);
 
   const removeBook = async (book) => {
     // HTTP - PUT request with (bookID,userID)
@@ -52,7 +45,6 @@ export default function BookCase() {
     );
     await fetchUserBook(userData[0].id);
   };
-
   return (
     <div className="p-4 dark:border-gray-700 mt-14">
       <BookCaseTable

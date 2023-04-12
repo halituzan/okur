@@ -21,15 +21,15 @@ export default function BookCaseTable({
   });
 
   useEffect(() => {
-    if (userData.length > 0) {
-      fetchUserBook(userData[0]?.id);
+    if (userData.id) {
+      fetchUserBook(userData.id);
     }
   }, [userData]);
 
   const addBookHandler = (e) => {
     setAddBookValue({ ...addBookValue, [e.target.name]: e.target.value });
   };
-  const userBooks = userData;
+  // const userBooks = userData;
 
   return (
     <div className="relative overflow-x-auto flex flex-col">

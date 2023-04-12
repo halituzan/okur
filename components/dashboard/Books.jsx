@@ -4,7 +4,7 @@ import BooksTable from "./booktable/BooksTable";
 import axios from "axios";
 export default function Books() {
   const [pagination, setPagination] = useState({
-    totalPage: 10,
+    totalPage: 0,
     currentPage: 0,
   });
   const [search, setSearch] = useState("");
@@ -16,7 +16,9 @@ export default function Books() {
     const { data } = await axios(
       `https://${
         process.env.NEXT_PUBLIC_BOOKY_MOCK_API
-      }.mockapi.io/bookApi/booky?page=${pagination.currentPage + 1}&limit=10`
+      }.mockapi.io/bookApi/booky?page=${
+        pagination.currentPage + 1
+      }&limit=10&status=true`
     );
 
     setBookList(data);
@@ -27,18 +29,18 @@ export default function Books() {
         process.env.NEXT_PUBLIC_BOOKY_MOCK_API
       }.mockapi.io/bookApi/booky?page=${
         pagination.currentPage + 1
-      }&limit=10&filter=${word}`
+      }&limit=10&filter=${word}&status=true`
     );
     setBookList(data);
 
     const tp = await axios(
-      `https://${process.env.NEXT_PUBLIC_BOOKY_MOCK_API}.mockapi.io/bookApi/booky?filter=${word}`
+      `https://${process.env.NEXT_PUBLIC_BOOKY_MOCK_API}.mockapi.io/bookApi/booky?filter=${word}&status=true`
     );
     setPagination({ ...pagination, totalPage: Math.ceil(tp.data.length / 10) });
   };
   const fetchAllData = async () => {
     const { data } = await axios(
-      `https://${process.env.NEXT_PUBLIC_BOOKY_MOCK_API}.mockapi.io/bookApi/booky`
+      `https://${process.env.NEXT_PUBLIC_BOOKY_MOCK_API}.mockapi.io/bookApi/booky?status=true`
     );
 
     setPagination({ ...pagination, totalPage: Math.ceil(data.length / 10) });
@@ -75,14 +77,6 @@ export default function Books() {
               onKeyDown={(e) => handleKeyDown(e)}
             />
           </div>
-          {/* <div className="flex items-center border-2 px-3 ml-2 lg:col-span-2 col-span-5 mb-2">
-            <input
-              className="pl-2 outline-none border-none w-full"
-              type="text"
-              name="writer"
-              placeholder="Yazar"
-            />
-          </div> */}
           <div className="flex justify-center items-center ml-2 lg:col-span-1 col-span-5 mb-2">
             <button
               type="button"
@@ -93,17 +87,25 @@ export default function Books() {
             </button>
           </div>
         </div>
-        <div className="pagination mt-2 flex lg:justify-end justify-center">
-          <Pagination
-            pagination={pagination}
-            setPagination={setPagination}
-            bookList={bookList}
-          />
-        </div>
+        {pagination.totalPage > 0 ? (
+          <div className="pagination mt-2 flex lg:justify-end justify-center">
+            <Pagination
+              pagination={pagination}
+              setPagination={setPagination}
+              bookList={bookList}
+            />
+          </div>
+        ) : (
+          ""
+        )}
       </div>
 
       <div className="book-list">
-        <BooksTable bookList={bookList} listBookFunc={kitapIste} />
+        {!bookList ? (
+          ""
+        ) : (
+          <BooksTable bookList={bookList} listBookFunc={kitapIste} />
+        )}
       </div>
     </div>
   );
