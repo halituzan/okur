@@ -10,6 +10,9 @@ export default function DashboardNavbar({
 }) {
   const [showSettings, setShowSettings] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
+  const [storage, setStorage] = useState(
+    JSON.parse(localStorage.getItem("bookyId"))
+  );
   const router = useRouter();
   const logOut = () => {
     localStorage.clear("bookyId");
@@ -17,7 +20,6 @@ export default function DashboardNavbar({
       router.back("/");
     }
   };
-
   const sidebarHandler = (e, l, index) => {
     let newButtonList = [...buttonList];
     setButtonList(
@@ -32,7 +34,7 @@ export default function DashboardNavbar({
     sidebarHandler(e, l, index);
     setShowMenu(true);
   };
-
+  console.log(storage.name.split(" "));
   return (
     <>
       <nav className="fixed top-0 z-50 w-full bg-rose-500 border-b border-gray-200 dark:bg-gray-800 dark:border-gray-700 ">
@@ -93,15 +95,9 @@ export default function DashboardNavbar({
                     data-dropdown-toggle="dropdown-user"
                   >
                     <span className="sr-only">Üye Menüsü</span>
-                    <Image
-                      className="w-8 h-8 rounded-full"
-                      width={50}
-                      height={50}
-                      src="/images/vesikalik.jpg"
-                      alt="user photo"
-                      blurDataURL="/images/vesikalik.jpg"
-                      placeholder="blur"
-                    />
+                    <p className="p-1.5 text-xl text-white ">
+                      {storage.name.split(" ").map((i) => i[0])}
+                    </p>
                   </button>
                 </div>
                 <div

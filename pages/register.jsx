@@ -1,11 +1,13 @@
 import Head from "next/head";
 import Image from "next/image";
 import Link from "next/link";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useRouter } from "next/router";
 
 export default function Register() {
+  const router = useRouter();
   const [registerValues, setRegisterValues] = useState({
     studentId: "",
     password: "",
@@ -17,7 +19,7 @@ export default function Register() {
   const [emailCheck, setEmailCheck] = useState(true);
   const [isPassCorrect, setIsPassCorrect] = useState(true);
   const [PassFocus, setPassFocus] = useState(false);
-
+  const [storage, setStorage] = useState(null);
   const registerHandler = (e) => {
     setRegisterValues({ ...registerValues, [e.target.name]: e.target.value });
     const emailRP = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
@@ -67,6 +69,18 @@ export default function Register() {
   const passFocusOut = () => {
     setPassFocus(false);
   };
+
+  useEffect(() => {
+    setStorage(localStorage.getItem("bookyId"));
+  }, []);
+
+  useEffect(() => {
+    if (storage !== null) {
+      router.push("/dashboard");
+      toast.success(`Giriş Yapılmış Yönlendiriliyorsunuz.`);
+    }
+  }, [storage]);
+
   return (
     <div className="h-screen md:flex">
       <Head>
@@ -82,7 +96,6 @@ export default function Register() {
               height={170}
               placeholder="blur"
               blurDataURL={"/images/logo.svg"}
-              
             />
             <h1 className="text-white font-bold text-4xl ml-2 font-sans"></h1>
           </Link>

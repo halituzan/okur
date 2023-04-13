@@ -13,7 +13,7 @@ export default function HomePage() {
         <HomeTitle />
       </div>
       <div className="hidden xl:flex col-span-1 row-span-1 rounded-md p-2 bg-slate-100 flex justify-center items-centerrounded-md ">
-        <Login />
+        <Login className="overflow-auto"/>
       </div>
     </div>
   );

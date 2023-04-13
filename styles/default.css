@@ -17,7 +17,9 @@ input:-webkit-autofill:focus,
 input:-webkit-autofill:active {
   -webkit-box-shadow: 0 0 0 30px white inset !important;
 }
-
+body::-webkit-scrollbar {
+  width: 0px;
+} 
 h1 {
   font-family: "Poppins", ui-sans-serif;
   font-weight: 600;

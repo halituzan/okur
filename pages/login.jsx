@@ -19,13 +19,17 @@ export default function login() {
 
   useEffect(() => {
     setStorage(localStorage.getItem("bookyId"));
-    
   }, []);
 
   useEffect(() => {
     if (storage !== null) {
       router.push("/dashboard");
       toast.success(`Giriş Başarılı`);
+      setLogin({
+        ...login,
+        password: JSON.parse(storage).password,
+        studentId: JSON.parse(storage).studentId,
+      });
     }
   }, [storage]);
 

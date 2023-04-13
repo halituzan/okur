@@ -114,7 +114,7 @@ export default function Dashboard() {
         notifications={notifications}
       />
 
-      <div className="p-4 sm:ml-64">
+      <div className="p-4 sm:ml-64 ">
         {buttonList.map((i) =>
           i.isClicked ? <div key={i.name}>{i.component}</div> : ""
         )}
