@@ -34,7 +34,6 @@ export default function DashboardNavbar({
     sidebarHandler(e, l, index);
     setShowMenu(true);
   };
-  console.log(storage.name.split(" "));
   return (
     <>
       <nav className="fixed top-0 z-50 w-full bg-rose-500 border-b border-gray-200 dark:bg-gray-800 dark:border-gray-700 ">

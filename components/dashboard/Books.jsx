@@ -18,7 +18,7 @@ export default function Books() {
         process.env.NEXT_PUBLIC_BOOKY_MOCK_API
       }.mockapi.io/bookApi/booky?page=${
         pagination.currentPage + 1
-      }&limit=10&status=true`
+      }&limit=10`
     );
 
     setBookList(data);
@@ -29,18 +29,18 @@ export default function Books() {
         process.env.NEXT_PUBLIC_BOOKY_MOCK_API
       }.mockapi.io/bookApi/booky?page=${
         pagination.currentPage + 1
-      }&limit=10&filter=${word}&status=true`
+      }&limit=10&filter=${word}`
     );
     setBookList(data);
 
     const tp = await axios(
-      `https://${process.env.NEXT_PUBLIC_BOOKY_MOCK_API}.mockapi.io/bookApi/booky?filter=${word}&status=true`
+      `https://${process.env.NEXT_PUBLIC_BOOKY_MOCK_API}.mockapi.io/bookApi/booky?filter=${word}`
     );
     setPagination({ ...pagination, totalPage: Math.ceil(tp.data.length / 10) });
   };
   const fetchAllData = async () => {
     const { data } = await axios(
-      `https://${process.env.NEXT_PUBLIC_BOOKY_MOCK_API}.mockapi.io/bookApi/booky?status=true`
+      `https://${process.env.NEXT_PUBLIC_BOOKY_MOCK_API}.mockapi.io/bookApi/booky`
     );
 
     setPagination({ ...pagination, totalPage: Math.ceil(data.length / 10) });
