@@ -21,7 +21,7 @@ export default function BookCaseTable({
   });
 
   useEffect(() => {
-    if (userData.id) {
+    if (userData?.id) {
       fetchUserBook(userData.id);
     }
   }, [userData]);

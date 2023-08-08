@@ -21,11 +21,11 @@ export default function Login() {
     if (storage !== null) {
       router.push("/dashboard");
       toast.success(`Giriş Başarılı`);
-      setLogin({
-        ...login,
-        password: JSON.parse(storage).password,
-        studentId: JSON.parse(storage).studentId,
-      });
+      // setLogin({
+      //   ...login,
+      //   password: JSON.parse(storage).password,
+      //   studentId: JSON.parse(storage).studentId,
+      // });
     }
   }, [storage]);
 
@@ -50,7 +50,7 @@ export default function Login() {
   };
 
   return (
-    <div className="flex md:w-1/2 justify-center py-10 items-center">
+    <div className="flex justify-center py-10 items-center rounded-xl border border-gray-100 shadow-xl">
       <form>
         <h1 className="text-gray-800 font-bold text-2xl mb-1">Giriş Yap!</h1>
 
@@ -76,7 +76,7 @@ export default function Login() {
             </g>
           </svg>
           <input
-            className="pl-2 outline-none border-none bg-slate-100"
+            className="pl-2 outline-none border-none "
             type="text"
             name="studentId"
             placeholder="Öğrenci Numarası"
@@ -125,7 +125,7 @@ export default function Login() {
           )}
 
           <input
-            className="pl-2 outline-none border-none bg-slate-100"
+            className="pl-2 outline-none border-none "
             type={showPass ? "password" : "text"}
             name="password"
             id="password"

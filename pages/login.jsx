@@ -25,11 +25,11 @@ export default function login() {
     if (storage !== null) {
       router.push("/dashboard");
       toast.success(`Giriş Başarılı`);
-      setLogin({
-        ...login,
-        password: JSON.parse(storage).password,
-        studentId: JSON.parse(storage).studentId,
-      });
+      // setLogin({
+      //   ...login,
+      //   password: JSON.parse(storage).password,
+      //   studentId: JSON.parse(storage).studentId,
+      // });
     }
   }, [storage]);
 

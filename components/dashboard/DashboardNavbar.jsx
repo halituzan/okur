@@ -10,9 +10,8 @@ export default function DashboardNavbar({
 }) {
   const [showSettings, setShowSettings] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
-  const [storage, setStorage] = useState(
-    JSON.parse(localStorage.getItem("bookyId"))
-  );
+
+  const [storage, setStorage] = useState(null);
   const router = useRouter();
   const logOut = () => {
     localStorage.clear("bookyId");
@@ -34,6 +33,15 @@ export default function DashboardNavbar({
     sidebarHandler(e, l, index);
     setShowMenu(true);
   };
+  useEffect(() => {
+    setStorage(localStorage.getItem("bookyId"));
+   
+  }, []);
+  useEffect(() => {
+    console.log(storage)
+   
+  }, [storage]);
+  
   return (
     <>
       <nav className="fixed top-0 z-50 w-full bg-rose-500 border-b border-gray-200 dark:bg-gray-800 dark:border-gray-700 ">
@@ -95,7 +103,7 @@ export default function DashboardNavbar({
                   >
                     <span className="sr-only">Üye Menüsü</span>
                     <p className="p-1.5 text-xl text-white ">
-                      {storage.name.split(" ").map((i) => i[0])}
+                      {storage?.name?.split(" ").map((i) => i[0])}
                     </p>
                   </button>
                 </div>
