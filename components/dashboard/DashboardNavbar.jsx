@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -10,9 +10,10 @@ export default function DashboardNavbar({
 }) {
   const [showSettings, setShowSettings] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
-
   const [storage, setStorage] = useState(null);
   const router = useRouter();
+  const dropdown = useRef();
+  const sidebar = useRef();
   const logOut = () => {
     localStorage.clear("bookyId");
     if (localStorage.getItem("bookyId") === null) {
@@ -34,14 +35,28 @@ export default function DashboardNavbar({
     setShowMenu(true);
   };
   useEffect(() => {
-    setStorage(localStorage.getItem("bookyId"));
-   
+    setStorage(JSON.parse(localStorage.getItem("bookyId")));
   }, []);
   useEffect(() => {
-    console.log(storage)
-   
+    console.log(storage);
   }, [storage]);
-  
+
+  const handleClickOutside = (event) => {
+    if (dropdown.current && !dropdown.current.contains(event.target)) {
+      setShowSettings(false);
+    }
+    if (sidebar.current && !sidebar.current.contains(event.target)) {
+      setShowMenu(true);
+    }
+  };
+  useEffect(() => {
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
   return (
     <>
       <nav className="fixed top-0 z-50 w-full bg-rose-500 border-b border-gray-200 dark:bg-gray-800 dark:border-gray-700 ">
@@ -108,6 +123,7 @@ export default function DashboardNavbar({
                   </button>
                 </div>
                 <div
+                  ref={dropdown}
                   className={
                     showSettings
                       ? "z-50 pr-2 right-1.5 top-14 absolute text-base list-none bg-white divide-y divide-gray-100 rounded shadow dark:bg-gray-700 dark:divide-gray-600"
@@ -168,6 +184,7 @@ export default function DashboardNavbar({
       </nav>
       <aside
         id="logo-sidebar"
+        ref={sidebar}
         className={
           showMenu
             ? "fixed top-0 left-0 z-40 w-64 h-screen pt-20 transition-transform -translate-x-full bg-white border-r border-gray-200 sm:translate-x-0 dark:bg-gray-800 dark:border-gray-700"
