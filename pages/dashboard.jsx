@@ -13,6 +13,8 @@ import BookCase from "../components/dashboard/BookCase";
 import Books from "../components/dashboard/Books";
 import DashboardNavbar from "../components/dashboard/DashboardNavbar";
 import Redirection from "../components/Redirection";
+import Network from "../helpers/Network";
+import axios from "axios";
 
 export default function Dashboard() {
   const router = useRouter();
@@ -84,24 +86,42 @@ export default function Dashboard() {
       component: <BookCase />,
     },
   ]);
+  const [loading, setLoading] = useState(false);
+  const [bookData, setBookData] = useState([]);
+  const [token, setToken] = useState(null);
 
-  const [stroage, setStroage] = useState(false);
+
+  const mountData = async () => {
+    if (token) {
+      const headers = { Authorization: `Bearer ${token}` };
+      await Network.get("api/Book/GetAvailableBooks", {
+        headers,
+      })
+        .then((res) => {
+          if (res.success) {
+            setBookData(res.data);
+          }
+        })
+        .catch((err) => console.log(err));
+    }
+  };
 
   useEffect(() => {
-    // localStorage.getItem("bookyId") === null ? router.push("/login") : "";
-    // localStorage.getItem("bookyId") === null
-    //   ? setStroage(false)
-    //   : setStroage(true);
-
-    if (localStorage.getItem("bookyId") === null) {
+    if (localStorage.getItem("token") === null) {
       router.push("/login");
-      setStroage(false);
+      setLoading(false);
     } else {
-      setStroage(true);
+      setToken(localStorage.getItem("token"));
+      mountData();
+      setLoading(true);
     }
   }, []);
 
-  return !stroage ? (
+  useEffect(() => {
+    mountData();
+  }, [token]);
+
+  return !loading ? (
     <Redirection />
   ) : (
     <>
@@ -114,7 +134,7 @@ export default function Dashboard() {
         notifications={notifications}
       />
 
-      <div className="p-4 sm:ml-64 ">
+      <div className="p-4 sm:ml-64 h-screen">
         {buttonList.map((i) =>
           i.isClicked ? <div key={i.name}>{i.component}</div> : ""
         )}
@@ -122,3 +142,72 @@ export default function Dashboard() {
     </>
   );
 }
+
+// export async function getServerSideProps({ req }) {
+//   const token = localStorage.getItem("token");
+
+//   if (token === null) {
+//     router.push("/login");
+//     setLoading(false);
+//   } else {
+//     mountData();
+//     setLoading(true);
+//   }
+
+//   try {
+//     const decoded = verify(token, process.env.NEXT_PUBLIC_JWT_SECRET);
+//     const userId = decoded.userId;
+//     if (mongoose.connection.readyState === 0) {
+//       mongoose
+//         .connect(URI)
+//         .then(() => console.log("MongoDB bağlantısı başarılı!"))
+//         .catch((err) => console.error("MongoDB bağlantısı hatası:", err));
+//     }
+
+//     const user = await User.findOne({ _id: userId });
+//     const support = await Support.findOne({ userId: user._id });
+
+//     if (!user) {
+//       return {
+//         redirect: {
+//           destination: "/login",
+//           permanent: false,
+//         },
+//       };
+//     }
+
+//     if (!user.isActive) {
+//       return {
+//         redirect: {
+//           destination: "/login",
+//           permanent: false,
+//         },
+//       };
+//     }
+
+//     const expectedUserId = user._id.toString();
+
+//     if (userId !== expectedUserId) {
+//       return {
+//         redirect: {
+//           destination: "/login",
+//           permanent: false,
+//         },
+//       };
+//     }
+
+//     return {
+//       props: {
+//         userData: JSON.parse(JSON.stringify(user)),
+//         supportData: JSON.parse(JSON.stringify(support)),
+//       },
+//     };
+//   } catch (err) {
+//     return {
+//       redirect: {
+//         destination: "/login",
+//         permanent: false,
+//       },
+//     };
+//   }
+// }

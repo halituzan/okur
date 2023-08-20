@@ -2,55 +2,74 @@ import React, { useEffect, useState } from "react";
 // import { books } from "../fakeBookData.js";
 import BookCaseTable from "./booktable/BookCaseTable.jsx";
 import axios from "axios";
+import Network from "../../helpers/Network.js";
+import { toast } from "react-toastify";
 export default function BookCase() {
-  const [userData, setUserData] = useState(null);
   const [userBookList, setUserBookList] = useState([]);
-
-  const fetchUserBook = async (id) => {
-    const { data } = await axios(
-      `https://${process.env.NEXT_PUBLIC_USERS_MOCK_API}.mockapi.io/users/${id}/userBooks/`
-    );
-    setUserBookList(data);
-  };
-
+  const [token, setToken] = useState(null);
+ 
   const removeBook = async (book) => {
     // HTTP - PUT request with (bookID,userID)
     console.log(book);
   };
-  const addBook = async (bookValue, id) => {
-    // HTTP - POST request with (bookID,userID)
-    await axios.post(
-      `https://${process.env.NEXT_PUBLIC_USERS_MOCK_API}.mockapi.io/users/${id}/userBooks/`,
-      {
-        bookID: bookValue.bookID,
-        bookName: bookValue.bookName,
-        bookWriter: bookValue.bookWriter,
-        status: false,
-      }
-    );
-
-    useEffect(() => {
-      setUserData(localStorage.getItem("bookyId"));
-    }, []);
-    await axios.post(
-      `https://${process.env.NEXT_PUBLIC_BOOKY_MOCK_API}.mockapi.io/bookApi/booky`,
-      {
-        bookID: bookValue.bookID,
-        bookName: bookValue.bookName,
-        bookWriter: bookValue.bookWriter,
-        userId: id,
-        status: false,
-      }
-    );
-    await fetchUserBook(userData[0].id);
+  const mountData = async () => {
+    if (token) {
+      const headers = { Authorization: `Bearer ${token}` };
+      await Network.get("api/Book/GetMyBooks", {
+        headers,
+      })
+        .then((res) => {
+          if (res.success) {
+            setUserBookList(res.data);
+          }
+        })
+        .catch((err) => console.log(err));
+    }
   };
+
+  const addBook = async (bookValue) => {
+    const { bookName, bookWriter } = bookValue;
+
+    if (!bookName || !bookWriter) {
+      toast.error("Kitap İsmi veya Yazar Adı Girmediniz.");
+      return;
+    }
+
+    try {
+      const headers = {
+        Authorization: `Bearer ${token}`,
+      };
+      const response = await Network.post(
+        "api/Book",
+        {
+          name: bookName,
+          author: bookWriter,
+        },
+        headers
+      );
+      if (response.success) {
+        mountData();
+      }
+      toast.success("Kitap Başarılı Bir Şekilde Eklendi.");
+    } catch (error) {
+      toast.error("Kitap Eklenirken Bir Hata Oluştu.");
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    setToken(localStorage.getItem("token"));
+    mountData();
+  }, []);
+  useEffect(() => {
+    mountData();
+  }, [token]);
+
   return (
     <div className="p-4 dark:border-gray-700 mt-14">
       <BookCaseTable
-        userData={userData}
         removeBook={removeBook}
         addBook={addBook}
-        fetchUserBook={fetchUserBook}
         userBookList={userBookList}
       />
     </div>

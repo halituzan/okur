@@ -1,17 +1,20 @@
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
-import { loginUser } from "../register.helper";
 import { useRouter } from "next/router";
 import { ToastContainer, toast } from "react-toastify";
-export default function Login() {
+import Network from "@/helpers/Network";
+import { LoginHandler } from "@/helpers/users.helpers";
+export default function Login({ showPass, setShowPass }) {
   const router = useRouter();
   const [storage, setStorage] = useState(null);
-  const [showPass, setShowPass] = useState(true);
+
   const [login, setLogin] = useState({
     password: "",
     studentId: "",
   });
+
+  const { password, studentId } = login;
 
   useEffect(() => {
     setStorage(localStorage.getItem("bookyId"));
@@ -37,16 +40,18 @@ export default function Login() {
   };
 
   const loginSender = async () => {
-    const data = await loginUser(login);
-    if (data) {
+    try {
+      const res = await LoginHandler({
+        schoolNumber: studentId,
+        password: password,
+      });
+      localStorage.setItem("token", res.token);
+      toast.success("Giriş Başarılı");
       router.push("/dashboard");
-    } else {
+    } catch (error) {
+      console.log(error);
       toast.error(`Girilen bilgiler doğru değil, lütfen tekrar deneyin.`);
     }
-  };
-
-  const showPassword = () => {
-    setShowPass(showPass ? false : true);
   };
 
   return (
@@ -133,7 +138,10 @@ export default function Login() {
             value={login.password}
             onChange={(e) => loginHandler(e)}
           />
-          <div id="show-password" onClick={() => showPassword()}>
+          <div
+            id="show-password"
+            onClick={() => setShowPass(showPass ? false : true)}
+          >
             {showPass ? (
               <AiFillEye className="h-5 w-5 text-gray-400" />
             ) : (

@@ -1,13 +1,36 @@
-import React from "react";
+import React, { useState } from "react";
 import Login from "../Login";
 import Link from "next/link";
+import Image from "next/image";
+
 export default function HomePage() {
+  const [showPass, setShowPass] = useState(true);
   return (
-    <div className="w-screen h-screen flex justify-center items-center">
-      <section className="rounded-xl border border-gray-100 p-4 shadow-xl">
+    <div className="home-provider w-screen h-screen flex flex-col justify-center items-center ">
+      <section className="rounded-xl border border-gray-100 p-4 shadow-xl  bg-white">
         <div className="px-4 py-8 sm:px-6 sm:py-12 lg:px-8 lg:py-16 flex flex-col justify-center items-center">
           <div className="grid grid-cols-1 gap-y-8 lg:grid-cols-2 items-center lg:gap-x-16">
-            <div className="mx-auto max-w-lg text-center lg:mx-0 ltr:lg:text-left rtl:lg:text-right">
+            <div className="mx-auto flex flex-col justify-center items-center max-w-lg text-center lg:mx-0 ltr:lg:text-left rtl:lg:text-right">
+              {showPass ? (
+                <Image
+                  src="/images/worm.svg"
+                  alt="Worm"
+                  width={150}
+                  height={150}
+                  placeholder="blur"
+                  blurDataURL={"/images/worm.svg"}
+                />
+              ) : (
+                <Image
+                  src="/images/worm1.svg"
+                  alt="Worm"
+                  width={150}
+                  height={150}
+                  placeholder="blur"
+                  blurDataURL={"/images/worm1.svg"}
+                />
+              )}
+
               <h2 className="text-4xl font-bold sm:text-6xl mb-4">Booky</h2>
               <p>Kitaplarınızı değiştirin, okuyun, teslim edin, teslim alın.</p>
               <p>
@@ -21,7 +44,7 @@ export default function HomePage() {
                 Hemen Başlayın
               </Link>
             </div>
-            <Login />
+            <Login showPass={showPass} setShowPass={setShowPass} />
           </div>
         </div>
       </section>

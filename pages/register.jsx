@@ -5,6 +5,8 @@ import React, { useEffect, useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useRouter } from "next/router";
+import Network from "../helpers/Network";
+import { RegisterHandler } from "../helpers/users.helpers";
 
 export default function Register() {
   const router = useRouter();
@@ -13,7 +15,8 @@ export default function Register() {
     password: "",
     email: "",
     passwordConfirm: "",
-    fullName: "",
+    firstName: "",
+    lastName: "",
   });
   const [passwordCheck, setPasswordCheck] = useState(true);
   const [emailCheck, setEmailCheck] = useState(true);
@@ -22,10 +25,11 @@ export default function Register() {
   const [storage, setStorage] = useState(null);
   const registerHandler = (e) => {
     setRegisterValues({ ...registerValues, [e.target.name]: e.target.value });
-    const emailRP = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
 
+    const emailRP = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
     const regexP =
       /^(?=.*[-\#\$\.\%\&\@\!\+\=\<\>\*])(?=.*[a-zA-Z])(?=.*\D).{8,12}$/;
+
     if (e.target.name === "password") {
       e.target.value.match(regexP)
         ? setPasswordCheck(true)
@@ -43,23 +47,36 @@ export default function Register() {
       : "";
   };
 
-  const registerSender = () => {
-    const { studentId, password, email, fullName, passwordConfirm } =
+  const registerSender = async () => {
+    const { studentId, password, email, firstName, lastName, passwordConfirm } =
       registerValues;
-    if (
-      passwordCheck &&
-      isPassCorrect &&
-      password !== "" &&
-      passwordConfirm !== ""
-    ) {
-      if (studentId && password && email && fullName) {
-        toast.success("Kayıt Başarılı");
-        //fetch işlemi
+    if (studentId && password && email && firstName && lastName) {
+      if (
+        passwordCheck &&
+        isPassCorrect &&
+        password !== "" &&
+        passwordConfirm !== ""
+      ) {
+        if (password === passwordConfirm) {
+          await RegisterHandler({
+            name: firstName,
+            surname: lastName,
+            schoolNumber: studentId,
+            email: email,
+            password: password,
+          }).then((res) => {
+            setInterval(() => {
+              router.push("/login");
+            }, 1000);
+          });
+        } else {
+          toast.error("Şifreleriniz Uyuşmuyor.");
+        }
       } else {
-        toast.error("Lütfen tüm bilgileri doldurun");
+        toast.error("Şifrenizi istenen şekilde girin.");
       }
     } else {
-      toast.error("Şifrenizi istenen şekilde girin.");
+      toast.error("Lütfen tüm bilgileri doldurun");
     }
   };
 
@@ -86,7 +103,7 @@ export default function Register() {
       <Head>
         <title>Booky Üye Kayıt Sayfası - booky.com.tr</title>
       </Head>
-      <div className="relative overflow-hidden md:flex w-1/2 bg-gradient-to-tr from-rose-500 to-purple-700 i justify-around items-center hidden book-auth">
+      <div className="home-provider relative overflow-hidden md:flex w-1/2 from-rose-500 to-purple-700 i justify-around items-center hidden book-auth">
         <div className="w-1/2">
           <Link href="/" className="flex justify-center">
             <Image
@@ -127,7 +144,7 @@ export default function Register() {
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className={
-                !registerValues.fullName ? "h-5 w-5 text-gray-400" : "h-5 w-5"
+                !registerValues.firstName ? "h-5 w-5 text-gray-400" : "h-5 w-5"
               }
               viewBox="0 0 20 20"
               fill="currentColor"
@@ -141,9 +158,33 @@ export default function Register() {
             <input
               className="pl-2 outline-none border-none"
               type="text"
-              name="fullName"
-              placeholder="Ad Soyad"
-              value={registerValues.fullName}
+              name="firstName"
+              placeholder="Ad"
+              value={registerValues.firstName}
+              onChange={(e) => registerHandler(e)}
+            />
+          </div>
+          <div className="flex items-center border-2 py-2 px-3 rounded-2xl mb-4">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className={
+                !registerValues.lastName ? "h-5 w-5 text-gray-400" : "h-5 w-5"
+              }
+              viewBox="0 0 20 20"
+              fill="currentColor"
+            >
+              <path
+                fillRule="evenodd"
+                d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
+                clipRule="evenodd"
+              />
+            </svg>
+            <input
+              className="pl-2 outline-none border-none"
+              type="text"
+              name="lastName"
+              placeholder="Soyad"
+              value={registerValues.lastName}
               onChange={(e) => registerHandler(e)}
             />
           </div>
