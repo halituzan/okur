@@ -19,7 +19,7 @@ const network = class NETWORK {
         localStorage.removeItem("myInformation");
         location.href = "/login";
       }
-      location.href = "/login";
+
       return Promise.reject(error);
     });
   }

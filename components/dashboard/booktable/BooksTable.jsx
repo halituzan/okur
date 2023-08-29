@@ -4,7 +4,7 @@ export default function BooksTable({ bookList, listBookFunc, tableHead }) {
   return (
     <div className="relative overflow-x-auto flex flex-col">
       <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-        <thead className="book-table-head text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+        <thead className=" text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
           <tr>
             {tableHead.map((i) => {
               return (
@@ -15,7 +15,7 @@ export default function BooksTable({ bookList, listBookFunc, tableHead }) {
             })}
           </tr>
         </thead>
-        <tbody className="book-table overflow-auto h-[calc(100vh - 310px)] w-[calc(100vw - 290px)] flex flex-col">
+        <tbody>
           {bookList?.map((book, index) => (
             <tr
               className="bg-white border-b dark:bg-gray-800 dark:border-gray-700"

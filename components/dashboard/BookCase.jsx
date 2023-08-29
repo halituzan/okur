@@ -80,6 +80,7 @@ export default function BookCase() {
         showModal={showModal}
         setShowModal={setShowModal}
         tableHead={tableHead}
+        mountData={mountData}
       />
     </div>
   );

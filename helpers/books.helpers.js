@@ -51,6 +51,10 @@ const DeclineBook = async (body) => {
   return await Network.put("api/Book/ApproveBook", body);
 };
 
+const UpdateBook = async (body) => {
+  return await Network.put("api/Book/UpdateBook", body);
+};
+
 ////// TODO Put Sevices //////
 
 ////// ? Delete Sevices //////
@@ -68,5 +72,6 @@ export {
   GetBooksWaitingForApproval,
   ApproveBook,
   DeclineBook,
-  deleteBook
+  deleteBook,
+  UpdateBook
 };
