@@ -6,6 +6,14 @@ import "flowbite";
 /* Icons */
 import { AiOutlineHome, AiOutlineInbox } from "react-icons/ai";
 import { GiBookshelf, GiBookPile } from "react-icons/gi";
+import {
+  BsFillPersonLinesFill,
+  BsJournalBookmarkFill,
+  BsFillPeopleFill,
+} from "react-icons/bs";
+import { PiStudent } from "react-icons/pi";
+
+
 /* Components */
 import Home from "../components/dashboard/Home";
 import Notification from "../components/dashboard/Notification";
@@ -14,7 +22,9 @@ import Books from "../components/dashboard/Books";
 import DashboardNavbar from "../components/dashboard/DashboardNavbar";
 import Redirection from "../components/Redirection";
 import Network from "../helpers/Network";
-import axios from "axios";
+import ApprovelUser from "../components/dashboard/ApprovelUser/ApprovelUser";
+import ApprovelBooks from "../components/dashboard/ApprovelBooks/ApprovelBooks";
+import { GetAvailableBooks } from "../helpers/books.helpers";
 
 export default function Dashboard() {
   const router = useRouter();
@@ -60,6 +70,7 @@ export default function Dashboard() {
       badge: false,
       isClicked: true,
       component: <Home />,
+      userType: 1,
     },
     {
       icon: <AiOutlineInbox />,
@@ -68,6 +79,7 @@ export default function Dashboard() {
       badge: true,
       isClicked: false,
       component: <Notification notifications={notifications} />,
+      userType: 1,
     },
     {
       icon: <GiBookPile />,
@@ -76,6 +88,7 @@ export default function Dashboard() {
       badge: false,
       isClicked: false,
       component: <Books />,
+      userType: 1,
     },
     {
       icon: <GiBookshelf />,
@@ -84,44 +97,67 @@ export default function Dashboard() {
       badge: false,
       isClicked: false,
       component: <BookCase />,
+      userType: 1,
+    },
+  ]);
+  const [teacherButtonList, setTeacherButtonList] = useState([
+    {
+      icon: <BsFillPersonLinesFill />,
+      title: "Öğrenci Onayları",
+      name: "approveluser",
+      badge: false,
+      isClicked: false,
+      component: <ApprovelUser />,
+      userType: 0,
+    },
+    {
+      icon: <BsJournalBookmarkFill />,
+      title: "Kitap Onayları",
+      name: "approvelbooks",
+      badge: false,
+      isClicked: false,
+      component: <ApprovelBooks />,
+      userType: 0,
+    },
+    {
+      icon: <BsFillPeopleFill />,
+      title: "Öğretmenler",
+      name: "teachers",
+      badge: false,
+      isClicked: false,
+      component: <ApprovelBooks />,
+      userType: 0,
+    },
+    {
+      icon: <PiStudent />,
+      title: "Öğrenciler",
+      name: "students",
+      badge: false,
+      isClicked: false,
+      component: <ApprovelBooks />,
+      userType: 0,
     },
   ]);
   const [loading, setLoading] = useState(false);
   const [bookData, setBookData] = useState([]);
-  const [token, setToken] = useState(null);
-
 
   const mountData = async () => {
-    if (token) {
-      const headers = { Authorization: `Bearer ${token}` };
-      await Network.get("api/Book/GetAvailableBooks", {
-        headers,
+    setLoading(true);
+    await GetAvailableBooks()
+      .then((res) => {
+        if (res.success) {
+          setBookData(res.data);
+          setLoading(false);
+        }
       })
-        .then((res) => {
-          if (res.success) {
-            setBookData(res.data);
-          }
-        })
-        .catch((err) => console.log(err));
-    }
+      .catch((err) => console.log(err));
   };
 
   useEffect(() => {
-    if (localStorage.getItem("token") === null) {
-      router.push("/login");
-      setLoading(false);
-    } else {
-      setToken(localStorage.getItem("token"));
-      mountData();
-      setLoading(true);
-    }
+    mountData();
   }, []);
 
-  useEffect(() => {
-    mountData();
-  }, [token]);
-
-  return !loading ? (
+  return loading ? (
     <Redirection />
   ) : (
     <>
@@ -132,11 +168,16 @@ export default function Dashboard() {
         buttonList={buttonList}
         setButtonList={setButtonList}
         notifications={notifications}
+        teacherButtonList={teacherButtonList}
+        setTeacherButtonList={setTeacherButtonList}
       />
 
       <div className="p-4 sm:ml-64 h-screen">
-        {buttonList.map((i) =>
-          i.isClicked ? <div key={i.name}>{i.component}</div> : ""
+        {buttonList.map(
+          (i) => i.isClicked && <div key={i.name}>{i.component}</div>
+        )}
+        {teacherButtonList.map(
+          (i) => i.isClicked && <div key={i.name}>{i.component}</div>
         )}
       </div>
     </>

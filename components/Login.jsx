@@ -46,6 +46,9 @@ export default function Login({ showPass, setShowPass }) {
         password: password,
       });
       localStorage.setItem("token", res.token);
+      await Network.get("/api/User/GetMyInformation").then((response) => {
+        localStorage.setItem("myInformation", JSON.stringify(response.data));
+      });
       toast.success("Giriş Başarılı");
       router.push("/dashboard");
     } catch (error) {
@@ -55,11 +58,11 @@ export default function Login({ showPass, setShowPass }) {
   };
 
   return (
-    <div className="flex justify-center py-10 items-center rounded-xl border border-gray-100 shadow-xl">
-      <form>
-        <h1 className="text-gray-800 font-bold text-2xl mb-1">Giriş Yap!</h1>
+    <div className="flex justify-center py-10 items-center">
+      <form className="w-full">
+        {/* <h1 className="text-gray-800 font-bold text-2xl mb-1">Giriş Yap!</h1> */}
 
-        <div className="flex items-center border-2 py-2 px-3 rounded-2xl mb-4">
+        {/* <div className="flex items-center border-2 py-2 px-3 rounded-2xl mb-4">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             className={!login.studentId ? "h-5 w-5 text-gray-400" : "h-5 w-5"}
@@ -148,14 +151,20 @@ export default function Login({ showPass, setShowPass }) {
               <AiFillEyeInvisible className="h-5 w-5" />
             )}
           </div>
-        </div>
+        </div> */}
 
-        <button
+        {/* <button
           type="button"
           className="block w-full bg-rose-500 mt-4 py-2 rounded-2xl text-white font-semibold mb-2"
           onClick={() => loginSender()}
         >
           Giriş Yap
+        </button> */}
+        <button
+          type="button"
+          className="block w-full bg-rose-500 mt-4 py-2 rounded-2xl text-white font-semibold mb-2"
+        >
+          <Link href="/login">Giriş Yap</Link>
         </button>
         <button
           type="button"

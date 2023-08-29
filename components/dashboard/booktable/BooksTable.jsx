@@ -1,22 +1,21 @@
 import React from "react";
 
-export default function BooksTable({ bookList, listBookFunc }) {
+export default function BooksTable({ bookList, listBookFunc, tableHead }) {
   return (
     <div className="relative overflow-x-auto flex flex-col">
       <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-        <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+        <thead className="book-table-head text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
           <tr>
-            <th scope="col" className="px-2 py-3">
-              Kitap Adı
-            </th>
-
-            <th scope="col" className="px-2 py-3">
-              Yazar
-            </th>
-            <th scope="col" className="px-2 py-3"></th>
+            {tableHead.map((i) => {
+              return (
+                <th scope="col" className="px-2 py-3" key={i.id}>
+                  {i.name}
+                </th>
+              );
+            })}
           </tr>
         </thead>
-        <tbody>
+        <tbody className="book-table overflow-auto h-[calc(100vh - 310px)] w-[calc(100vw - 290px)] flex flex-col">
           {bookList?.map((book, index) => (
             <tr
               className="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
@@ -24,10 +23,9 @@ export default function BooksTable({ bookList, listBookFunc }) {
             >
               <th
                 scope="row"
-                className="px-2  font-medium text-gray-900  dark:text-white"
+                className="px-2 font-medium text-gray-900  dark:text-white"
               >
                 {book.name}
-                {/* - {book.status ? "onaylı" : "onaysız"} */}
               </th>
 
               <td className="px-2">{book.author}</td>

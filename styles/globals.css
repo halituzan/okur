@@ -127,3 +127,32 @@
     background-position: 0% 50%;
   }
 }
+.book-table-head {
+  width: calc(100vw - 290px);
+  display: flex;
+}
+.book-table-head > tr {
+  display: flex;
+  width: calc(100vw - 290px);
+}
+.book-table-head > tr > th {
+  flex: 1;
+}
+.book-table {
+  overflow-y: auto;
+  height: calc(100vh - 310px);
+  width: calc(100vw - 290px);
+  display: flex;
+  flex-direction: column;
+}
+.book-table > tr {
+  display: flex;
+  width: calc(100vw - 290px);
+}
+.book-table > tr > th,
+.book-table > tr > td {
+  flex: 1;
+}
+.book-table::-webkit-scrollbar {
+  width: 0;
+}

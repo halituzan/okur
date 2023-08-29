@@ -1,6 +1,13 @@
 import React, { useRef, useEffect } from "react";
 import { AiFillCloseCircle } from "react-icons/ai";
-const Modal = ({ showModal, setShowModal, body, footer }) => {
+const Modal = ({
+  showModal,
+  setShowModal,
+  body,
+  footer,
+  setAddBookValue,
+  title,
+}) => {
   const modalRef = useRef();
 
   const handleClickOutside = (event) => {
@@ -28,10 +35,19 @@ const Modal = ({ showModal, setShowModal, body, footer }) => {
             >
               {/*header*/}
               <div className="flex items-start justify-between p-5 border-b border-solid border-rose-600 rounded-t">
-                <h3 className="text-3xl font-semibold">Kitap Ekle</h3>
+                <h3 className="text-3xl font-semibold">{title}</h3>
                 <button
                   className="p-1 ml-auto border-0 text-black float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
-                  onClick={() => setShowModal(false)}
+                  onClick={() => {
+                    setAddBookValue &&
+                      setAddBookValue({
+                        bookId: "",
+                        bookName: "",
+                        bookWriter: "",
+                      });
+
+                    setShowModal(false);
+                  }}
                 >
                   <AiFillCloseCircle className="fill-rose-600" />
                 </button>

@@ -1,34 +1,28 @@
 import Network from "./Network";
 ////// ! Get Sevices //////
-const GetAvailableBooks = async (setterFunc, token) => {
-  const headers = { Authorization: `Bearer ${token}` };
-  await Network.get("api/Book/GetAvailableBooks", { headers })
-    .then((res) => {
-      if (res.success) {
-        setterFunc(res.data);
-      }
-    })
-    .catch((err) => console.log(err));
+const GetAvailableBooks = async (search = null, page = 0, size = 10) => {
+  return await Network.get(
+    `api/Book/GetAvailableBooks${
+      search !== null ? `?Search=${search}` : "?"
+    }&Pagination.PageNumber=${page}&Pagination.PageSize=${size}`
+  );
 };
-const GetMyBooks = async (setterFunc, token) => {
-  const headers = { Authorization: `Bearer ${token}` };
-  await Network.get("api/Book/GetMyBooks", { headers })
-    .then((res) => {
-      if (res.success) {
-        setterFunc(res.data);
-      }
-    })
-    .catch((err) => console.log(err));
+const GetMyBooks = async () => {
+  return await Network.get("api/Book/GetMyBooks");
 };
-const GetBookWithId = async (setterFunc, token, id) => {
-  const headers = { Authorization: `Bearer ${token}` };
-  await Network.get(`api/Book/${id}`, { headers })
-    .then((res) => {
-      if (res.success) {
-        setterFunc(res.data);
-      }
-    })
-    .catch((err) => console.log(err));
+const GetBookWithId = async (id) => {
+  return await Network.get(`api/Book/${id}`);
+};
+const GetBooksWaitingForApproval = async (
+  search = null,
+  page = 0,
+  size = 10
+) => {
+  return await Network.get(
+    `/api/Book/GetBooksWaitingForApproval${
+      search !== null ? `?Search=${search}&` : "?"
+    }Pagination.PageNumber=${page}&Pagination.PageSize=${size}`
+  );
 };
 ////// ! Post Sevices //////
 
@@ -43,6 +37,36 @@ const PostBookWithId = async (setterFunc, token, body) => {
     }
   });
 };
+const PostAddBook = async (body) => {
+  return await Network.post("api/Book", body);
+};
 ////// ? Post Sevices //////
 
-export { GetAvailableBooks, GetMyBooks, GetBookWithId, PostBookWithId };
+////// TODO Put Sevices //////
+
+const ApproveBook = async (body) => {
+  return await Network.put("api/Book/ApproveBook", body);
+};
+const DeclineBook = async (body) => {
+  return await Network.put("api/Book/ApproveBook", body);
+};
+
+////// TODO Put Sevices //////
+
+////// ? Delete Sevices //////
+const deleteBook = async (id) => {
+  return await Network.delete(`api/book/${id}`);
+};
+////// ? Delete Sevices //////
+
+export {
+  GetAvailableBooks,
+  GetMyBooks,
+  GetBookWithId,
+  PostBookWithId,
+  PostAddBook,
+  GetBooksWaitingForApproval,
+  ApproveBook,
+  DeclineBook,
+  deleteBook
+};

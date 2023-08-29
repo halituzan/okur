@@ -3,30 +3,23 @@ import "flowbite";
 import { GetAvailableBooks } from "../../helpers/books.helpers";
 import Modal from "../Modal";
 export default function Home() {
-  const [token, setToken] = useState(null);
   const [showRequestModal, setShowRequestModal] = useState(false);
   const [bookList, setBookList] = useState([]);
 
   const mountData = async () => {
-    if (token) {
-      await GetAvailableBooks(setBookList, token);
-    }
+    await GetAvailableBooks().then((res) => {
+      setBookList(res.data.resultList);
+    });
   };
 
   useEffect(() => {
-    setToken(localStorage.getItem("token"));
-  }, []);
-  useEffect(() => {
     mountData();
-  }, [token]);
+  }, []);
 
   return (
     <div className="p-4 border-gray-200 border-dashed rounded-lg dark:border-gray-700 mt-14">
       <div className="grid grid-cols-4 gap-4 mb-4 ">
         <div className="flex flex-col col-span-1 items-center justify-center text-center h-48 rounded bg-gray-50 dark:bg-gray-800">
-          <p className="text-2xl text-black font-bold dark:text-gray-500">
-            {token?.name}
-          </p>
           <p className="text-2xl text-black  dark:text-gray-500">
             Verdiği Kitabın Teslim Tarihi
           </p>

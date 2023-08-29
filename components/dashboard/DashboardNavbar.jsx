@@ -7,21 +7,25 @@ export default function DashboardNavbar({
   buttonList,
   setButtonList,
   notifications,
+  teacherButtonList,
+  setTeacherButtonList,
 }) {
   const [showSettings, setShowSettings] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
-  const [storage, setStorage] = useState(null);
+  const [userInformation, setUserInformation] = useState(null);
   const router = useRouter();
   const dropdown = useRef();
   const sidebar = useRef();
   const logOut = () => {
-    localStorage.clear("bookyId");
-    if (localStorage.getItem("bookyId") === null) {
+    localStorage.clear("myInformation");
+    if (localStorage.getItem("myInformation") === null) {
       router.back("/");
     }
   };
-  const sidebarHandler = (e, l, index) => {
+
+  const menuHandler = (l, type) => {
     let newButtonList = [...buttonList];
+    let newTeacherButtonList = [...teacherButtonList];
     setButtonList(
       newButtonList.map((i) =>
         i.name === l.name
@@ -29,17 +33,21 @@ export default function DashboardNavbar({
           : { ...i, isClicked: false }
       )
     );
-  };
-  const menuHandler = (e, l, index) => {
-    sidebarHandler(e, l, index);
+    setTeacherButtonList(
+      newTeacherButtonList.map((i) =>
+        i.name === l.name
+          ? { ...i, isClicked: true }
+          : { ...i, isClicked: false }
+      )
+    );
     setShowMenu(true);
   };
   useEffect(() => {
-    setStorage(JSON.parse(localStorage.getItem("bookyId")));
+    setUserInformation(JSON.parse(localStorage.getItem("myInformation")));
   }, []);
   useEffect(() => {
-    console.log(storage);
-  }, [storage]);
+    console.log(userInformation);
+  }, [userInformation]);
 
   const handleClickOutside = (event) => {
     if (dropdown.current && !dropdown.current.contains(event.target)) {
@@ -67,7 +75,7 @@ export default function DashboardNavbar({
                 data-drawer-target="logo-sidebar"
                 data-drawer-toggle="logo-sidebar"
                 aria-controls="logo-sidebar"
-                type="button"
+                Type="button"
                 className="inline-flex items-center p-2 text-sm text-gray-500 rounded-lg md:hidden hover:bg-rose-500 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
                 onClick={() => {
                   showMenu ? setShowMenu(false) : setShowMenu(true);
@@ -118,7 +126,8 @@ export default function DashboardNavbar({
                   >
                     <span className="sr-only">Üye Menüsü</span>
                     <p className="p-1.5 text-xl text-white ">
-                      {storage?.name?.split(" ").map((i) => i[0])}
+                      {userInformation?.name[0].toUpperCase() +
+                        userInformation?.surname[0].toUpperCase()}
                     </p>
                   </button>
                 </div>
@@ -136,13 +145,17 @@ export default function DashboardNavbar({
                       className="text-sm text-gray-900 dark:text-white"
                       role="none"
                     >
-                      Halit Uzan
+                      {(
+                        userInformation?.name +
+                        " " +
+                        userInformation?.surname
+                      ).toLocaleUpperCase()}
                     </p>
                     <p
                       className="text-sm font-medium text-gray-900 truncate dark:text-gray-300"
                       role="none"
                     >
-                      halituzan@gmail.com
+                      {userInformation?.email}
                     </p>
                   </div>
                   <ul className="py-1" role="none">
@@ -192,10 +205,10 @@ export default function DashboardNavbar({
         }
         aria-label="Sidebar"
       >
-        <div className="h-full px-3 pb-4 overflow-y-auto bg-white dark:bg-gray-800">
+        <div className="h-full px-3 pb-4 overflow-y-auto bg-white dark:bg-gray-800 flex flex-col justify-between">
           <ul className="space-y-2 font-medium">
-            {buttonList.map((l, index) =>
-              l.badge && notifications.length > 0 ? (
+            {buttonList.map((l, index) => {
+              return l.badge && notifications.length > 0 ? (
                 <li className="aside-buttons" key={index}>
                   <Link
                     href="/dashboard"
@@ -205,7 +218,7 @@ export default function DashboardNavbar({
                         : "flex items-center p-2 text-gray-900 rounded-lg hover:text-white dark:text-white hover:bg-rose-500 dark:hover:bg-gray-700"
                     }
                     onClick={(e) => {
-                      menuHandler(e, l, index);
+                      menuHandler(l, "", "all");
                     }}
                   >
                     <span>{l.icon}</span>
@@ -231,17 +244,42 @@ export default function DashboardNavbar({
                         ? "flex items-center p-2 bg-rose-500 text-white rounded-lg dark:text-white hover:bg-rose-500 hover:text-white dark:hover:bg-gray-700"
                         : "flex items-center p-2 text-gray-900 rounded-lg hover:text-white dark:text-white hover:bg-rose-500 dark:hover:bg-gray-700"
                     }
-                    onClick={(e) => {
-                      menuHandler(e, l, index);
+                    onClick={() => {
+                      menuHandler(l, "all");
                     }}
                   >
                     {l.icon}
                     <span className="ml-3">{l.title}</span>
                   </Link>
                 </li>
-              )
-            )}
+              );
+            })}
           </ul>
+          {userInformation?.userType === 0 && (
+            <ul className="mb-10">
+              <h3 className="ml-2 border-b-2">Öğretmen İşlemleri</h3>
+              {teacherButtonList.map((l, index) => {
+                return (
+                  <li className="aside-buttons my-2" key={l.name}>
+                    <Link
+                      href="/dashboard"
+                      className={
+                        l.isClicked
+                          ? "flex items-center p-2 bg-rose-500 text-white rounded-lg dark:text-white hover:bg-rose-500 hover:text-white dark:hover:bg-gray-700"
+                          : "flex items-center p-2 text-gray-900 rounded-lg hover:text-white dark:text-white hover:bg-rose-500 dark:hover:bg-gray-700"
+                      }
+                      onClick={(e) => {
+                        menuHandler(l, "teacher");
+                      }}
+                    >
+                      {l.icon}
+                      <span className="ml-3">{l.title}</span>
+                    </Link>
+                  </li>
+                );
+              })}
+            </ul>
+          )}
         </div>
       </aside>
     </>
