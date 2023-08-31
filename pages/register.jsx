@@ -64,11 +64,19 @@ export default function Register() {
             schoolNumber: studentId,
             email: email,
             password: password,
-          }).then((res) => {
-            setInterval(() => {
-              router.push("/login");
-            }, 1000);
-          });
+          })
+            .then((res) => {
+              if (res.success) {
+                toast.success(res.message);
+              }
+
+              setInterval(() => {
+                router.push("/login");
+              }, 1000);
+            })
+            .catch((err) => {
+              toast.error(err.response.data.Message);
+            });
         } else {
           toast.error("Şifreleriniz Uyuşmuyor.");
         }

@@ -39,14 +39,16 @@ export default function BookCase() {
       return;
     }
     try {
-      const response = await PostAddBook({ name, author });
-      if (response.success) {
+      const res = await PostAddBook({ name, author });
+      toast.success(res.message);
+      if (res.success) {
+        console.log(res);
+
         mountData();
       }
-      toast.success("Kitap Başarılı Bir Şekilde Eklendi.");
-    } catch (error) {
-      toast.error("Kitap Eklenirken Bir Hata Oluştu.");
-      console.log(error);
+    } catch (err) {
+      toast.error(err.response.data.Message);
+      console.log(err);
     }
   };
 

@@ -40,13 +40,15 @@ export default function login() {
   const loginSender = async () => {
     try {
       const res = await LoginHandler(login);
+      toast.success("Giriş Başarılı");
+      if (!res.token) {
+        return;
+      }
       localStorage.setItem("token", res.token);
       await GetMyInformation().then((response) => {
-        console.log(response);
-
         localStorage.setItem("myInformation", JSON.stringify(response.data));
       });
-      toast.success("Giriş Başarılı");
+
       router.push("/dashboard");
     } catch (error) {
       console.log(error);

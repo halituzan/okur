@@ -3,6 +3,8 @@ import React, { useEffect, useState } from "react";
 import Head from "next/head";
 import { useRouter } from "next/navigation";
 import "flowbite";
+import "react-toastify/dist/ReactToastify.css";
+
 /* Icons */
 import { AiOutlineHome, AiOutlineInbox } from "react-icons/ai";
 import { GiBookshelf, GiBookPile } from "react-icons/gi";
@@ -12,7 +14,6 @@ import {
   BsFillPeopleFill,
 } from "react-icons/bs";
 import { PiStudent } from "react-icons/pi";
-
 
 /* Components */
 import Home from "../components/dashboard/Home";
@@ -25,6 +26,9 @@ import Network from "../helpers/Network";
 import ApprovelUser from "../components/dashboard/ApprovelUser/ApprovelUser";
 import ApprovelBooks from "../components/dashboard/ApprovelBooks/ApprovelBooks";
 import { GetAvailableBooks } from "../helpers/books.helpers";
+import Teachers from "../components/dashboard/Teachers/Teachers";
+import Students from "../components/dashboard/Students/Students";
+import { ToastContainer } from "react-toastify";
 
 export default function Dashboard() {
   const router = useRouter();
@@ -125,7 +129,7 @@ export default function Dashboard() {
       name: "teachers",
       badge: false,
       isClicked: false,
-      component: <ApprovelBooks />,
+      component: <Teachers />,
       userType: 0,
     },
     {
@@ -134,7 +138,7 @@ export default function Dashboard() {
       name: "students",
       badge: false,
       isClicked: false,
-      component: <ApprovelBooks />,
+      component: <Students />,
       userType: 0,
     },
   ]);
@@ -180,6 +184,7 @@ export default function Dashboard() {
           (i) => i.isClicked && <div key={i.name}>{i.component}</div>
         )}
       </div>
+      <ToastContainer position="bottom-right" />
     </>
   );
 }
