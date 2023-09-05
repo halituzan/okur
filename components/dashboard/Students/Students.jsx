@@ -156,7 +156,7 @@ const Students = () => {
                 }
                 onClick={() => approvalBooksSearchHandler(search)}
               >
-                Kitap Ara
+                Ara
               </button>
             </div>
           </div>

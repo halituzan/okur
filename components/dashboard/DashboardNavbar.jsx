@@ -75,7 +75,7 @@ export default function DashboardNavbar({
                 data-drawer-target="logo-sidebar"
                 data-drawer-toggle="logo-sidebar"
                 aria-controls="logo-sidebar"
-                Type="button"
+                type="button"
                 className="inline-flex items-center p-2 text-sm text-gray-500 rounded-lg md:hidden hover:bg-rose-500 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
                 onClick={() => {
                   showMenu ? setShowMenu(false) : setShowMenu(true);
@@ -161,23 +161,13 @@ export default function DashboardNavbar({
                   <ul className="py-1" role="none">
                     <li>
                       <Link
-                        href="/dashboard"
+                        href="/profile"
                         className="block px-4 py-2 text-sm text-gray-700 hover:bg-rose-500 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white"
                         role="menuitem"
                       >
                         Profil
                       </Link>
                     </li>
-                    <li>
-                      <Link
-                        href="/dashboard"
-                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-rose-500 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white"
-                        role="menuitem"
-                      >
-                        Ayarlar
-                      </Link>
-                    </li>
-
                     <li>
                       <Link
                         href="/dashboard"
@@ -218,7 +208,7 @@ export default function DashboardNavbar({
                         : "flex items-center p-2 text-gray-900 rounded-lg hover:text-white dark:text-white hover:bg-rose-500 dark:hover:bg-gray-700"
                     }
                     onClick={(e) => {
-                      menuHandler(l, "", "all");
+                      menuHandler(l, "all");
                     }}
                   >
                     <span>{l.icon}</span>

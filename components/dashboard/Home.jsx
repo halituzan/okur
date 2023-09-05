@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import "flowbite";
 import { GetAvailableBooks } from "../../helpers/books.helpers";
 import Modal from "../Modal";
+import Countdown from "../countdown/Countdown";
 export default function Home() {
   const [showRequestModal, setShowRequestModal] = useState(false);
   const [bookList, setBookList] = useState([]);
@@ -20,13 +21,15 @@ export default function Home() {
     <div className="p-4 border-gray-200 border-dashed rounded-lg dark:border-gray-700 mt-14">
       <div className="grid grid-cols-4 gap-4 mb-4 ">
         <div className="flex flex-col col-span-1 items-center justify-center text-center h-48 rounded bg-gray-50 dark:bg-gray-800">
+          <span className="mb-2">Kitabın Teslim Tarihi</span>
           <p className="text-2xl text-black  dark:text-gray-500">
-            Verdiği Kitabın Teslim Tarihi
+            {/* <Countdown /> */}
           </p>
         </div>
-        <div className="flex items-center col-span-1 justify-center h-48 rounded text-center  bg-gray-50 dark:bg-gray-800">
+        <div className="flex flex-col col-span-1 items-center justify-center text-center h-48 rounded bg-gray-50 dark:bg-gray-800">
+          <span className="mb-2">Kitabın Alım Tarihi</span>
           <p className="text-2xl text-gray-400 dark:text-gray-500">
-            Aldığı Kitabın Teslim Tarihi
+            {/* <Countdown /> */}
           </p>
         </div>
         <div className="flex items-center col-span-2 justify-center h-48 rounded bg-gray-50 dark:bg-gray-800">

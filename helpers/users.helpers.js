@@ -15,8 +15,16 @@ const GetMyInformation = async () => {
 ////// ! User Info Sevices //////
 
 ////// TODO Student Activate/ Deactivate Sevices //////
-const GetUsersWaitingForApproval = async () => {
-  return Network.get("api/User/GetUsersWaitingForApproval");
+const GetUsersWaitingForApproval = async (
+  search = null,
+  page = 0,
+  size = 10
+) => {
+  return Network.get(
+    `api/User/GetUsersWaitingForApproval${
+      search !== null ? `?Search=${search}&` : "?"
+    }Pagination.PageNumber=${page}&Pagination.PageSize=${size}`
+  );
 };
 const ActivateStudent = async (body) => {
   return await Network.put("api/User/ActivateStudent", body);
@@ -24,19 +32,22 @@ const ActivateStudent = async (body) => {
 const DeActivateStudent = async (body) => {
   return await Network.put("api/User/DeactivateStudent", body);
 };
+
 ////// TODO Student Activate/ Deactivate Sevices //////
 
-////// ? Teacher Services //////
+////// ? Teacher and Users Services //////
 const AddTeacherHandler = async (body) => {
   return await Network.post("api/User/AddTeacher", body);
 };
-const GetTeacherList = async () => {
-  return "Servis Bekleniyor";
+const GetAllUsers = async (search = null, page = 0, size = 10) => {
+  return Network.get(
+    `/api/User/GetAllUsers${
+      search !== null ? `?Search=${search}&` : "?"
+    }Pagination.PageNumber=${page}&Pagination.PageSize=${size}`
+  );
 };
-const UpdateTeacher = async () => {
-  return "Servis Bekleniyor";
-};
-////// ? Teacher Services //////
+
+////// ? Teacher and Users Services //////
 
 export {
   LoginHandler,
@@ -46,6 +57,5 @@ export {
   ActivateStudent,
   DeActivateStudent,
   GetUsersWaitingForApproval,
-  GetTeacherList,
-  UpdateTeacher,
+  GetAllUsers,
 };

@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import Pagination from "../booktable/Pagination";
 import {
   ActivateStudent,
   DeActivateStudent,
@@ -7,7 +6,9 @@ import {
 } from "../../../helpers/users.helpers";
 import { useEffect } from "react";
 import { useDisclosure } from "@mantine/hooks";
-import { Modal } from "@mantine/core";
+import { Modal, NativeSelect,Pagination } from "@mantine/core";
+import { IoIosArrowDown } from "react-icons/io";
+import svgData from "../../../svgData";
 
 const ApprovelUser = () => {
   const [search, setSearch] = useState("");
@@ -19,7 +20,9 @@ const ApprovelUser = () => {
   const [pagination, setPagination] = useState({
     totalPage: 0,
     currentPage: 0,
+    perPage: 10,
   });
+
   const [userList, setUserList] = useState([]);
   const [tableHead, setTableHead] = useState([
     { id: 1, name: "Öğrenci Adı" },
@@ -27,68 +30,147 @@ const ApprovelUser = () => {
     { id: 3, name: null },
   ]);
 
+  const { searchIcon } = svgData;
+
+  const handleKeyDown = (e) => {
+    if (search.length > 2) {
+      if (e.key === "Enter") {
+        approvalUsersSearchHandler(search);
+      }
+    }
+  };
+  const approvalUsersSearchHandler = async (search) => {
+    await GetUsersWaitingForApproval(search, 0, pagination.perPage)
+      .then((res) => {
+        setUserList(res.data.resultList);
+        setPagination({
+          ...pagination,
+          totalPage: Math.ceil(res?.data?.totalCount / pagination.perPage),
+        });
+      })
+      .catch((err) => console.log(err));
+  };
+  const approvalUsersPaginationHandler = async () => {
+    await GetUsersWaitingForApproval(
+      search ? search : null,
+      pagination.currentPage,
+      pagination.perPage
+    )
+      .then((res) => {
+        setUserList(res.data.resultList);
+        setPagination({
+          ...pagination,
+          totalPage: Math.ceil(res?.data?.totalCount / pagination.perPage),
+        });
+      })
+      .catch((err) => console.log(err));
+  };
+
   const approvalUserHandler = async () => {
     await GetUsersWaitingForApproval()
       .then((res) => {
-        console.log(res);
-        setUserList(res.data);
+        setUserList(res.data.resultList);
+        setPagination({
+          ...pagination,
+          totalPage: Math.ceil(res?.data?.totalCount / pagination.perPage),
+        });
       })
       .catch((err) => console.log(err));
   };
 
   const approveUser = async (student, type) => {
-    console.log(student);
-
     if (type === "approve") {
-      await ActivateStudent({ studentId: student.userId }).then(async (res) => {
-        await approvalUserHandler();
+      await ActivateStudent({ studentId: student.userId }).then(async () => {
+        await approvalUserHandler().then(async () => {
+          approvalUsersPaginationHandler();
+          setPagination({ ...pagination, currentPage: 0 });
+        });
         close();
       });
     }
     if (type === "decline") {
-      await DeActivateStudent({ studentId: student.userId }).then(
-        async (res) => {
-          await approvalUserHandler();
-          close();
-        }
-      );
+      await DeActivateStudent({ studentId: student.userId }).then(async () => {
+        await approvalUserHandler().then(async () => {
+          approvalUsersPaginationHandler();
+          setPagination({ ...pagination, currentPage: 0 });
+        });
+        close();
+      });
     }
   };
 
   useEffect(() => {
-    approvalUserHandler();
+    approvalUsersPaginationHandler();
   }, []);
-
+  useEffect(() => {
+    approvalUsersPaginationHandler();
+  }, [pagination.perPage, pagination.currentPage]);
   return (
     <div>
       <div>
-        <div className="p-4 dark:border-gray-700 mt-14 grid grid-cols-4">
-          <div className="flex items-center border-2 px-3 ml-2 lg:col-span-3 col-span-5 mb-2">
-            <input
-              className="pl-2 outline-none border-none w-full"
-              type="text"
-              name="bookName"
-              placeholder="Kitap adı veya yazar ile ara"
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              onKeyDown={(e) => {}}
-            />
-          </div>
-          <div className="flex justify-center items-center ml-2 lg:col-span-1 col-span-5 mb-2">
-            <button
-              type="button"
-              className="flex lg:w-autopx-3 w-full bg-rose-500 text-white text-l py-2 font-bold px-3 justify-center items-center"
+        <div className="p-4 dark:border-gray-700 mt-14">
+          <div className="w-full">
+            <label
+              for="default-search"
+              class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white"
             >
-              Öğrenci Ara
-            </button>
+              Ara
+            </label>
+            <div class="relative w-full">
+              <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                {searchIcon()}
+              </div>
+              <input
+                type="search"
+                id="default-search"
+                class="block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300  bg-gray-50 focus:ring-rose-500 focus:border-rose-500"
+                placeholder="Kitap adı veya yazar ile ara"
+                value={search}
+                onChange={(e) => {
+                  setSearch(e.target.value);
+                  if (e.target.value === "") {
+                    setPagination({ ...pagination, currentPage: 0 });
+                    approvalUserHandler();
+                  }
+                }}
+                onKeyDown={(e) => handleKeyDown(e)}
+              />
+              <button
+                type="submit"
+                disabled={search.length < 3}
+                class={
+                  search.length >= 3
+                    ? "text-white absolute right-2.5 bottom-2.5 bg-rose-600 hover:bg-rose-700 focus:ring-4 focus:outline-none focus:ring-rose-300 font-medium rounded-lg text-sm px-4 py-2"
+                    : "text-white absolute right-2.5 bottom-2.5 bg-gray-500 hover:bg-gray-400 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-4 py-2"
+                }
+                onClick={() => approvalUsersSearchHandler(search)}
+              >
+                Ara
+              </button>
+            </div>
           </div>
         </div>
         {pagination.totalPage > 0 ? (
-          <div className="pagination mt-2 flex lg:justify-end justify-center">
+          <div className="pagination flex flex-row justify-between w-full gap-10 my-5">
+            <NativeSelect
+              data={["10", "20", "50", "100"]}
+              label="Kişi Sayısı"
+              variant="filled"
+              styles={{ height: "auto" }}
+              rightSection={<IoIosArrowDown />}
+              icon={null}
+              onChange={(e) =>
+                setPagination({ ...pagination, perPage: e.currentTarget.value })
+              }
+            />
             <Pagination
-              pagination={pagination}
-              setPagination={setPagination}
-              userList={userList}
+              value={pagination.currentPage + 1}
+              color="gray"
+              siblings={2}
+              onChange={(e) =>
+                setPagination({ ...pagination, currentPage: e - 1 })
+              }
+              total={pagination.totalPage}
             />
           </div>
         ) : (
@@ -102,9 +184,9 @@ const ApprovelUser = () => {
             <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
               <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                 <tr>
-                  {tableHead.map((i) => {
+                  {tableHead.map((i, index) => {
                     return (
-                      <th scope="col" className="px-2 py-3" key={i.id}>
+                      <th scope="col" className="px-2 py-3" key={index}>
                         {i.name}
                       </th>
                     );
@@ -112,10 +194,10 @@ const ApprovelUser = () => {
                 </tr>
               </thead>
               <tbody>
-                {userList?.map((user) => (
+                {userList?.map((user, index) => (
                   <tr
                     className="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
-                    key={user.id}
+                    key={index}
                   >
                     <th
                       scope="row"

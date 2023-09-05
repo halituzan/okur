@@ -149,7 +149,7 @@ const ApprovelBooks = () => {
                 }
                 onClick={() => approvalBooksSearchHandler(search)}
               >
-                Kitap Ara
+                Ara
               </button>
             </div>
           </div>

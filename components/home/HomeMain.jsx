@@ -9,7 +9,6 @@ export default function HomeMain() {
     <>
       <header className="bg-slate-200 rounded-t-md -m-2 p-5 flex justify-between border-b border-rose-500">
         <div className="h-left flex ">
-         
           <div className="search-button ml-3 flex justify-center items-center">
             <AiOutlineSearch
               className="search-icon text-l text-rose-500 cursor-pointer"

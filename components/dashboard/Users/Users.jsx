@@ -1,22 +1,17 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { ApproveBook, DeclineBook } from "../../../helpers/books.helpers";
+import { AddTeacherHandler, GetAllUsers } from "../../../helpers/users.helpers";
 
-import {
-  GetBooksWaitingForApproval,
-  ApproveBook,
-  DeclineBook,
-} from "../../../helpers/books.helpers";
 import { IoIosArrowDown } from "react-icons/io";
-
-import { useEffect } from "react";
-import { useDisclosure } from "@mantine/hooks";
-import { NativeSelect, Pagination } from "@mantine/core";
-import svgData from "../../../svgData";
+import { BsPersonAdd } from "react-icons/bs";
 import { PiChalkboardTeacherDuotone } from "react-icons/pi";
 import Modal from "../../Modal";
-import { BsPersonAdd } from "react-icons/bs";
-import { AddTeacherHandler } from "../../../helpers/users.helpers";
+import { useDisclosure } from "@mantine/hooks";
+import { NativeSelect, Pagination } from "@mantine/core";
 
-const Teachers = () => {
+import svgData from "../../../svgData";
+
+const Users = () => {
   const { searchIcon } = svgData;
   const [search, setSearch] = useState("");
   const [showAddModal, setShowAddModal] = useState(false);
@@ -40,25 +35,26 @@ const Teachers = () => {
     perPage: 10,
   });
 
-  const [teacherList, setBookList] = useState([]);
+  const [userList, serUserList] = useState([]);
   const [tableHead, setTableHead] = useState([
     { id: 1, name: "Adı" },
     { id: 2, name: "Soyadı" },
     { id: 3, name: "Email" },
-    { id: 3, name: null },
+    { id: 4, name: "Kullanıcı Tipi" },
+    { id: 5, name: null },
   ]);
 
   const handleKeyDown = (e) => {
     if (search.length > 2) {
       if (e.key === "Enter") {
-        approvalBooksSearchHandler(search);
+        allUsersSearchHandler(search);
       }
     }
   };
-  const approvalBooksHandler = async () => {
-    await GetBooksWaitingForApproval()
+  const allUsers = async () => {
+    await GetAllUsers()
       .then((res) => {
-        setBookList(res.data.resultList);
+        serUserList(res.data.resultList);
         setPagination({
           ...pagination,
           totalPage: Math.ceil(res?.data?.totalCount / pagination.perPage),
@@ -66,14 +62,14 @@ const Teachers = () => {
       })
       .catch((err) => console.log(err));
   };
-  const approvalBooksPaginationHandler = async () => {
-    await GetBooksWaitingForApproval(
+  const allUsersPaginationHandler = async () => {
+    await GetAllUsers(
       search ? search : null,
       pagination.currentPage,
       pagination.perPage
     )
       .then((res) => {
-        setBookList(res.data.resultList);
+        serUserList(res.data.resultList);
         setPagination({
           ...pagination,
           totalPage: Math.ceil(res?.data?.totalCount / pagination.perPage),
@@ -81,10 +77,10 @@ const Teachers = () => {
       })
       .catch((err) => console.log(err));
   };
-  const approvalBooksSearchHandler = async (search) => {
-    await GetBooksWaitingForApproval(search, 0, pagination.perPage)
+  const allUsersSearchHandler = async (search) => {
+    await GetAllUsers(search, 0, pagination.perPage)
       .then((res) => {
-        setBookList(res.data.resultList);
+        serUserList(res.data.resultList);
         setPagination({
           ...pagination,
           totalPage: Math.ceil(res?.data?.totalCount / pagination.perPage),
@@ -93,27 +89,27 @@ const Teachers = () => {
       .catch((err) => console.log(err));
   };
 
-  const approveBook = async (book, type) => {
-    if (type === "approve") {
-      await ApproveBook({ bookId: book.id }).then(async (res) => {
-        await approvalBooksHandler().then(async (res) => {
-          approvalBooksPaginationHandler();
-          setPagination({ ...pagination, currentPage: 0 });
-        });
-        close();
-      });
-    }
-    if (type === "decline") {
-      await DeclineBook({ bookId: book.id }).then(async (res) => {
-        await approvalBooksHandler().then(async (res) => {
-          approvalBooksPaginationHandler();
-          setPagination({ ...pagination, currentPage: 0 });
-        });
+  // const approveBook = async (book, type) => {
+  //   if (type === "approve") {
+  //     await ApproveBook({ bookId: book.id }).then(async (res) => {
+  //       await allUsers().then(async (res) => {
+  //         allUsersPaginationHandler();
+  //         setPagination({ ...pagination, currentPage: 0 });
+  //       });
+  //       close();
+  //     });
+  //   }
+  //   if (type === "decline") {
+  //     await DeclineBook({ bookId: book.id }).then(async (res) => {
+  //       await allUsers().then(async (res) => {
+  //         allUsersPaginationHandler();
+  //         setPagination({ ...pagination, currentPage: 0 });
+  //       });
 
-        close();
-      });
-    }
-  };
+  //       close();
+  //     });
+  //   }
+  // };
 
   const addTeacher = async () => {
     await AddTeacherHandler(teacher).then((res) => {
@@ -122,11 +118,11 @@ const Teachers = () => {
   };
 
   useEffect(() => {
-    approvalBooksHandler();
+    allUsers();
   }, []);
 
   useEffect(() => {
-    approvalBooksPaginationHandler();
+    allUsersPaginationHandler();
   }, [pagination.perPage, pagination.currentPage]);
 
   return (
@@ -148,13 +144,13 @@ const Teachers = () => {
                 type="search"
                 id="default-search"
                 class="block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300  bg-gray-50 focus:ring-rose-500 focus:border-rose-500"
-                placeholder="Öğretmen Arayın"
+                placeholder="Kullanıcı Arayın"
                 value={search}
                 onChange={(e) => {
                   setSearch(e.target.value);
                   if (e.target.value === "") {
                     setPagination({ ...pagination, currentPage: 0 });
-                    approvalBooksHandler();
+                    allUsers();
                   }
                 }}
                 onKeyDown={(e) => handleKeyDown(e)}
@@ -167,9 +163,9 @@ const Teachers = () => {
                     ? "text-white absolute right-2.5 bottom-2.5 bg-rose-600 hover:bg-rose-700 focus:ring-4 focus:outline-none focus:ring-rose-300 font-medium rounded-lg text-sm px-4 py-2"
                     : "text-white absolute right-2.5 bottom-2.5 bg-gray-500 hover:bg-gray-400 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-4 py-2"
                 }
-                onClick={() => approvalBooksSearchHandler(search)}
+                onClick={() => allUsersSearchHandler(search)}
               >
-                Kitap Ara
+                Ara
               </button>
             </div>
           </div>
@@ -213,7 +209,7 @@ const Teachers = () => {
       </div>
 
       <div className="book-list">
-        {teacherList && (
+        {userList && (
           <div className="relative overflow-x-auto flex flex-col">
             <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
               <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
@@ -228,20 +224,21 @@ const Teachers = () => {
                 </tr>
               </thead>
               <tbody>
-                {teacherList?.map((teacher, index) => (
+                {userList?.map((user, index) => (
                   <tr
                     className="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
-                    key={teacher.id}
+                    key={user.id}
                   >
                     <th
                       scope="row"
                       className="px-2  font-medium text-gray-900  dark:text-white"
                     >
-                      {teacher.name}
+                      {user.name}
                     </th>
 
-                    <td className="px-2">{teacher.surname}</td>
-                    <td className="px-2">{teacher.email}</td>
+                    <td className="px-2">{user.surname}</td>
+                    <td className="px-2">{user.email}</td>
+                    <td className="px-2">{user.userType === 0 ? "Öğretmen" : "Öğrenci"}</td>
                     <td className="px-2 flex justify-end items-center pr-0">
                       <button
                         type="button"
@@ -249,8 +246,8 @@ const Teachers = () => {
                         onClick={() => {
                           setShowEditModal(true);
                           setCurrentTeacherValue({
-                            name: teacher.name,
-                            surname: teacher.surname,
+                            name: user.name,
+                            surname: user.surname,
                           });
                         }}
                       >
@@ -457,4 +454,4 @@ const Teachers = () => {
   );
 };
 
-export default Teachers;
+export default Users;
