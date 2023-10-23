@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import BooksTable from "./booktable/BooksTable";
-import { GetAvailableBooks } from "../../helpers/books.helpers";
+import { GetAvailableBooks, RequestBook } from "../../helpers/books.helpers";
 import svgData from "../../svgData";
 import { NativeSelect, Pagination } from "@mantine/core";
 import { IoIosArrowDown } from "react-icons/io";
@@ -23,8 +23,8 @@ export default function Books() {
 
   /* Functions */
 
-  const availableBooksHandler = async () => {
-    await GetAvailableBooks()
+  const availableBooksHandler = async (type = false) => {
+    await GetAvailableBooks(null, 0, 10, type && type)
       .then((res) => {
         setBookList(res.data.resultList);
         setPagination({
@@ -77,7 +77,9 @@ export default function Books() {
     availableBooksPaginationHandler();
   }, [pagination.perPage, pagination.currentPage]);
 
-  const kitapIste = () => {};
+  const kitapIste = async (id) => {
+    await RequestBook(id);
+  };
   return (
     <div>
       <div>
@@ -123,19 +125,40 @@ export default function Books() {
             </div>
           </div>
         </div>
+        <div className="flex items-center">
+          <input
+            type="checkbox"
+            id="isRequested"
+            onChange={(e) => {
+              if (e.currentTarget.checked) {
+                availableBooksHandler(true);
+              } else {
+                availableBooksHandler();
+              }
+            }}
+          />
+          <label htmlFor="isRequested" className="ml-2">
+            Sadece talep edilebilirleri göster
+          </label>
+        </div>
         {pagination.totalPage > 0 && (
           <div className="pagination flex flex-row justify-between w-full gap-10 my-5">
-            <NativeSelect
-              data={["10", "20", "50", "100"]}
-              label="Kişi Sayısı"
-              variant="filled"
-              styles={{ height: "auto" }}
-              rightSection={<IoIosArrowDown />}
-              icon={null}
-              onChange={(e) =>
-                setPagination({ ...pagination, perPage: e.currentTarget.value })
-              }
-            />
+            <div>
+              <NativeSelect
+                data={["10", "20", "50", "100"]}
+                label="Kişi Sayısı"
+                variant="filled"
+                styles={{ height: "auto" }}
+                rightSection={<IoIosArrowDown />}
+                icon={null}
+                onChange={(e) =>
+                  setPagination({
+                    ...pagination,
+                    perPage: e.currentTarget.value,
+                  })
+                }
+              />
+            </div>
             <Pagination
               value={pagination.currentPage + 1}
               color="gray"
@@ -150,9 +173,7 @@ export default function Books() {
       </div>
 
       <div className="book-list">
-        {!bookList ? (
-          ""
-        ) : (
+        {bookList && (
           <BooksTable
             tableHead={tableHead}
             bookList={bookList}

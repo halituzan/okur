@@ -8,7 +8,8 @@ import {
 import { toast } from "react-toastify";
 import Modal from "../../Modal";
 import { UpdateBook } from "../../../helpers/books.helpers";
-
+import svgData from "../../../svgData";
+const { informationIcon } = svgData;
 export default function BookCaseTable({
   addBook,
   removeBook,
@@ -71,33 +72,46 @@ export default function BookCaseTable({
 
               <td className="px-2">{book.author}</td>
               <td className="px-2 flex justify-end items-center pr-0">
-                <button
-                  type="button"
-                  className="px-3 mr-3 bg-rose-500 text-white text-l mt-4 py-2  font-bold mb-2 flex justify-center items-center "
-                  onClick={() => {
-                    console.log("first");
-                    setEditModalValue({
-                      ...editModalValue,
-                      id: book.id,
-                      name: book.name,
-                      author: book.author,
-                    });
-                    setOpenEditModal(true);
-                  }}
-                >
-                  <AiOutlineEdit /> Güncelle
-                </button>
-                <button
-                  type="button"
-                  className=" px-3 bg-rose-500 text-white text-l mt-4 py-2  font-bold mb-2 flex justify-center items-center "
-                  onClick={() => {
-                    console.log("first");
-                    setCurrentBook(book);
-                    setOpenDeleteModal(true);
-                  }}
-                >
-                  <AiFillDelete /> Sil
-                </button>
+                {book.lastRequestStatus === "Available" ? (
+                  <>
+                    {" "}
+                    <button
+                      type="button"
+                      className="px-3 mr-3 bg-rose-500 text-white text-l mt-4 py-2  font-bold mb-2 flex justify-center items-center "
+                      onClick={() => {
+                        console.log("first");
+                        setEditModalValue({
+                          ...editModalValue,
+                          id: book.id,
+                          name: book.name,
+                          author: book.author,
+                        });
+                        setOpenEditModal(true);
+                      }}
+                    >
+                      <AiOutlineEdit /> Güncelle
+                    </button>
+                    <button
+                      type="button"
+                      className=" px-3 bg-rose-500 text-white text-l mt-4 py-2  font-bold mb-2 flex justify-center items-center "
+                      onClick={() => {
+                        console.log("first");
+                        setCurrentBook(book);
+                        setOpenDeleteModal(true);
+                      }}
+                    >
+                      <AiFillDelete /> Sil
+                    </button>
+                  </>
+                ) : (
+                  <button
+                    type="button"
+                    className="px-3 bg-transparant text-orange-600 text-l mt-4 py-2  font-bold mb-2 flex justify-center items-center "
+                    title="Kitabı düzenleyebilmeniz için teslim almalısınız."
+                  >
+                    {informationIcon()} Kitap Düzenlenmez
+                  </button>
+                )}
               </td>
             </tr>
           ))}

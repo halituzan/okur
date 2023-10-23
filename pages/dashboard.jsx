@@ -6,13 +6,14 @@ import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
 
 /* Icons */
-import { AiOutlineHome, AiOutlineInbox } from "react-icons/ai";
+import { AiOutlineHome, AiOutlineInbox, AiOutlinePullRequest } from "react-icons/ai";
 import { GiBookshelf, GiBookPile } from "react-icons/gi";
 import {
   BsFillPersonLinesFill,
   BsJournalBookmarkFill,
   BsFillPeopleFill,
 } from "react-icons/bs";
+
 
 /* Components */
 import Home from "../components/dashboard/Home";
@@ -28,6 +29,7 @@ import Users from "../components/dashboard/Users/Users";
 /* Services Helpers */
 import { GetAvailableBooks } from "../helpers/books.helpers";
 import Layout from "../components/layout/Layout";
+import Talepler from "../components/dashboard/Talepler";
 
 export default function Dashboard() {
   const [notifications, setNotifications] = useState([
@@ -99,6 +101,15 @@ export default function Dashboard() {
       badge: false,
       isClicked: false,
       component: <BookCase />,
+      userType: 1,
+    },
+    {
+      icon: <AiOutlinePullRequest />,
+      title: "Talepler",
+      name: "talepler",
+      badge: false,
+      isClicked: false,
+      component: <Talepler />,
       userType: 1,
     },
   ]);

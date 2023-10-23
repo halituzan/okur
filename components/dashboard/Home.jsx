@@ -1,15 +1,22 @@
 import React, { useEffect, useState } from "react";
 import "flowbite";
-import { GetAvailableBooks } from "../../helpers/books.helpers";
+import {
+  GetAvailableBooks,
+  GetBookRequests,
+} from "../../helpers/books.helpers";
 import Modal from "../Modal";
 import Countdown from "../countdown/Countdown";
 export default function Home() {
   const [showRequestModal, setShowRequestModal] = useState(false);
   const [bookList, setBookList] = useState([]);
+  const [myBookList, setMyBookList] = useState([]);
 
   const mountData = async () => {
     await GetAvailableBooks().then((res) => {
       setBookList(res.data.resultList);
+    });
+    await GetBookRequests().then((res) => {
+      setMyBookList(res.data.filter((i) => i.reqStatus === 5).splice(0, 5));
     });
   };
 
@@ -18,27 +25,31 @@ export default function Home() {
   }, []);
 
   return (
-    <div className="p-4 border-gray-200 border-dashed rounded-lg dark:border-gray-700 mt-14">
+    <div className="p-4 border-gray-200 border-dashed rounded-lg mt-14">
       <div className="grid grid-cols-4 gap-4 mb-4 ">
-        <div className="flex flex-col col-span-1 items-center justify-center text-center h-48 rounded bg-gray-50 dark:bg-gray-800">
+        <div className="flex flex-col col-span-1 items-center justify-center text-center h-48 rounded bg-gray-50">
           <span className="mb-2">Kitabın Teslim Tarihi</span>
-          <p className="text-2xl text-black  dark:text-gray-500">
-            {/* <Countdown /> */}
-          </p>
+          <p className="text-2xl text-black  ">{/* <Countdown /> */}</p>
         </div>
-        <div className="flex flex-col col-span-1 items-center justify-center text-center h-48 rounded bg-gray-50 dark:bg-gray-800">
+        <div className="flex flex-col col-span-1 items-center justify-center text-center h-48 rounded bg-gray-50">
           <span className="mb-2">Kitabın Alım Tarihi</span>
-          <p className="text-2xl text-gray-400 dark:text-gray-500">
-            {/* <Countdown /> */}
-          </p>
+          <p className="text-2xl text-gray-400 ">{/* <Countdown /> */}</p>
         </div>
-        <div className="flex items-center col-span-2 justify-center h-48 rounded bg-gray-50 dark:bg-gray-800">
-          <p className="text-2xl text-gray-400 dark:text-gray-500">
+        <div className="flex flex-col divide-y items-start py-2 col-span-2 justify-start h-48 w-full rounded bg-gray-50 relative">
+          <p className="text-md my-1 font-bold self-center text-gray-400 absolute top-[-20px] bg-gray-50 px-5 rounded-tl-lg rounded-tr-md">
             Okuduğu son 5 kitap
           </p>
+          {myBookList.reverse().map((item, index) => {
+            return (
+              <p key={item.id} className="py-1 px-2 w-full">
+                {index + 1} - <span className="font-bold">{item.name}</span>{" "}
+                <span className="italic">{item.author}</span>
+              </p>
+            );
+          })}
         </div>
       </div>
-      <div className="flex flex-col items-start justify-start mb-4 rounded bg-gray-50 dark:bg-gray-800 divide-y-2">
+      <div className="flex flex-col items-start justify-start mb-4 rounded bg-gray-50 divide-y-2">
         <h3 className="p-4 text-2xl">Son Listelenen Kitaplar</h3>
         {bookList?.map((book, index) => {
           return (
@@ -48,12 +59,12 @@ export default function Home() {
             >
               <span className="flex-1">{book.name}</span>
               <span className="flex-1">{book.author}</span>
-              <button
+              {/* <button
                 className="flex items-center p-2 text-white bg-rose-500 rounded-lg ml-2"
                 onClick={() => setShowRequestModal(true)}
               >
                 Talep Et
-              </button>
+              </button> */}
             </div>
           );
         })}

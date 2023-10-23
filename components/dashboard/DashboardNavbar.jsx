@@ -10,6 +10,7 @@ export default function DashboardNavbar({
   teacherButtonList,
   setTeacherButtonList,
 }) {
+
   const [showSettings, setShowSettings] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
   const [userInformation, setUserInformation] = useState(null);
@@ -17,8 +18,8 @@ export default function DashboardNavbar({
   const dropdown = useRef();
   const sidebar = useRef();
   const logOut = () => {
-    localStorage.clear("myInformation");
-    if (localStorage.getItem("myInformation") === null) {
+    localStorage.removeItem("myInformation");
+    if (!localStorage.getItem("myInformation")) {
       router.back("/");
     }
   };
@@ -45,9 +46,7 @@ export default function DashboardNavbar({
   useEffect(() => {
     setUserInformation(JSON.parse(localStorage.getItem("myInformation")));
   }, []);
-  useEffect(() => {
-    console.log(userInformation);
-  }, [userInformation]);
+
 
   const handleClickOutside = (event) => {
     if (dropdown.current && !dropdown.current.contains(event.target)) {

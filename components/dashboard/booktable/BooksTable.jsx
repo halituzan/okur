@@ -1,6 +1,7 @@
 import React from "react";
 
 export default function BooksTable({ bookList, listBookFunc, tableHead }) {
+  const myInformation = JSON.parse(localStorage.getItem("myInformation"));
   return (
     <div className="relative overflow-x-auto flex flex-col">
       <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
@@ -30,13 +31,25 @@ export default function BooksTable({ bookList, listBookFunc, tableHead }) {
 
               <td className="px-2">{book.author}</td>
               <td className="px-2 flex justify-end items-center pr-0">
-                <button
-                  type="button"
-                  className="px-3 bg-rose-500 text-white text-l mt-4 py-2  font-bold mb-2 flex justify-center items-center "
-                  onClick={() => listBookFunc(book)}
-                >
-                  Talep Et
-                </button>
+                {book.lastRequestStatus === "Available" &&
+                book.ownerId !== myInformation.userId ? (
+                  <button
+                    type="button"
+                    className="px-3 bg-rose-500 text-white text-l mt-4 py-2  font-bold mb-2 flex justify-center items-center "
+                    onClick={() => listBookFunc(book.id)}
+                  >
+                    Talep Et
+                  </button>
+                ) : (
+                  <button
+                    type="button"
+                    className="px-3  bg-gray-500 text-white text-l mt-4 py-2  font-bold mb-2  justify-center items-center "
+                    disabled={true}
+                    style={{ visibility: "hidden" }}
+                  >
+                    Talep Edildi
+                  </button>
+                )}
               </td>
             </tr>
           ))}
