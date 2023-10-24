@@ -68,7 +68,7 @@ export default function login() {
 
       <div className="home-provider relative overflow-hidden md:flex w-1/2  from-rose-500 to-purple-700 i justify-around items-center hidden book-auth">
         <div className="w-1/2">
-          <Link href="/" className="flex justify-center">
+          <div className="flex justify-center">
             <Image
               src="/images/logo.svg"
               alt="logo"
@@ -78,19 +78,16 @@ export default function login() {
               blurDataURL={"/images/logo.svg"}
             />
             <h1 className="text-white font-bold text-4xl ml-2 font-sans"></h1>
-          </Link>
-
-          <p className="text-white mt-1 text-xl">Giriş Sayfası</p>
+          </div>
 
           {/* <button type="submit" className="block w-28 bg-white text-indigo-800 mt-4 py-2 rounded-2xl font-bold mb-2">Anasayfa</button> */}
-          <p className="text-white">
-            Lorem Ipsum is simply dummy text of the printing and typesetting
-            industry.
+          <p className="text-white mb-2">
+            Eğlenceli ve ilgi çekici kitap maceramıza hoş geldin. Şimdi giriş
+            yap ve kitaplarla dolu bu büyülü dünyaya geri dön.
           </p>
           <p className="text-white">
-            Lorem Ipsum has been the industry standard dummy text ever since the
-            1500s, when an unknown printer took a galley of type and scrambled
-            it to make a type specimen book.
+            Arkadaşlarınla bağlantı kur, yeni kitaplar keşfet ve kendi
+            hikayelerini oluştur. Hadi, okuma tutkusunu yeniden canlandıralım!
           </p>
         </div>
         <div className="absolute -bottom-32 -left-40 w-80 h-80 border-4 rounded-full border-opacity-30 border-t-8" />
@@ -168,9 +165,9 @@ export default function login() {
             Giriş Yap
           </button>
           <div className="flex content-center">
-            <span className="text-sm ml-2 hover:text-blue-500 cursor-pointer">
+            {/* <span className="text-sm ml-2 hover:text-blue-500 cursor-pointer">
               Şifremi Unuttum ?
-            </span>
+            </span> */}
             <Link
               href="/register"
               className="w-full bg-emerald-500 py-2 rounded-2xl text-white font-semibold mb-2 flex justify-center items-center"

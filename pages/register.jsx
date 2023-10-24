@@ -113,7 +113,7 @@ export default function Register() {
       </Head>
       <div className="home-provider relative overflow-hidden md:flex w-1/2 from-rose-500 to-purple-700 i justify-around items-center hidden book-auth">
         <div className="w-1/2">
-          <Link href="/" className="flex justify-center">
+          <div className="flex justify-center">
             <Image
               src="/images/logo.svg"
               alt="logo"
@@ -123,18 +123,17 @@ export default function Register() {
               blurDataURL={"/images/logo.svg"}
             />
             <h1 className="text-white font-bold text-4xl ml-2 font-sans"></h1>
-          </Link>
+          </div>
 
-          <p className="text-white mt-1 text-xl">Kayıt Sayfası</p>
-
-          <p className="text-white">
-            Lorem Ipsum is simply dummy text of the printing and typesetting
-            industry.
+          <p className="text-white mb-2">
+            Merhaba, kitap dünyasına hoş geldin! Burada, maceraların, bilgeliğin
+            ve hayal gücünün sınırlarını keşfedeceksin.
           </p>
           <p className="text-white">
-            Lorem Ipsum has been the industry standard dummy text ever since the
-            1500s, when an unknown printer took a galley of type and scrambled
-            it to make a type specimen book.
+            Yeni arkadaşlarla tanışacak, kitaplarını paylaşacak ve büyüleyici
+            hikayeleri keşfedeceksin. Kaydını oluştur ve kitaplarının sihirli
+            dünyasına katıl! Aşağıdaki bilgilerle bize katıl ve heyecan verici
+            bir yolculuğun parçası ol!
           </p>
         </div>
         <div className="absolute -bottom-32 -left-40 w-80 h-80 border-4 rounded-full border-opacity-30 border-t-8" />

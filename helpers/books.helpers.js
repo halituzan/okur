@@ -69,6 +69,7 @@ const RequestBook = async (id) => {
       await GetAvailableBooks();
     }
   } catch (error) {
+    toast.error(error.response.data.Message);
     console.log(error);
   }
 };

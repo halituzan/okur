@@ -18,6 +18,8 @@ export default function Home() {
     if (stroage !== null) {
       router.push(`/dashboard`);
       toast.success("Yönlendiriliyorsunuz.");
+    } else{
+      router.push(`/login`);
     }
   };
   useEffect(() => {

@@ -11,6 +11,7 @@ import { useEffect } from "react";
 import { useDisclosure } from "@mantine/hooks";
 import { Modal, NativeSelect, Pagination } from "@mantine/core";
 import svgData from "../../../svgData";
+import { AiOutlineExclamationCircle } from "react-icons/ai";
 
 const ApprovelBooks = () => {
   const { searchIcon } = svgData;
@@ -25,7 +26,6 @@ const ApprovelBooks = () => {
     currentPage: 0,
     perPage: 10,
   });
-
 
   const [bookList, setBookList] = useState([]);
   const [tableHead, setTableHead] = useState([
@@ -180,8 +180,8 @@ const ApprovelBooks = () => {
         )}
       </div>
 
-      <div className="book-list">
-        {bookList && (
+      <div className="book-list m-4">
+        {bookList.length > 0 ? (
           <div className="relative overflow-x-auto flex flex-col">
             <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
               <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
@@ -243,6 +243,13 @@ const ApprovelBooks = () => {
                 ))}
               </tbody>
             </table>
+          </div>
+        ) : (
+          <div className="flex flex-col col-span-1 items-center justify-center text-center h-24 rounded font-bold text-gray-400 bg-gray-50">
+            <span className="mb-2 flex items-center text-rose-500/80 ">
+              <AiOutlineExclamationCircle size={20} className="text-xl mr-2" />{" "}
+              Onaylanacak herhangi bir kitap bulunmuyor
+            </span>
           </div>
         )}
       </div>
