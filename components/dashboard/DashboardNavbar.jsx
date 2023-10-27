@@ -10,7 +10,6 @@ export default function DashboardNavbar({
   teacherButtonList,
   setTeacherButtonList,
 }) {
-
   const [showSettings, setShowSettings] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
   const [userInformation, setUserInformation] = useState(null);
@@ -18,8 +17,8 @@ export default function DashboardNavbar({
   const dropdown = useRef();
   const sidebar = useRef();
   const logOut = () => {
-    localStorage.removeItem("myInformation");
-    if (!localStorage.getItem("myInformation")) {
+    localStorage.clear();
+    if (!localStorage.getItem("token")) {
       router.back("/");
     }
   };
@@ -46,7 +45,6 @@ export default function DashboardNavbar({
   useEffect(() => {
     setUserInformation(JSON.parse(localStorage.getItem("myInformation")));
   }, []);
-
 
   const handleClickOutside = (event) => {
     if (dropdown.current && !dropdown.current.contains(event.target)) {
@@ -151,7 +149,7 @@ export default function DashboardNavbar({
                       ).toLocaleUpperCase()}
                     </p>
                     <p
-                      className="text-sm font-medium text-gray-900 truncate dark:text-gray-300"
+                      className="text-sm font-medium text-gray-900 truncate "
                       role="none"
                     >
                       {userInformation?.email}
@@ -161,7 +159,7 @@ export default function DashboardNavbar({
                     <li>
                       <Link
                         href="/profile"
-                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-rose-500 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white"
+                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-rose-500 hover:text-white"
                         role="menuitem"
                       >
                         Profil
@@ -170,7 +168,7 @@ export default function DashboardNavbar({
                     <li>
                       <Link
                         href="/dashboard"
-                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-rose-500 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white"
+                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-rose-500 hover:text-white"
                         role="menuitem"
                         onClick={() => logOut()}
                       >

@@ -155,7 +155,7 @@ const ApprovelBooks = () => {
           </div>
         </div>
         {pagination.totalPage > 0 && (
-          <div className="pagination flex flex-row justify-between w-full gap-10 my-5">
+          <div className="pagination flex flex-row justify-between gap-10 m-4">
             <NativeSelect
               data={["10", "20", "50", "100"]}
               label="Kişi Sayısı"

@@ -8,9 +8,9 @@ import { useEffect } from "react";
 import { useDisclosure } from "@mantine/hooks";
 import { Modal, NativeSelect, Pagination } from "@mantine/core";
 import { IoIosArrowDown } from "react-icons/io";
-import svgData from "../../../svgData";
 import { AiOutlineExclamationCircle } from "react-icons/ai";
-
+import svgData from "../../../svgData";
+const { searchIcon } = svgData;
 const ApprovelUser = () => {
   const [search, setSearch] = useState("");
   const [currentUser, setCurrentUser] = useState({
@@ -30,8 +30,6 @@ const ApprovelUser = () => {
     { id: 2, name: "Öğrenci Numarası" },
     { id: 3, name: null },
   ]);
-
-  const { searchIcon } = svgData;
 
   const handleKeyDown = (e) => {
     if (search.length > 2) {
@@ -152,7 +150,7 @@ const ApprovelUser = () => {
           </div>
         </div>
         {pagination.totalPage > 0 ? (
-          <div className="pagination flex flex-row justify-between w-full gap-10 my-5">
+          <div className="pagination flex flex-row justify-between gap-10 m-4">
             <NativeSelect
               data={["10", "20", "50", "100"]}
               label="Kişi Sayısı"

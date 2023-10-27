@@ -20,7 +20,7 @@ export default function login() {
   const { password, schoolNumber } = login;
 
   useEffect(() => {
-    setStorage(localStorage.getItem("bookyId"));
+    setStorage(localStorage.getItem("token"));
   }, []);
 
   useEffect(() => {

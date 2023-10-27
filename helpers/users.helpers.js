@@ -1,3 +1,4 @@
+import { toast } from "react-toastify";
 import Network from "./Network";
 ////// ! Auth Sevices //////
 const LoginHandler = async (body) => {
@@ -47,6 +48,25 @@ const GetAllUsers = async (search = null, page = 0, size = 10) => {
   );
 };
 
+const EditUser = async (body) => {
+  const res = await Network.put("/api/User/EditUser", body);
+  toast.success(res.message);
+  return res;
+};
+
+const ChangePassword = async (body) => {
+  const res = await Network.put("/api/User/ChangePassword", body);
+  console.log(res);
+
+  if (res.status) {
+    toast.success(res.message);
+  } else {
+    toast.error(res.Message);
+  }
+
+  return res;
+};
+
 ////// ? Teacher and Users Services //////
 
 export {
@@ -58,4 +78,6 @@ export {
   DeActivateStudent,
   GetUsersWaitingForApproval,
   GetAllUsers,
+  EditUser,
+  ChangePassword,
 };

@@ -47,15 +47,14 @@ const GetBookRequests = async () => {
 ////// ! Post Sevices //////
 
 ////// ? Post Sevices //////
-const PostBookWithId = async (setterFunc, token, body) => {
-  const { name, author } = body;
-  await Network.post("api/Book", { name, author }).then((res) => {
-    if (res.success) {
-      toast.success(res.message);
-      setterFunc(res.data);
-    }
-  });
-};
+// const PostBookWithId = async (setterFunc, token, body) => {
+//   const { name, author } = body;
+//   await Network.post("api/Book", { name, author }).then((res) => {
+//     if (res.success) {
+//       setterFunc(res.data);
+//     }
+//   });
+// };
 const PostAddBook = async (body) => {
   const res = await Network.post("api/Book", body);
   toast.success(res.message);
@@ -121,7 +120,7 @@ export {
   GetAvailableBooks,
   GetMyBooks,
   GetBookWithId,
-  PostBookWithId,
+  // PostBookWithId,
   PostAddBook,
   GetBooksWaitingForApproval,
   ApproveBook,

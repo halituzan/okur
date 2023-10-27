@@ -17,6 +17,12 @@ import Books from "../components/dashboard/Books";
 import ApprovelUser from "../components/dashboard/ApprovelUser/ApprovelUser";
 import ApprovelBooks from "../components/dashboard/ApprovelBooks/ApprovelBooks";
 import Users from "../components/dashboard/Users/Users";
+import {
+  ChangePassword,
+  EditUser,
+  GetMyInformation,
+} from "../helpers/users.helpers";
+import { ToastContainer, toast } from "react-toastify";
 const Profile = () => {
   const [notifications, setNotifications] = useState([
     {
@@ -125,15 +131,61 @@ const Profile = () => {
     name: "",
     surname: "",
   });
+  const { name, surname } = editValue;
   const [myInfo, setMyInfo] = useState({});
   const [editPassword, setEditPassword] = useState({
     oldPassword: "",
     newPassword: "",
     newPasswordAgain: "",
   });
+  const { oldPassword, newPassword, newPasswordAgain } = editPassword;
+  const myInfoHandler = async () => {
+    try {
+      const res = await GetMyInformation();
+      console.log(res);
+      setMyInfo(res.data);
+    } catch (error) {}
+  };
+  const changePasswordHandler = async () => {
+    if (!oldPassword || !newPassword || !newPasswordAgain) {
+      console.log("first1");
+
+      toast.error("Lütfen tüm alanları doldurunuz.");
+      return;
+    } else if (newPassword !== newPasswordAgain) {
+      toast.error("Yeni parolalar uyuşmuyor");
+      return;
+    }
+    console.log("first");
+
+    try {
+      await ChangePassword(editPassword);
+      setOpenEdit(false);
+    } catch (error) {
+      toast.error(error.response.data.Message);
+    }
+
+    setEditValue({
+      name: "",
+      surname: "",
+    });
+    setEditPassword({
+      oldPassword: "",
+      newPassword: "",
+      newPasswordAgain: "",
+    });
+  };
+
+  const editUser = async () => {
+    try {
+      await EditUser(editValue);
+      setOpenEdit(false);
+      await myInfoHandler();
+    } catch (error) {}
+  };
+
   useEffect(() => {
-    const myInfo = JSON.parse(localStorage.getItem("myInformation"));
-    setMyInfo(myInfo);
+    myInfoHandler();
   }, []);
 
   return (
@@ -164,7 +216,7 @@ const Profile = () => {
                       });
                       setOpenEdit(false);
                     }}
-                    className="flex items-center w-24 justify-center font-bold px-4 py-2 text-whit border bg-gray-500/100 rounded-lg ml-2"
+                    className="flex items-center w-24 justify-center font-bold px-4 py-2 text-white border bg-gray-500/100 rounded-lg ml-2"
                   >
                     İptal
                   </button>
@@ -179,8 +231,9 @@ const Profile = () => {
                         newPassword: "",
                         newPasswordAgain: "",
                       });
-                      setOpenEdit(false);
+                      editUser();
                     }}
+                    disabled={!surname || !name}
                     className="flex items-center w-24 justify-center font-bold px-4 py-2 text-white text-sm bg-rose-500 rounded-lg ml-2"
                   >
                     Kaydet
@@ -211,7 +264,7 @@ const Profile = () => {
                     type="text"
                     className="block p-1 pl-3 flex-1 w-full text-sm text-gray-900 border border-gray-300  bg-gray-50 focus:ring-rose-500 focus:border-rose-500"
                     placeholder="Ad"
-                    value={editValue.name}
+                    value={name}
                     onChange={(e) => {
                       setEditValue({ ...editValue, name: e.target.value });
                     }}
@@ -229,7 +282,7 @@ const Profile = () => {
                     type="text"
                     className="block p-1 pl-3 flex-1 w-full text-sm text-gray-900 border border-gray-300  bg-gray-50 focus:ring-rose-500 focus:border-rose-500"
                     placeholder="Soyad"
-                    value={editValue.surname}
+                    value={surname}
                     onChange={(e) => {
                       setEditValue({ ...editValue, surname: e.target.value });
                     }}
@@ -266,16 +319,7 @@ const Profile = () => {
                 <h2 className="text-black text-2xl py-2">Şifreyi Değiştir</h2>
                 <button
                   onClick={() => {
-                    setEditValue({
-                      name: "",
-                      surname: "",
-                    });
-                    setEditPassword({
-                      oldPassword: "",
-                      newPassword: "",
-                      newPasswordAgain: "",
-                    });
-                    setOpenEdit(false);
+                    changePasswordHandler();
                   }}
                   className="flex items-center w-24 justify-center font-bold px-4 py-2 text-white text-sm bg-rose-500 rounded-lg ml-2"
                 >
@@ -342,6 +386,7 @@ const Profile = () => {
           )}
         </div>
       </div>
+      <ToastContainer position="bottom-right" />
     </div>
   );
 };
