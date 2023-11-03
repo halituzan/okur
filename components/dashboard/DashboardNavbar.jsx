@@ -122,10 +122,13 @@ export default function DashboardNavbar({
                     data-dropdown-toggle="dropdown-user"
                   >
                     <span className="sr-only">Üye Menüsü</span>
-                    <p className="p-1.5 text-xl text-white ">
-                      {userInformation?.name[0].toUpperCase() +
-                        userInformation?.surname[0].toUpperCase()}
-                    </p>
+                    <div className="p-1.5 text-xl text-white ">
+                      <Image
+                        src={userInformation.avatar}
+                        width={40}
+                        height={40}
+                      />
+                    </div>
                   </button>
                 </div>
                 <div
