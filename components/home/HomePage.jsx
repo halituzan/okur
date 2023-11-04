@@ -2,9 +2,11 @@ import React, { useState } from "react";
 import Login from "../Login";
 import Link from "next/link";
 import Image from "next/image";
+import Network from "@/helpers/Network";
 
 export default function HomePage() {
   const [showPass, setShowPass] = useState(true);
+
   return (
     <div className="home-provider w-screen h-screen flex flex-col justify-center items-center">
       <section

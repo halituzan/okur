@@ -162,8 +162,6 @@ const Students = () => {
           </div>
           <div className="flex justify-end items-center px-3 ml-2 lg:col-span-3 col-span-5 w-1/3">
             <button
-              data-modal-target="addBookModal"
-              data-modal-toggle="addBookModal"
               type="button"
               className=" w-full px-3 bg-rose-500 text-white text-l mt-0 p-3 font-bold flex justify-center items-center self-end"
               onClick={() => setShowAddModal(true)}

@@ -40,14 +40,10 @@ export default function BookCase() {
     }
     try {
       const res = await PostAddBook({ name, author });
-      toast.success(res.message);
       if (res.success) {
-        console.log(res);
-
         mountData();
       }
     } catch (err) {
-      toast.error(err.response.data.Message);
       console.log(err);
     }
   };
@@ -64,8 +60,6 @@ export default function BookCase() {
     <div className="p-4 dark:border-gray-700 mt-14">
       <div className="flex justify-end items-center px-3 ml-2 lg:col-span-3 col-span-5 mb-2">
         <button
-          data-modal-target="addBookModal"
-          data-modal-toggle="addBookModal"
           type="button"
           className=" w-auto px-3 bg-rose-500 text-white text-l mt-0 py-2 font-bold mb-2 flex justify-center items-center self-end"
           onClick={() => setShowModal(true)}

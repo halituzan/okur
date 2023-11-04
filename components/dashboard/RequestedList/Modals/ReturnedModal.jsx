@@ -15,7 +15,7 @@ const ReturnedModal = ({ currentBook, setOpenBookBorrowed }) => {
           >
             {/*header*/}
             <div className="flex items-start justify-between p-5 border-b border-solid border-rose-600 rounded-t">
-              <h3 className="text-3xl font-semibold">
+              <h3 className="text-2xl font-semibold">
                 Kitabı Teslim Alıyorsunuz
               </h3>
               <button

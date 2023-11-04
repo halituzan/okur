@@ -8,7 +8,10 @@ import Image from "next/image";
 import Head from "next/head";
 import { GetMyInformation, LoginHandler } from "../helpers/users.helpers";
 import svgData from "../svgData";
+import { useDispatch } from "react-redux";
+import { userInfoReducer } from "../store/slices/userSlice";
 export default function login() {
+  const dispatch = useDispatch();
   const router = useRouter();
   const [storage, setStorage] = useState(null);
   const [showPass, setShowPass] = useState(true);
@@ -16,7 +19,6 @@ export default function login() {
     password: "",
     schoolNumber: "",
   });
-
   const { password, schoolNumber } = login;
 
   useEffect(() => {
@@ -44,8 +46,10 @@ export default function login() {
       if (!res.token) {
         return;
       }
+
       localStorage.setItem("token", res.token);
       await GetMyInformation().then((response) => {
+        dispatch(userInfoReducer(response.data));
         localStorage.setItem("myInformation", JSON.stringify(response.data));
       });
 
@@ -124,20 +128,20 @@ export default function login() {
           </p>
 
           <div className="flex items-center border-2 py-2 px-3 rounded-2xl mb-4">
-            {studentIdIcon(!login.schoolNumber)}
+            {studentIdIcon(!schoolNumber)}
 
             <input
               className="pl-2 outline-none border-none"
               type="text"
               name="schoolNumber"
               placeholder="Öğrenci Numarası"
-              value={login.schoolNumber}
+              value={schoolNumber}
               onChange={(e) => loginHandler(e)}
             />
           </div>
 
           <div className="flex items-center border-2 py-2 px-3 rounded-2xl mb-4 relative">
-            {!showPass ? lockIcon() : unLockIcon(!login.password)}
+            {!showPass ? lockIcon() : unLockIcon(!password)}
 
             <input
               className="pl-2 outline-none border-none"
@@ -145,7 +149,7 @@ export default function login() {
               name="password"
               id="password"
               placeholder="Şifrenizi Girin"
-              value={login.password}
+              value={password}
               onChange={(e) => loginHandler(e)}
             />
             <div id="show-password" onClick={() => showPassword()}>

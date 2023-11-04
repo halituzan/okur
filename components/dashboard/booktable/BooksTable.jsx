@@ -1,6 +1,10 @@
 import React from "react";
 
-export default function BooksTable({ bookList, listBookFunc, tableHead }) {
+export default function BooksTable({
+  bookList,
+  listBookFunc,
+  tableHead,
+}) {
   const myInformation = JSON.parse(localStorage.getItem("myInformation"));
   return (
     <div className="relative overflow-x-auto flex flex-col">

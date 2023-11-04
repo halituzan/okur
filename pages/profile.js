@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
 import Layout from "../components/layout/Layout";
 /* Icons */
-import { AiOutlineHome, AiOutlineInbox } from "react-icons/ai";
+import { AiOutlineHome, AiOutlineInbox, AiOutlineSelect } from "react-icons/ai";
 import { GiBookshelf, GiBookPile } from "react-icons/gi";
 import {
   BsFillPersonLinesFill,
   BsJournalBookmarkFill,
   BsFillPeopleFill,
+  BsUpload,
 } from "react-icons/bs";
 
 /* Components */
@@ -23,7 +24,14 @@ import {
   GetMyInformation,
 } from "../helpers/users.helpers";
 import { ToastContainer, toast } from "react-toastify";
+import Image from "next/image";
+import { Modal } from "@mantine/core";
+import { useDisclosure } from "@mantine/hooks";
+import { avatarList } from "../public/avatars/1x";
+import { useDispatch } from "react-redux";
+import { userInfoReducer } from "../store/slices/userSlice";
 const Profile = () => {
+  const dispatch = useDispatch();
   const [notifications, setNotifications] = useState([
     {
       userId: "1",
@@ -125,8 +133,10 @@ const Profile = () => {
       userType: 0,
     },
   ]);
+  const [opened, { open, close }] = useDisclosure(false);
 
   const [openEdit, setOpenEdit] = useState(false);
+  const [avatar, setAvatar] = useState(null);
   const [editValue, setEditValue] = useState({
     name: "",
     surname: "",
@@ -142,7 +152,7 @@ const Profile = () => {
   const myInfoHandler = async () => {
     try {
       const res = await GetMyInformation();
-      console.log(res);
+      dispatch(userInfoReducer(res.data));
       setMyInfo(res.data);
     } catch (error) {}
   };
@@ -178,8 +188,11 @@ const Profile = () => {
 
   const editUser = async () => {
     try {
-      await EditUser(editValue);
+      const res = await EditUser({ ...editValue, avatar });
+      console.log(res);
+
       setOpenEdit(false);
+      localStorage.setItem("user", JSON.stringify(res.data));
       await myInfoHandler();
     } catch (error) {}
   };
@@ -201,6 +214,7 @@ const Profile = () => {
           <div className="flex flex-col">
             <div className="border-b-2 border-gray-600 flex justify-between items-center py-2">
               <h2 className="text-black text-2xl py-2">Kullanıcı Bilgileri</h2>
+
               {openEdit ? (
                 <div className="flex justify-end">
                   <button
@@ -254,62 +268,88 @@ const Profile = () => {
                 </button>
               )}
             </div>
-            <div className="info mt-2 w-full lg:w-1/2">
-              <div className="my-4 flex w-full justify-start items-center">
-                <span className="w-full md:w-[200px] md:flex-0 flex-1 font-bold mr-2 after:content-[':']">
-                  Ad
-                </span>
-                {openEdit ? (
-                  <input
-                    type="text"
-                    className="block p-1 pl-3 flex-1 w-full text-sm text-gray-900 border border-gray-300  bg-gray-50 focus:ring-rose-500 focus:border-rose-500"
-                    placeholder="Ad"
-                    value={name}
-                    onChange={(e) => {
-                      setEditValue({ ...editValue, name: e.target.value });
-                    }}
-                  />
-                ) : (
-                  <span className="flex-1 w-full">{myInfo.name}</span>
+            <div className="info mt-2 w-full flex flex-col md:flex-row justify-start items-center">
+              <div className="relative">
+                <Image
+                  src={
+                    avatar
+                      ? `/avatars/3x/${avatar}.png`
+                      : myInfo?.avatar
+                      ? `/avatars/3x/${myInfo?.avatar}.png`
+                      : "/avatars/3x/1.png"
+                  }
+                  width={200}
+                  height={200}
+                  alt={`avatar ${avatar ? avatar : myInfo.avatar}`}
+                />
+                {openEdit && (
+                  <>
+                    <span
+                      className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white/80 w-20 h-20 rounded-full flex justify-center items-center text-rose-600 cursor-pointer hover:shadow-xl"
+                      onClick={open}
+                    >
+                      <AiOutlineSelect size={40} className="" />
+                    </span>
+                  </>
                 )}
               </div>
-              <div className="my-4 flex w-full justify-start items-center">
-                <span className="w-full md:w-[200px] md:flex-0 flex-1 font-bold mr-2 after:content-[':']">
-                  Soyad
-                </span>
-                {openEdit ? (
-                  <input
-                    type="text"
-                    className="block p-1 pl-3 flex-1 w-full text-sm text-gray-900 border border-gray-300  bg-gray-50 focus:ring-rose-500 focus:border-rose-500"
-                    placeholder="Soyad"
-                    value={surname}
-                    onChange={(e) => {
-                      setEditValue({ ...editValue, surname: e.target.value });
-                    }}
-                  />
-                ) : (
-                  <span className="flex-1 w-full">{myInfo.surname}</span>
-                )}
-              </div>
-              <div className="my-4 flex w-full justify-start items-center">
-                <span className="w-full md:w-[200px] md:flex-0 flex-1 font-bold mr-2 after:content-[':']">
-                  Email
-                </span>
-                <span className="flex-1 w-full">{myInfo.email}</span>
-              </div>
-              <div className="my-4 flex w-full justify-start items-center">
-                <span className="w-full md:w-[200px] md:flex-0 flex-1 font-bold mr-2 after:content-[':']">
-                  Öğrenci No
-                </span>
-                <span className="flex-1 w-full">{myInfo.schoolNumber}</span>
-              </div>
-              <div className="my-4 flex w-full justify-start items-center">
-                <span className="w-full md:w-[200px] md:flex-0 flex-1 font-bold mr-2 after:content-[':']">
-                  Kullanıcı Tipi
-                </span>
-                <span className="flex-1 w-full">
-                  {myInfo.userType === 0 ? "Öğretmen" : "Öğrenci"}
-                </span>
+              <div className="ml-5">
+                <div className="my-4 flex w-full justify-start items-center">
+                  <span className="w-full md:w-[200px] md:flex-0 flex-1 font-bold mr-2 after:content-[':']">
+                    Ad
+                  </span>
+                  {openEdit ? (
+                    <input
+                      type="text"
+                      className="block p-1 pl-3 flex-1 w-full text-sm text-gray-900 border border-gray-300  bg-gray-50 focus:ring-rose-500 focus:border-rose-500"
+                      placeholder="Ad"
+                      value={name}
+                      onChange={(e) => {
+                        setEditValue({ ...editValue, name: e.target.value });
+                      }}
+                    />
+                  ) : (
+                    <span className="flex-1 w-full">{myInfo.name}</span>
+                  )}
+                </div>
+                <div className="my-4 flex w-full justify-start items-center">
+                  <span className="w-full md:w-[200px] md:flex-0 flex-1 font-bold mr-2 after:content-[':']">
+                    Soyad
+                  </span>
+                  {openEdit ? (
+                    <input
+                      type="text"
+                      className="block p-1 pl-3 flex-1 w-full text-sm text-gray-900 border border-gray-300  bg-gray-50 focus:ring-rose-500 focus:border-rose-500"
+                      placeholder="Soyad"
+                      value={surname}
+                      onChange={(e) => {
+                        setEditValue({ ...editValue, surname: e.target.value });
+                      }}
+                    />
+                  ) : (
+                    <span className="flex-1 w-full">{myInfo.surname}</span>
+                  )}
+                </div>
+                <div className="my-4 flex w-full justify-start items-center">
+                  <span className="w-full md:w-[200px] md:flex-0 flex-1 font-bold mr-2 after:content-[':']">
+                    Email
+                  </span>
+                  <span className="flex-1 w-full">{myInfo.email}</span>
+                </div>
+                <div className="my-4 flex w-full justify-start items-center">
+                  <span className="w-full md:w-[200px] md:flex-0 flex-1 font-bold mr-2 after:content-[':']">
+                    Öğrenci No
+                  </span>
+                  <span className="flex-1 w-full">{myInfo.schoolNumber}</span>
+                </div>
+                <div className="my-4 flex w-full justify-start items-center">
+                  <span className="w-full md:w-[200px] md:flex-0 flex-1 font-bold mr-2 after:content-[':']">
+                    Kullanıcı Tipi
+                  </span>
+                  <span className="flex-1 w-full">
+                    {myInfo.userType === 0 ? "Öğretmen" : "Öğrenci"}
+                  </span>
+                </div>
               </div>
             </div>
           </div>
@@ -386,6 +426,27 @@ const Profile = () => {
           )}
         </div>
       </div>
+      {/* Avatar Modal */}
+      <Modal opened={opened} onClose={close}>
+        <div className="flex justify-center flex-wrap items-start">
+          {avatarList.map((item, index) => {
+            return (
+              <span
+                key={index}
+                className="m-2"
+                onClick={() => setAvatar((index + 1).toString())}
+              >
+                <Image
+                  src={item.default.src}
+                  width={100}
+                  height={100}
+                  alt={`avatar ${index + 1}`}
+                />
+              </span>
+            );
+          })}
+        </div>
+      </Modal>
       <ToastContainer position="bottom-right" />
     </div>
   );

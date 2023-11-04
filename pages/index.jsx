@@ -6,6 +6,8 @@ import { useRouter } from "next/router";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
+import store from "../store";
+import { Provider } from "react-redux";
 export default function Home() {
   const router = useRouter();
   const [stroage, setStroage] = useState(null);
@@ -18,7 +20,7 @@ export default function Home() {
     if (stroage !== null) {
       router.push(`/dashboard`);
       toast.success("Yönlendiriliyorsunuz.");
-    } else{
+    } else {
       router.push(`/login`);
     }
   };
@@ -31,7 +33,9 @@ export default function Home() {
       <Head>
         <title>Anasayfa - booky.com.tr</title>
       </Head>
+
       <HomePage />
+
       <ToastContainer position="bottom-right" />
     </>
   );

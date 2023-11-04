@@ -44,6 +44,12 @@ const GetBookRequests = async () => {
     return res;
   } catch (error) {}
 };
+const GetBooksIRead = async () => {
+  try {
+    const res = await Network.get("api/Book/GetBooksIRead");
+    return res;
+  } catch (error) {}
+};
 ////// ! Post Sevices //////
 
 ////// ? Post Sevices //////
@@ -68,7 +74,6 @@ const RequestBook = async (id) => {
       await GetAvailableBooks();
     }
   } catch (error) {
-    toast.error(error.response.data.Message);
     console.log(error);
   }
 };
@@ -78,7 +83,7 @@ const AcceptBookRequest = async (id) => {
   return res;
 };
 const DeclineBookRequest = async (id) => {
-  const res = await Network.post(`api/Book/AcceptBookRequest?bookId=${id}`);
+  const res = await Network.post(`api/Book/DeclineBookRequest?bookId=${id}`);
   toast.success(res.message);
   return res;
 };
@@ -133,4 +138,5 @@ export {
   DeclineBookRequest,
   BookBorrowed,
   BookReturned,
+  GetBooksIRead,
 };

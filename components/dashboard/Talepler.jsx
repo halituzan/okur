@@ -2,21 +2,25 @@ import React, { useEffect, useState } from "react";
 import {
   GetAvailableBooks,
   GetBookRequests,
+  GetBooksIRead,
 } from "../../helpers/books.helpers";
 import BooksTable from "./booktable/BooksTable";
 import RequestBookTable from "./RequestedList/RequestBookTable";
 
 const Talepler = () => {
   const [requestsBookList, setRequestsBookList] = useState([]);
+  const [booksIRead, setBooksIRead] = useState([]);
   const [activeTab, setActiveTab] = useState(1); // 1 ise Talep Ettiklerim, 2 ise Talep edilenler, 3 ise okunanlar
   const myInformation = JSON.parse(localStorage.getItem("myInformation"));
   const requestsBooksHandler = async () => {
-    await GetBookRequests()
-      .then((res) => {
-        setRequestsBookList(res.data);
-      })
-      .catch((err) => console.log(err));
+    try {
+      const response = await GetBookRequests();
+      setRequestsBookList(response.data);
+      const res = await GetBooksIRead();
+      setBooksIRead(res.data);
+    } catch (error) {}
   };
+
   /* Hooks */
   useEffect(() => {
     requestsBooksHandler();
@@ -83,9 +87,7 @@ const Talepler = () => {
               { id: 2, name: "Yazar" },
               { id: 3, name: null },
             ]}
-            bookList={requestsBookList.filter((item) => {
-              return item.reqStatus === 5;
-            })}
+            bookList={booksIRead}
             listBookFunc={() => {}}
           />
         )}

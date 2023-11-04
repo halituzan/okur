@@ -35,7 +35,7 @@ const Modal = ({
             >
               {/*header*/}
               <div className="flex items-start justify-between p-5 border-b border-solid border-rose-600 rounded-t">
-                <h3 className="text-3xl font-semibold">{title}</h3>
+                <h3 className="text-2xl font-semibold">{title}</h3>
                 <button
                   className="p-1 ml-auto border-0 text-black float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
                   onClick={() => {

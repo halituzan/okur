@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import "flowbite";
+import { useSelector } from "react-redux";
 export default function DashboardNavbar({
   buttonList,
   setButtonList,
@@ -10,9 +11,10 @@ export default function DashboardNavbar({
   teacherButtonList,
   setTeacherButtonList,
 }) {
+  const userInformation = useSelector((state) => state.users.userInformation);
   const [showSettings, setShowSettings] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
-  const [userInformation, setUserInformation] = useState(null);
+
   const router = useRouter();
   const dropdown = useRef();
   const sidebar = useRef();
@@ -42,9 +44,6 @@ export default function DashboardNavbar({
     );
     setShowMenu(true);
   };
-  useEffect(() => {
-    setUserInformation(JSON.parse(localStorage.getItem("myInformation")));
-  }, []);
 
   const handleClickOutside = (event) => {
     if (dropdown.current && !dropdown.current.contains(event.target)) {
@@ -69,8 +68,6 @@ export default function DashboardNavbar({
           <div className="flex items-center justify-between">
             <div className="flex items-center justify-start">
               <button
-                data-drawer-target="logo-sidebar"
-                data-drawer-toggle="logo-sidebar"
                 aria-controls="logo-sidebar"
                 type="button"
                 className="inline-flex items-center p-2 text-sm text-gray-500 rounded-lg md:hidden hover:bg-rose-500 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
@@ -94,7 +91,7 @@ export default function DashboardNavbar({
                 </svg>
               </button>
               <Link href="/" className="flex ml-2 md:mr-24">
-                <span className="self-center text-xl font-semibold sm:text-2xl whitespace-nowrap dark:text-white">
+                <span className="self-center text-2xl font-semibold sm:text-2xl whitespace-nowrap dark:text-white">
                   <Image
                     src="/images/logo.svg"
                     alt="logo"
@@ -117,18 +114,20 @@ export default function DashboardNavbar({
                 <div>
                   <button
                     type="button"
-                    className="flex text-sm bg-gray-800 rounded-full focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600"
+                    className="rounded-full"
                     aria-expanded="false"
-                    data-dropdown-toggle="dropdown-user"
                   >
-                    <span className="sr-only">Üye Menüsü</span>
-                    <div className="p-1.5 text-xl text-white ">
-                      <Image
-                        src={userInformation.avatar}
-                        width={40}
-                        height={40}
-                      />
-                    </div>
+                    <Image
+                      src={
+                        userInformation?.avatar
+                          ? `/avatars/2x/${userInformation?.avatar}.png`
+                          : `/avatars/2x/1.png`
+                      }
+                      width={40}
+                      height={40}
+                      alt="user Info"
+                      className="rounded-full border-r-2 border-r-slate-600"
+                    />
                   </button>
                 </div>
                 <div

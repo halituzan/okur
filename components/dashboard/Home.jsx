@@ -3,20 +3,27 @@ import "flowbite";
 import {
   GetAvailableBooks,
   GetBookRequests,
+  GetBooksIRead,
 } from "../../helpers/books.helpers";
 import Modal from "../Modal";
-import Countdown from "../countdown/Countdown";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  bookListReducer,
+  myBookListReducer,
+} from "../../store/slices/bookSlice";
 export default function Home() {
+  const dispatch = useDispatch();
+  const bookList = useSelector((state) => state.books.bookList);
+  const myBookList = useSelector((state) => state.books.myBookList);
+
   const [showRequestModal, setShowRequestModal] = useState(false);
-  const [bookList, setBookList] = useState([]);
-  const [myBookList, setMyBookList] = useState([]);
 
   const mountData = async () => {
     await GetAvailableBooks().then((res) => {
-      setBookList(res.data.resultList);
+      dispatch(bookListReducer(res.data.resultList));
     });
-    await GetBookRequests().then((res) => {
-      setMyBookList(res.data.filter((i) => i.reqStatus === 5).splice(0, 5));
+    await GetBooksIRead().then((res) => {
+      dispatch(myBookListReducer(res.data));
     });
   };
 
@@ -37,7 +44,7 @@ export default function Home() {
         </div>
         <div className="flex flex-col divide-y items-start py-2 col-span-2 justify-start h-48 w-full rounded bg-gray-50 relative">
           <p className="text-md my-1 font-bold self-center text-gray-400 absolute top-[-20px] bg-gray-50 px-5 rounded-tl-lg rounded-tr-md">
-            Okuduğu son 5 kitap
+            Okuduğun Kitaplar
           </p>
           {myBookList.reverse().map((item, index) => {
             return (
