@@ -6,12 +6,13 @@ import {
 } from "../../helpers/books.helpers";
 import BooksTable from "./booktable/BooksTable";
 import RequestBookTable from "./RequestedList/RequestBookTable";
+import { useSelector } from "react-redux";
 
 const Talepler = () => {
   const [requestsBookList, setRequestsBookList] = useState([]);
   const [booksIRead, setBooksIRead] = useState([]);
   const [activeTab, setActiveTab] = useState(1); // 1 ise Talep Ettiklerim, 2 ise Talep edilenler, 3 ise okunanlar
-  const myInformation = JSON.parse(localStorage.getItem("myInformation"));
+  const myInformation = useSelector((state) => state.users.userInformation);
   const requestsBooksHandler = async () => {
     try {
       const response = await GetBookRequests();
@@ -63,7 +64,7 @@ const Talepler = () => {
             ]}
             bookList={requestsBookList.filter((item) => {
               return (
-                item.ownerId !== myInformation.userId && item.reqStatus !== 5
+                item.ownerId !== myInformation?.userId && item.reqStatus !== 5
               );
             })}
             listBookFunc={() => {}}
@@ -76,7 +77,7 @@ const Talepler = () => {
               { id: 3, name: null },
             ]}
             bookList={requestsBookList.filter((item) => {
-              return item.ownerId === myInformation.userId;
+              return item.ownerId === myInformation?.userId;
             })}
             listBookFunc={() => {}}
           />

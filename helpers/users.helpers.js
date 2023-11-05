@@ -56,8 +56,6 @@ const EditUser = async (body) => {
 
 const ChangePassword = async (body) => {
   const res = await Network.put("/api/User/ChangePassword", body);
-  console.log(res);
-
   if (res.status) {
     toast.success(res.message);
   } else {

@@ -158,7 +158,7 @@ const Profile = () => {
   };
   const changePasswordHandler = async () => {
     if (!oldPassword || !newPassword || !newPasswordAgain) {
-      console.log("first1");
+
 
       toast.error("Lütfen tüm alanları doldurunuz.");
       return;
@@ -166,7 +166,7 @@ const Profile = () => {
       toast.error("Yeni parolalar uyuşmuyor");
       return;
     }
-    console.log("first");
+
 
     try {
       await ChangePassword(editPassword);
@@ -189,8 +189,7 @@ const Profile = () => {
   const editUser = async () => {
     try {
       const res = await EditUser({ ...editValue, avatar });
-      console.log(res);
-
+ 
       setOpenEdit(false);
       localStorage.setItem("user", JSON.stringify(res.data));
       await myInfoHandler();

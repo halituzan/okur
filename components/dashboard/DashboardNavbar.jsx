@@ -1,20 +1,21 @@
 import React, { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import "flowbite";
-import { useSelector } from "react-redux";
-export default function DashboardNavbar({
-  buttonList,
-  setButtonList,
-  notifications,
-  teacherButtonList,
-  setTeacherButtonList,
-}) {
+import { useDispatch, useSelector } from "react-redux";
+import { userInfoReducer } from "../../store/slices/userSlice";
+import { GetMyInformation } from "../../helpers/users.helpers";
+export default function DashboardNavbar({ children }) {
+  const { buttonList, teacherButtonList, notifications } = useSelector(
+    (state) => state.defaults
+  );
+  const pathname = usePathname();
+
   const userInformation = useSelector((state) => state.users.userInformation);
   const [showSettings, setShowSettings] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
-
+  const dispatch = useDispatch();
   const router = useRouter();
   const dropdown = useRef();
   const sidebar = useRef();
@@ -25,24 +26,10 @@ export default function DashboardNavbar({
     }
   };
 
-  const menuHandler = (l, type) => {
-    let newButtonList = [...buttonList];
-    let newTeacherButtonList = [...teacherButtonList];
-    setButtonList(
-      newButtonList.map((i) =>
-        i.name === l.name
-          ? { ...i, isClicked: true }
-          : { ...i, isClicked: false }
-      )
-    );
-    setTeacherButtonList(
-      newTeacherButtonList.map((i) =>
-        i.name === l.name
-          ? { ...i, isClicked: true }
-          : { ...i, isClicked: false }
-      )
-    );
-    setShowMenu(true);
+  const userInfoHandler = async () => {
+    await GetMyInformation().then((response) => {
+      dispatch(userInfoReducer(response.data));
+    });
   };
 
   const handleClickOutside = (event) => {
@@ -54,15 +41,15 @@ export default function DashboardNavbar({
     }
   };
   useEffect(() => {
+    userInfoHandler();
     document.addEventListener("mousedown", handleClickOutside);
-
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
 
   return (
-    <>
+    <div>
       <nav className="fixed top-0 z-50 w-full bg-rose-500 border-b border-gray-200 dark:bg-gray-800 dark:border-gray-700 ">
         <div className="px-3 py-3 lg:px-5 lg:pl-3">
           <div className="flex items-center justify-between">
@@ -200,15 +187,12 @@ export default function DashboardNavbar({
               return l.badge && notifications.length > 0 ? (
                 <li className="aside-buttons" key={index}>
                   <Link
-                    href="/dashboard"
+                    href={l.navigate}
                     className={
-                      l.isClicked
+                      l.navigate === pathname
                         ? "flex items-center p-2 text-white bg-rose-500 rounded-lg dark:text-white hover:bg-rose-500 dark:hover:bg-gray-700"
                         : "flex items-center p-2 text-gray-900 rounded-lg hover:text-white dark:text-white hover:bg-rose-500 dark:hover:bg-gray-700"
                     }
-                    onClick={(e) => {
-                      menuHandler(l, "all");
-                    }}
                   >
                     <span>{l.icon}</span>
 
@@ -227,15 +211,12 @@ export default function DashboardNavbar({
               ) : (
                 <li className="aside-buttons" key={l.name}>
                   <Link
-                    href="/dashboard"
+                    href={l.navigate}
                     className={
-                      l.isClicked
+                      l.navigate === pathname
                         ? "flex items-center p-2 bg-rose-500 text-white rounded-lg dark:text-white hover:bg-rose-500 hover:text-white dark:hover:bg-gray-700"
                         : "flex items-center p-2 text-gray-900 rounded-lg hover:text-white dark:text-white hover:bg-rose-500 dark:hover:bg-gray-700"
                     }
-                    onClick={() => {
-                      menuHandler(l, "all");
-                    }}
                   >
                     {l.icon}
                     <span className="ml-3">{l.title}</span>
@@ -251,15 +232,12 @@ export default function DashboardNavbar({
                 return (
                   <li className="aside-buttons my-2" key={l.name}>
                     <Link
-                      href="/dashboard"
+                      href={l.navigate}
                       className={
-                        l.isClicked
+                        l.navigate === pathname
                           ? "flex items-center p-2 bg-rose-500 text-white rounded-lg dark:text-white hover:bg-rose-500 hover:text-white dark:hover:bg-gray-700"
                           : "flex items-center p-2 text-gray-900 rounded-lg hover:text-white dark:text-white hover:bg-rose-500 dark:hover:bg-gray-700"
                       }
-                      onClick={(e) => {
-                        menuHandler(l, "teacher");
-                      }}
                     >
                       {l.icon}
                       <span className="ml-3">{l.title}</span>
@@ -271,6 +249,11 @@ export default function DashboardNavbar({
           )}
         </div>
       </aside>
-    </>
+      <main className="p-4 sm:ml-64 h-screen">
+        <div className="border-gray-200 border-dashed rounded-lg mt-14">
+          {children}
+        </div>
+      </main>
+    </div>
   );
 }

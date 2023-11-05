@@ -6,15 +6,15 @@ import AcceptModal from "./Modals/AcceptModal";
 import DeclineModal from "./Modals/DeclineModal";
 import BorrowedModal from "./Modals/BorrowedModal";
 import ReturnedModal from "./Modals/ReturnedModal";
+import { useSelector } from "react-redux";
 const { informationIcon } = svgData;
 export default function BooksTable({ bookList, listBookFunc, tableHead }) {
-  const myInformation = JSON.parse(localStorage.getItem("myInformation"));
+  const myInformation = useSelector((state) => state.users.userInformation);
   const [openAccept, setOpenAccept] = useState(false);
   const [openDecline, setOpenDecline] = useState(false);
   const [openBookBorrowed, setOpenBookBorrowed] = useState(false);
   const [openBookReturned, setOpenBookReturned] = useState(false);
   const [currentBook, setCurrentBook] = useState({});
-
 
   return (
     <div className="relative overflow-x-auto flex flex-col">
@@ -49,7 +49,7 @@ export default function BooksTable({ bookList, listBookFunc, tableHead }) {
 
                   <td className="px-2">{author}</td>
                   <td className="px-2 flex justify-end items-center pr-0">
-                    {reqStatus === 1 && ownerId !== myInformation.userId ? (
+                    {reqStatus === 1 && ownerId !== myInformation?.userId ? (
                       <button
                         type="button"
                         className="px-3 bg-transparant text-rose-600 text-l mt-4 py-2  font-bold mb-2 flex justify-center items-center "
@@ -58,7 +58,7 @@ export default function BooksTable({ bookList, listBookFunc, tableHead }) {
                         Talep Onayı Bekleniyor.{" "}
                         <span className="ml-2">{informationIcon()}</span>
                       </button>
-                    ) : reqStatus === 1 && ownerId === myInformation.userId ? (
+                    ) : reqStatus === 1 && ownerId === myInformation?.userId ? (
                       <div className="flex items-center">
                         <button
                           type="button"
@@ -83,7 +83,7 @@ export default function BooksTable({ bookList, listBookFunc, tableHead }) {
                           Kabul Et
                         </button>
                       </div>
-                    ) : reqStatus === 3 && ownerId === myInformation.userId ? (
+                    ) : reqStatus === 3 && ownerId === myInformation?.userId ? (
                       <button
                         type="button"
                         className="px-3 bg-transparant text-rose-600 text-l mt-4 py-2  font-bold mb-2 flex justify-center items-center "
@@ -92,7 +92,7 @@ export default function BooksTable({ bookList, listBookFunc, tableHead }) {
                         Lütfen Kitabı Teslim Edin.{" "}
                         <span className="ml-2">{informationIcon()}</span>
                       </button>
-                    ) : reqStatus === 3 && ownerId !== myInformation.userId ? (
+                    ) : reqStatus === 3 && ownerId !== myInformation?.userId ? (
                       <button
                         type="button"
                         className="px-3 bg-rose-600 text-white text-l mt-4 py-2  font-bold mb-2 flex justify-center items-center "
@@ -103,7 +103,7 @@ export default function BooksTable({ bookList, listBookFunc, tableHead }) {
                       >
                         Teslim Aldım
                       </button>
-                    ) : reqStatus === 4 && ownerId === myInformation.userId ? (
+                    ) : reqStatus === 4 && ownerId === myInformation?.userId ? (
                       <button
                         type="button"
                         className="px-3 bg-rose-600 text-white text-l mt-4 py-2  font-bold mb-2 flex justify-center items-center "
@@ -114,7 +114,7 @@ export default function BooksTable({ bookList, listBookFunc, tableHead }) {
                       >
                         Teslim Aldım
                       </button>
-                    ) : reqStatus === 4 && ownerId !== myInformation.userId ? (
+                    ) : reqStatus === 4 && ownerId !== myInformation?.userId ? (
                       <button
                         type="button"
                         className="px-3 cursor-default bg-rose-600 text-white text-l mt-4 py-2  font-bold mb-2 flex justify-center items-center "

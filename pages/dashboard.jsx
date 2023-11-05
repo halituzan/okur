@@ -6,7 +6,11 @@ import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
 
 /* Icons */
-import { AiOutlineHome, AiOutlineInbox, AiOutlinePullRequest } from "react-icons/ai";
+import {
+  AiOutlineHome,
+  AiOutlineInbox,
+  AiOutlinePullRequest,
+} from "react-icons/ai";
 import { GiBookshelf, GiBookPile } from "react-icons/gi";
 import {
   BsFillPersonLinesFill,
@@ -14,13 +18,10 @@ import {
   BsFillPeopleFill,
 } from "react-icons/bs";
 
-
 /* Components */
 import Home from "../components/dashboard/Home";
-import Notification from "../components/dashboard/Notification";
 import BookCase from "../components/dashboard/BookCase";
 import Books from "../components/dashboard/Books";
-import DashboardNavbar from "../components/dashboard/DashboardNavbar";
 import Redirection from "../components/Redirection";
 import ApprovelUser from "../components/dashboard/ApprovelUser/ApprovelUser";
 import ApprovelBooks from "../components/dashboard/ApprovelBooks/ApprovelBooks";
@@ -168,23 +169,11 @@ export default function Dashboard() {
       <Head>
         <title>Kullanıcı Sayfası - booky.com.tr</title>
       </Head>
-      <Layout
-        teacherButtonList={teacherButtonList}
-        setTeacherButtonList={setTeacherButtonList}
-        setButtonList={setButtonList}
-        buttonList={buttonList}
-      />
+      <Layout>
+        <Home />
+      </Layout>
 
-      <div className="p-4 sm:ml-64 h-screen">
-        {buttonList.map(
-          (i) => i.isClicked && <div key={i.name}>{i.component}</div>
-        )}
-        {teacherButtonList.map(
-          (i) => i.isClicked && <div key={i.name}>{i.component}</div>
-        )}
-      </div>
       <ToastContainer position="bottom-right" />
     </>
   );
 }
-
