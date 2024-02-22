@@ -54,10 +54,10 @@ const Users = () => {
   const allUsers = async () => {
     await GetAllUsers()
       .then((res) => {
-        serUserList(res.data.resultList);
+        serUserList(res.resultList);
         setPagination({
           ...pagination,
-          totalPage: Math.ceil(res?.data?.totalCount / pagination.perPage),
+          totalPage: Math.ceil(res?.totalCount / pagination.perPage),
         });
       })
       .catch((err) => console.log(err));
@@ -69,10 +69,10 @@ const Users = () => {
       pagination.perPage
     )
       .then((res) => {
-        serUserList(res.data.resultList);
+        serUserList(res.resultList);
         setPagination({
           ...pagination,
-          totalPage: Math.ceil(res?.data?.totalCount / pagination.perPage),
+          totalPage: Math.ceil(res?.totalCount / pagination.perPage),
         });
       })
       .catch((err) => console.log(err));
@@ -80,10 +80,10 @@ const Users = () => {
   const allUsersSearchHandler = async (search) => {
     await GetAllUsers(search, 0, pagination.perPage)
       .then((res) => {
-        serUserList(res.data.resultList);
+        serUserList(res.resultList);
         setPagination({
           ...pagination,
-          totalPage: Math.ceil(res?.data?.totalCount / pagination.perPage),
+          totalPage: Math.ceil(res?.totalCount / pagination.perPage),
         });
       })
       .catch((err) => console.log(err));

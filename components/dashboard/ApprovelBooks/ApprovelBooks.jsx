@@ -44,10 +44,10 @@ const ApprovelBooks = () => {
   const approvalBooksHandler = async () => {
     await GetBooksWaitingForApproval()
       .then((res) => {
-        setBookList(res.data.resultList);
+        setBookList(res.resultList);
         setPagination({
           ...pagination,
-          totalPage: Math.ceil(res?.data?.totalCount / pagination.perPage),
+          totalPage: Math.ceil(res?.totalCount / pagination.perPage),
         });
       })
       .catch((err) => console.log(err));
@@ -59,10 +59,10 @@ const ApprovelBooks = () => {
       pagination.perPage
     )
       .then((res) => {
-        setBookList(res.data.resultList);
+        setBookList(res.resultList);
         setPagination({
           ...pagination,
-          totalPage: Math.ceil(res?.data?.totalCount / pagination.perPage),
+          totalPage: Math.ceil(res?.totalCount / pagination.perPage),
         });
       })
       .catch((err) => console.log(err));
@@ -70,10 +70,10 @@ const ApprovelBooks = () => {
   const approvalBooksSearchHandler = async (search) => {
     await GetBooksWaitingForApproval(search, 0, pagination.perPage)
       .then((res) => {
-        setBookList(res.data.resultList);
+        setBookList(res.resultList);
         setPagination({
           ...pagination,
-          totalPage: Math.ceil(res?.data?.totalCount / pagination.perPage),
+          totalPage: Math.ceil(res?.totalCount / pagination.perPage),
         });
       })
       .catch((err) => console.log(err));

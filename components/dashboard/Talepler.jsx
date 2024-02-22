@@ -16,7 +16,7 @@ const Talepler = () => {
   const requestsBooksHandler = async () => {
     try {
       const response = await GetBookRequests();
-      setRequestsBookList(response.data);
+      setRequestsBookList(response);
       const res = await GetBooksIRead();
       setBooksIRead(res.data);
     } catch (error) {}

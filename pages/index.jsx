@@ -35,8 +35,6 @@ export default function Home() {
       </Head>
 
       <HomePage />
-
-      <ToastContainer position="bottom-right" />
     </>
   );
 }

@@ -11,17 +11,20 @@ export default function BooksTable({ bookList, tableHead }) {
   const requestBook = async (id) => {
     try {
       const res = await RequestBook(id);
-      console.log(res);
-    } catch (error) {}
+
+      setShowRequestModal(false);
+    } catch (error) {
+      setShowRequestModal(false);
+    }
   };
   return (
-    <div className="relative overflow-x-auto flex flex-col">
-      <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-        <thead className=" text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+    <div className='relative overflow-x-auto flex flex-col'>
+      <table className='w-full text-sm text-left text-gray-500 dark:text-gray-400'>
+        <thead className=' text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400'>
           <tr>
             {tableHead.map((i) => {
               return (
-                <th scope="col" className="px-2 py-3" key={i.id}>
+                <th scope='col' className='px-2 py-3' key={i.id}>
                   {i.name}
                 </th>
               );
@@ -31,23 +34,23 @@ export default function BooksTable({ bookList, tableHead }) {
         <tbody>
           {bookList?.map((book, index) => (
             <tr
-              className="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
+              className='bg-white border-b dark:bg-gray-800 dark:border-gray-700'
               key={book.id}
             >
               <th
-                scope="row"
-                className="px-2 font-medium text-gray-900  dark:text-white"
+                scope='row'
+                className='px-2 font-medium text-gray-900  dark:text-white'
               >
                 {book.name}
               </th>
 
-              <td className="px-2">{book.author}</td>
-              <td className="px-2 flex justify-end items-center pr-0">
+              <td className='px-2'>{book.author}</td>
+              <td className='px-2 flex justify-end items-center pr-0'>
                 {book.lastRequestStatus === "Available" &&
                 book.ownerId !== myInformation?.userId ? (
                   <button
-                    type="button"
-                    className="px-3 bg-rose-500 text-white text-l mt-4 py-2  font-bold mb-2 flex justify-center items-center "
+                    type='button'
+                    className='px-3 bg-rose-500 text-white text-l mt-4 py-2  font-bold mb-2 flex justify-center items-center '
                     onClick={() => {
                       setShowRequestModal(true);
                       setCurrentItem(book);
@@ -58,8 +61,8 @@ export default function BooksTable({ bookList, tableHead }) {
                   </button>
                 ) : (
                   <button
-                    type="button"
-                    className="px-3  bg-gray-500 text-white text-l mt-4 py-2  font-bold mb-2  justify-center items-center "
+                    type='button'
+                    className='px-3  bg-gray-500 text-white text-l mt-4 py-2  font-bold mb-2  justify-center items-center '
                     disabled={true}
                     style={{ visibility: "hidden" }}
                   >

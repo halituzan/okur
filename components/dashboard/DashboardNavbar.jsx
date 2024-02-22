@@ -13,8 +13,11 @@ export default function DashboardNavbar({ children }) {
   const pathname = usePathname();
 
   const userInformation = useSelector((state) => state.users.userInformation);
+
   const [showSettings, setShowSettings] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
+  const [token, setToken] = useState(null);
+  const [user, setUser] = useState(false);
   const dispatch = useDispatch();
   const router = useRouter();
   const dropdown = useRef();
@@ -28,11 +31,12 @@ export default function DashboardNavbar({ children }) {
 
   const userInfoHandler = async () => {
     if (!userInformation?.id) {
-      await GetMyInformation().then((response) => {
+      try {
+        const response = await GetMyInformation();
         console.log(response);
 
-        dispatch(userInfoReducer(response.data));
-      });
+        dispatch(userInfoReducer(response));
+      } catch (error) {}
     }
   };
 
@@ -45,12 +49,22 @@ export default function DashboardNavbar({ children }) {
     }
   };
   useEffect(() => {
-    userInfoHandler();
+    const tkn = localStorage.getItem("token");
+    const usr = JSON.parse(localStorage.getItem("myInformation"));
+
+    setToken(tkn);
+    setUser(usr);
     document.addEventListener("mousedown", handleClickOutside);
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
+
+  useEffect(() => {
+    if (token && user.userId) {
+      userInfoHandler();
+    }
+  }, [token, user]);
 
   return (
     <div>

@@ -10,39 +10,37 @@ const GetAvailableBooks = async (
   try {
     if (!type) {
       const res = await Network.get(
-        `api/Book/GetAvailableBooks${
-          search !== null ? `?Search=${search}` : "?"
+        `api/Book/GetAvailableBooks${search !== null ? `?Search=${search}` : "?"
         }&Pagination.PageNumber=${page}&Pagination.PageSize=${size}`
       );
       return res.data;
     } else {
       const res = await Network.get(
-        `api/Book/GetAvailableBooks${
-          search !== null ? `?Search=${search}&` : "?"
+        `api/Book/GetAvailableBooks${search !== null ? `?Search=${search}&` : "?"
         }Pagination.PageNumber=${page}&Pagination.PageSize=${size}&isAvailable=true`
       );
       return res.data;
     }
   } catch (error) {
-    toast.error(error.response.data.Message);
+    console.log(error);
   }
 };
 const GetMyBooks = async () => {
   try {
     const res = await Network.get("api/Book/GetMyBooks");
-    toast.success(res.data.message);
+
     return res.data;
   } catch (error) {
-    toast.error(error.response.data.Message);
+    console.log(error);
   }
 };
 const GetBookWithId = async (id) => {
   try {
     const res = await Network.get(`api/Book/${id}`);
-    toast.success(res.data.message);
+
     return res.data;
   } catch (error) {
-    toast.error(error.response.data.Message);
+    console.log(error);
   }
 };
 const GetBooksWaitingForApproval = async (
@@ -52,32 +50,30 @@ const GetBooksWaitingForApproval = async (
 ) => {
   try {
     const res = await Network.get(
-      `/api/Book/GetBooksWaitingForApproval${
-        search !== null ? `?Search=${search}&` : "?"
+      `/api/Book/GetBooksWaitingForApproval${search !== null ? `?Search=${search}&` : "?"
       }Pagination.PageNumber=${page}&Pagination.PageSize=${size}`
     );
-    toast.success(res.data.message);
     return res.data;
   } catch (error) {
-    toast.error(error.response.data.Message);
+    console.log(error);
   }
 };
 const GetBookRequests = async () => {
   try {
     const res = await Network.get("api/Book/GetBookRequests");
-    toast.success(res.data.message);
+
     return res.data;
   } catch (error) {
-    toast.error(error.response.data.Message);
+    console.log(error);
   }
 };
 const GetBooksIRead = async () => {
   try {
     const res = await Network.get("api/Book/GetBooksIRead");
-    toast.success(res.data.message);
+
     return res.data;
   } catch (error) {
-    toast.error(error.response.data.Message);
+    console.log(error);
   }
 };
 ////// ! Post Sevices //////
@@ -94,10 +90,10 @@ const GetBooksIRead = async () => {
 const PostAddBook = async (body) => {
   try {
     const res = await Network.post("api/Book", body);
-    toast.success(res.data.message);
+    toast.success(res.message);
     return res.data;
   } catch (error) {
-    toast.error(error.response.data.Message);
+    console.log(error);
   }
 };
 const RequestBook = async (id) => {
@@ -108,7 +104,8 @@ const RequestBook = async (id) => {
     toast.success(res.message);
     await GetAvailableBooks();
   } catch (error) {
-    toast.success(error.response?.data.Message);
+    console.log(error);
+
   }
 };
 const AcceptBookRequest = async (id) => {
@@ -117,7 +114,7 @@ const AcceptBookRequest = async (id) => {
     toast.success(res.data.message);
     return res.data;
   } catch (error) {
-    toast.success(error.response.data.Message);
+    console.log(error);
   }
 };
 const DeclineBookRequest = async (id) => {
@@ -126,7 +123,7 @@ const DeclineBookRequest = async (id) => {
     toast.success(res.data.message);
     return res.data;
   } catch (error) {
-    toast.success(error.response.data.Message);
+    console.log(error);
   }
 };
 const BookBorrowed = async (id) => {
@@ -135,7 +132,7 @@ const BookBorrowed = async (id) => {
     toast.success(res.data.message);
     return res.data;
   } catch (error) {
-    toast.success(error.response.data.Message);
+    console.log(error);
   }
 };
 const BookReturned = async (id) => {
@@ -144,7 +141,7 @@ const BookReturned = async (id) => {
     toast.success(res.data.message);
     return res.data;
   } catch (error) {
-    toast.success(error.response.data.Message);
+    console.log(error);
   }
 };
 
@@ -158,7 +155,7 @@ const ApproveBook = async (body) => {
     toast.success(res.data.message);
     return res.data;
   } catch (error) {
-    toast.success(error.response.data.Message);
+    console.log(error);
   }
 };
 const DeclineBook = async (body) => {
@@ -167,7 +164,7 @@ const DeclineBook = async (body) => {
     toast.success(res.data.message);
     return res.data;
   } catch (error) {
-    toast.success(error.response.data.Message);
+    console.log(error);
   }
 };
 
@@ -177,7 +174,7 @@ const UpdateBook = async (body) => {
     toast.success(res.data.message);
     return res.data;
   } catch (error) {
-    toast.success(error.response.data.Message);
+    console.log(error);
   }
 };
 
@@ -190,7 +187,7 @@ const deleteBook = async (id) => {
     toast.success(res.data.message);
     return res.data;
   } catch (error) {
-    toast.success(error.response.data.Message);
+    console.log(error);
   }
 };
 ////// ? Delete Sevices //////

@@ -1,3 +1,4 @@
+import { ToastContainer, toast } from 'react-toastify';
 const network = class NETWORK {
   constructor(axios) {
     this.network = axios.create({
@@ -18,6 +19,12 @@ const network = class NETWORK {
         localStorage.removeItem("token");
         localStorage.removeItem("myInformation");
         location.href = "/login";
+      }
+
+      if (error.response?.status === 500) {
+        console.log(error.response.data.Message);
+        
+        toast.error(error.response.data.Message)
       }
 
       return Promise.reject(error);
