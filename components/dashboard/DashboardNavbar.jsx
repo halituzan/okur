@@ -33,10 +33,11 @@ export default function DashboardNavbar({ children }) {
     if (!userInformation?.id) {
       try {
         const response = await GetMyInformation();
-        console.log(response);
 
         dispatch(userInfoReducer(response));
-      } catch (error) {}
+      } catch (error) {
+        console.log(error);
+      }
     }
   };
 
