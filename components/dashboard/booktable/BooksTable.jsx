@@ -1,9 +1,19 @@
-import React from "react";
+import React, { useState } from "react";
 import { useSelector } from "react-redux";
+import Modals from "../Modals/Modals";
+import { RequestBook } from "../../../helpers/books.helpers";
 
-export default function BooksTable({ bookList, listBookFunc, tableHead }) {
+export default function BooksTable({ bookList, tableHead }) {
   const myInformation = useSelector((state) => state.users.userInformation);
 
+  const [showRequestModal, setShowRequestModal] = useState(false);
+  const [currentItem, setCurrentItem] = useState({});
+  const requestBook = async (id) => {
+    try {
+      const res = await RequestBook(id);
+      console.log(res);
+    } catch (error) {}
+  };
   return (
     <div className="relative overflow-x-auto flex flex-col">
       <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
@@ -38,7 +48,11 @@ export default function BooksTable({ bookList, listBookFunc, tableHead }) {
                   <button
                     type="button"
                     className="px-3 bg-rose-500 text-white text-l mt-4 py-2  font-bold mb-2 flex justify-center items-center "
-                    onClick={() => listBookFunc(book.id)}
+                    onClick={() => {
+                      setShowRequestModal(true);
+                      setCurrentItem(book);
+                      // listBookFunc(book.id);
+                    }}
                   >
                     Talep Et
                   </button>
@@ -57,6 +71,15 @@ export default function BooksTable({ bookList, listBookFunc, tableHead }) {
           ))}
         </tbody>
       </table>
+      {showRequestModal && (
+        <Modals
+          icon={"/modal/success.svg"}
+          title={currentItem.name}
+          description={"kitabını talep etmek istediğinize emin misiniz?"}
+          close={() => setShowRequestModal(false)}
+          request={() => requestBook(currentItem.id)}
+        />
+      )}
     </div>
   );
 }

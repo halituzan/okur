@@ -20,10 +20,10 @@ export default function Home() {
 
   const mountData = async () => {
     await GetAvailableBooks().then((res) => {
-      dispatch(bookListReducer(res.data.resultList));
+      dispatch(bookListReducer(res.resultList));
     });
     await GetBooksIRead().then((res) => {
-      dispatch(myBookListReducer(res.data));
+      dispatch(myBookListReducer(res));
     });
   };
 

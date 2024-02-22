@@ -18,9 +18,6 @@ const network = class NETWORK {
         localStorage.removeItem("token");
         localStorage.removeItem("myInformation");
         location.href = "/login";
-        toast.error(error.response?.data.Message);
-      } else {
-        toast.error(error.response?.data.Message);
       }
 
       return Promise.reject(error);
@@ -28,41 +25,28 @@ const network = class NETWORK {
   }
 
   get = async (path) => {
-    try {
-      const res = await this.network.get(path);
-      toast.success(res.message);
-      return res.data;
-    } catch (error) {}
+    const res = await this.network.get(path);
+    return res.data;
   };
 
   post = async (path, body) => {
-    try {
-      const res = await this.network.post(path, body);
-      toast.success(res.message);
-      return res.data;
-    } catch (error) {}
+    const res = await this.network.post(path, body);
+    return res.data;
   };
 
   put = async (path, body) => {
-    try {
-      const res = await this.network.put(path, body);
-      toast.success(res.message);
-      return res.data;
-    } catch (error) {}
+    const res = await this.network.put(path, body);
+    return res.data;
   };
   delete = async (path, body) => {
-    try {
-      const res = await this.network({
-        method: "DELETE",
-        data: body,
-        url: path,
-      });
-      toast.success(res.message);
-      return res.data;
-    } catch (error) {}
+    const res = await this.network({
+      method: "DELETE",
+      data: body,
+      url: path,
+    });
+    return res.data;
   };
 };
 
 import axios from "axios";
-import { toast } from "react-toastify";
 export default new network(axios);

@@ -42,21 +42,22 @@ export default function login() {
   const loginSender = async () => {
     try {
       const res = await LoginHandler(login);
-      toast.success("Giriş Başarılı");
+      console.log(res);
+
       if (!res.token) {
         return;
       }
 
       localStorage.setItem("token", res.token);
-      await GetMyInformation().then((response) => {
-        dispatch(userInfoReducer(response.data));
-        localStorage.setItem("myInformation", JSON.stringify(response.data));
-      });
 
+      await GetMyInformation().then((response) => {
+        dispatch(userInfoReducer(response));
+        localStorage.setItem("myInformation", JSON.stringify(response));
+      });
+      toast.success("Giriş başarılı, yönlendiriliyorsunuz!");
       router.push("/dashboard");
     } catch (error) {
-      console.log(error);
-      toast.error(`Girilen bilgiler doğru değil, lütfen tekrar deneyin.`);
+      toast.error(error.response?.data.Message);
     }
   };
 

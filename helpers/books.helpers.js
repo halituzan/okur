@@ -7,48 +7,78 @@ const GetAvailableBooks = async (
   size = 10,
   type = false
 ) => {
-  if (!type) {
-    return await Network.get(
-      `api/Book/GetAvailableBooks${
-        search !== null ? `?Search=${search}` : "?"
-      }&Pagination.PageNumber=${page}&Pagination.PageSize=${size}`
-    );
-  } else {
-    return await Network.get(
-      `api/Book/GetAvailableBooks${
-        search !== null ? `?Search=${search}&` : "?"
-      }Pagination.PageNumber=${page}&Pagination.PageSize=${size}&isAvailable=true`
-    );
+  try {
+    if (!type) {
+      const res = await Network.get(
+        `api/Book/GetAvailableBooks${
+          search !== null ? `?Search=${search}` : "?"
+        }&Pagination.PageNumber=${page}&Pagination.PageSize=${size}`
+      );
+      return res.data;
+    } else {
+      const res = await Network.get(
+        `api/Book/GetAvailableBooks${
+          search !== null ? `?Search=${search}&` : "?"
+        }Pagination.PageNumber=${page}&Pagination.PageSize=${size}&isAvailable=true`
+      );
+      return res.data;
+    }
+  } catch (error) {
+    toast.error(error.response.data.Message);
   }
 };
 const GetMyBooks = async () => {
-  return await Network.get("api/Book/GetMyBooks");
+  try {
+    const res = await Network.get("api/Book/GetMyBooks");
+    toast.success(res.data.message);
+    return res.data;
+  } catch (error) {
+    toast.error(error.response.data.Message);
+  }
 };
 const GetBookWithId = async (id) => {
-  return await Network.get(`api/Book/${id}`);
+  try {
+    const res = await Network.get(`api/Book/${id}`);
+    toast.success(res.data.message);
+    return res.data;
+  } catch (error) {
+    toast.error(error.response.data.Message);
+  }
 };
 const GetBooksWaitingForApproval = async (
   search = null,
   page = 0,
   size = 10
 ) => {
-  return await Network.get(
-    `/api/Book/GetBooksWaitingForApproval${
-      search !== null ? `?Search=${search}&` : "?"
-    }Pagination.PageNumber=${page}&Pagination.PageSize=${size}`
-  );
+  try {
+    const res = await Network.get(
+      `/api/Book/GetBooksWaitingForApproval${
+        search !== null ? `?Search=${search}&` : "?"
+      }Pagination.PageNumber=${page}&Pagination.PageSize=${size}`
+    );
+    toast.success(res.data.message);
+    return res.data;
+  } catch (error) {
+    toast.error(error.response.data.Message);
+  }
 };
 const GetBookRequests = async () => {
   try {
     const res = await Network.get("api/Book/GetBookRequests");
-    return res;
-  } catch (error) {}
+    toast.success(res.data.message);
+    return res.data;
+  } catch (error) {
+    toast.error(error.response.data.Message);
+  }
 };
 const GetBooksIRead = async () => {
   try {
     const res = await Network.get("api/Book/GetBooksIRead");
-    return res;
-  } catch (error) {}
+    toast.success(res.data.message);
+    return res.data;
+  } catch (error) {
+    toast.error(error.response.data.Message);
+  }
 };
 ////// ! Post Sevices //////
 
@@ -62,40 +92,60 @@ const GetBooksIRead = async () => {
 //   });
 // };
 const PostAddBook = async (body) => {
-  const res = await Network.post("api/Book", body);
-  toast.success(res.message);
-  return res;
+  try {
+    const res = await Network.post("api/Book", body);
+    toast.success(res.data.message);
+    return res.data;
+  } catch (error) {
+    toast.error(error.response.data.Message);
+  }
 };
 const RequestBook = async (id) => {
   try {
     const res = await Network.post(`api/Book/RequestBook?bookId=${id}`);
-    if (res.success) {
-      toast.success(res.message);
-      await GetAvailableBooks();
-    }
+    console.log(res);
+
+    toast.success(res.message);
+    await GetAvailableBooks();
   } catch (error) {
-    console.log(error);
+    toast.success(error.response?.data.Message);
   }
 };
 const AcceptBookRequest = async (id) => {
-  const res = await Network.post(`api/Book/AcceptBookRequest?bookId=${id}`);
-  toast.success(res.message);
-  return res;
+  try {
+    const res = await Network.post(`api/Book/AcceptBookRequest?bookId=${id}`);
+    toast.success(res.data.message);
+    return res.data;
+  } catch (error) {
+    toast.success(error.response.data.Message);
+  }
 };
 const DeclineBookRequest = async (id) => {
-  const res = await Network.post(`api/Book/DeclineBookRequest?bookId=${id}`);
-  toast.success(res.message);
-  return res;
+  try {
+    const res = await Network.post(`api/Book/DeclineBookRequest?bookId=${id}`);
+    toast.success(res.data.message);
+    return res.data;
+  } catch (error) {
+    toast.success(error.response.data.Message);
+  }
 };
 const BookBorrowed = async (id) => {
-  const res = await Network.post(`/api/Book/BookBorrowed?bookId=${id}`);
-  toast.success(res.message);
-  return res;
+  try {
+    const res = await Network.post(`/api/Book/BookBorrowed?bookId=${id}`);
+    toast.success(res.data.message);
+    return res.data;
+  } catch (error) {
+    toast.success(error.response.data.Message);
+  }
 };
 const BookReturned = async (id) => {
-  const res = await Network.post(`/api/Book/BookReturned?bookId=${id}`);
-  toast.success(res.message);
-  return res;
+  try {
+    const res = await Network.post(`/api/Book/BookReturned?bookId=${id}`);
+    toast.success(res.data.message);
+    return res.data;
+  } catch (error) {
+    toast.success(error.response.data.Message);
+  }
 };
 
 ////// ? Post Sevices //////
@@ -103,21 +153,45 @@ const BookReturned = async (id) => {
 ////// TODO Put Sevices //////
 
 const ApproveBook = async (body) => {
-  return await Network.put("api/Book/ApproveBook", body);
+  try {
+    const res = await Network.put("api/Book/ApproveBook", body);
+    toast.success(res.data.message);
+    return res.data;
+  } catch (error) {
+    toast.success(error.response.data.Message);
+  }
 };
 const DeclineBook = async (body) => {
-  return await Network.put("api/Book/ApproveBook", body);
+  try {
+    const res = await Network.put("api/Book/ApproveBook", body);
+    toast.success(res.data.message);
+    return res.data;
+  } catch (error) {
+    toast.success(error.response.data.Message);
+  }
 };
 
 const UpdateBook = async (body) => {
-  return await Network.put("api/Book/UpdateBook", body);
+  try {
+    const res = await Network.put("api/Book/UpdateBook", body);
+    toast.success(res.data.message);
+    return res.data;
+  } catch (error) {
+    toast.success(error.response.data.Message);
+  }
 };
 
 ////// TODO Put Sevices //////
 
 ////// ? Delete Sevices //////
 const deleteBook = async (id) => {
-  return await Network.delete(`api/book/${id}`);
+  try {
+    const res = await Network.delete(`api/book/${id}`);
+    toast.success(res.data.message);
+    return res.data;
+  } catch (error) {
+    toast.success(error.response.data.Message);
+  }
 };
 ////// ? Delete Sevices //////
 

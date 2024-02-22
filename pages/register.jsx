@@ -67,7 +67,7 @@ export default function Register() {
           })
             .then((res) => {
               if (res.success) {
-                toast.success(res.message);
+                toast.success(res.data.message);
               }
 
               setInterval(() => {
