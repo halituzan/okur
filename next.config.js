@@ -11,13 +11,14 @@ const nextConfig = {
       },
     ],
   },
+  "output": "export",
   async rewrites() {
     return [
       {
         source: "/v1/:path*",
         destination: "https://localhost:7052/:path*",
       },
-    
+
     ];
   },
 };
