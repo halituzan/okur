@@ -24,8 +24,6 @@ const Books = () => {
     { id: 3, name: null },
   ]);
 
-  /* Functions */
-
   const availableBooksHandler = async (type = false) => {
     await GetAvailableBooks(null, 0, 10, type && type)
       .then((res) => {
@@ -72,7 +70,6 @@ const Books = () => {
     }
   };
 
-  /* Hooks */
   useEffect(() => {
     availableBooksHandler();
   }, []);
