@@ -99,7 +99,6 @@ const PostAddBook = async (body) => {
 const RequestBook = async (id) => {
   try {
     const res = await Network.post(`api/Book/RequestBook?bookId=${id}`);
-    console.log(res);
 
     toast.success(res.message);
     await GetAvailableBooks();

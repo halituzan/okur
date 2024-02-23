@@ -22,8 +22,6 @@ const network = class NETWORK {
       }
 
       if (error.response?.status === 500) {
-        console.log(error.response.data.Message);
-        
         toast.error(error.response.data.Message)
       }
 

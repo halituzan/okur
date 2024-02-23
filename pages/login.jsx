@@ -42,8 +42,6 @@ export default function login() {
   const loginSender = async () => {
     try {
       const res = await LoginHandler(login);
-      console.log(res);
-
       if (!res.token) {
         return;
       }

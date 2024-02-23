@@ -25,7 +25,6 @@ export default function BookCase() {
   const mountData = async () => {
     await GetMyBooks()
       .then((res) => {
-        console.log(res);
 
         setUserBookList(res);
       })

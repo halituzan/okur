@@ -2,6 +2,7 @@
 const nextConfig = {
   reactStrictMode: true,
   images: {
+    unoptimized: true,
     remotePatterns: [
       {
         protocol: "https",
@@ -17,7 +18,7 @@ const nextConfig = {
         source: "/v1/:path*",
         destination: "https://localhost:7052/:path*",
       },
-    
+
     ];
   },
 };

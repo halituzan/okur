@@ -4,8 +4,6 @@ import Network from "./Network";
 const LoginHandler = async (body) => {
   try {
     const res = await Network.post("api/User/login", body);
-    console.log(res);
-    
     toast.success(res.message);
     return res;
   } catch (error) {
@@ -100,7 +98,6 @@ const GetAllUsers = async (search = null, page = 0, size = 10) => {
 const EditUser = async (body) => {
   const res = await Network.put("/api/User/EditUser", body);
   toast.success(res.data.message);
-  console.log(res);
   return res.data;
 };
 

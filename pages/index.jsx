@@ -1,14 +1,11 @@
-import HomePage from "../components/home/HomePage";
 import Head from "next/head";
-import Redirection from "../components/Redirection";
-import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
-import { ToastContainer, toast } from "react-toastify";
+import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import 'sweetalert2/src/sweetalert2.scss'
+import 'sweetalert2/dist/sweetalert2.min.css';
+import HomePage from "../components/home/HomePage";
 
-import store from "../store";
-import { Provider } from "react-redux";
 export default function Home() {
   const router = useRouter();
   const [stroage, setStroage] = useState(null);

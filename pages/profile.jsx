@@ -144,8 +144,6 @@ const Profile = () => {
   });
   const { name, surname } = editValue;
   const [myInfo, setMyInfo] = useState({});
-  console.log(myInfo);
-
   const [editPassword, setEditPassword] = useState({
     oldPassword: "",
     newPassword: "",
@@ -156,8 +154,6 @@ const Profile = () => {
     try {
       const res = await GetMyInformation();
       dispatch(userInfoReducer(res));
-      console.log(res);
-
       setMyInfo(res);
     } catch (error) {}
   };
@@ -269,7 +265,10 @@ const Profile = () => {
               )}
             </div>
             <div className='info mt-2 w-full flex flex-col md:flex-row justify-start items-center'>
-              <div className='relative'  onMouseLeave={() => setShowButton(false)}>
+              <div
+                className='relative'
+                onMouseLeave={() => setShowButton(false)}
+              >
                 <Image
                   src={
                     avatar
