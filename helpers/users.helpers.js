@@ -9,7 +9,7 @@ const LoginHandler = async (body) => {
     toast.success(res.message);
     return res;
   } catch (error) {
-    toast.error(error.response?.data.Message);
+    
   }
 };
 const RegisterHandler = async (body) => {
@@ -18,7 +18,7 @@ const RegisterHandler = async (body) => {
     toast.success(res.data.message);
     return res.data;
   } catch (error) {
-    toast.error(error.response.data.Message);
+   
   }
 };
 ////// ! Auth Sevices //////
@@ -29,7 +29,7 @@ const GetMyInformation = async () => {
     const res = await Network.get("/api/User/GetMyInformation");
     return res.data;
   } catch (error) {
-    toast.error(error.response.data.Message);
+   
   }
 };
 ////// ! User Info Sevices //////

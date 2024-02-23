@@ -8,7 +8,7 @@ const Layout = ({ children }) => {
     <DashboardNavbar>
       {children}
 
-      <ToastContainer position='bottom-right' />
+      <ToastContainer position='top-right' />
     </DashboardNavbar>
   );
 };

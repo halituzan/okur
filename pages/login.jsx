@@ -56,9 +56,7 @@ export default function login() {
       });
       toast.success("Giriş başarılı, yönlendiriliyorsunuz!");
       router.push("/dashboard");
-    } catch (error) {
-      toast.error(error.response?.data.Message);
-    }
+    } catch (error) {}
   };
 
   const showPassword = () => {
@@ -66,123 +64,143 @@ export default function login() {
   };
   const { studentIdIcon, lockIcon, unLockIcon } = svgData;
   return (
-    <div className="h-screen md:flex">
+    <div className='h-screen md:flex'>
       <Head>
         <title>Booky Üye Giriş Sayfası - booky.com.tr</title>
       </Head>
 
-      <div className="home-provider relative overflow-hidden md:flex w-1/2  from-rose-500 to-purple-700 i justify-around items-center hidden book-auth">
-        <div className="w-1/2">
-          <div className="flex justify-center">
+      <div className='home-provider relative overflow-hidden md:flex w-1/2  from-rose-500 to-purple-700 i justify-around items-center hidden book-auth'>
+        <div className='w-1/2'>
+          <div className='flex justify-center'>
             <Image
-              src="/images/logo.svg"
-              alt="logo"
+              src='/images/logo.svg'
+              alt='logo'
               width={200}
               height={170}
-              placeholder="blur"
+              placeholder='blur'
               blurDataURL={"/images/logo.svg"}
             />
-            <h1 className="text-white font-bold text-4xl ml-2 font-sans"></h1>
+            <h1 className='text-white font-bold text-4xl ml-2 font-sans'></h1>
           </div>
 
           {/* <button type="submit" className="block w-28 bg-white text-indigo-800 mt-4 py-2 rounded-2xl font-bold mb-2">Anasayfa</button> */}
-          <p className="text-white mb-2">
+          <p className='text-white mb-2'>
             Eğlenceli ve ilgi çekici kitap maceramıza hoş geldin. Şimdi giriş
             yap ve kitaplarla dolu bu büyülü dünyaya geri dön.
           </p>
-          <p className="text-white">
+          <p className='text-white'>
             Arkadaşlarınla bağlantı kur, yeni kitaplar keşfet ve kendi
             hikayelerini oluştur. Hadi, okuma tutkusunu yeniden canlandıralım!
           </p>
         </div>
-        <div className="absolute -bottom-32 -left-40 w-80 h-80 border-4 rounded-full border-opacity-30 border-t-8" />
-        <div className="absolute -bottom-40 -left-20 w-80 h-80 border-4 rounded-full border-opacity-30 border-t-8" />
-        <div className="absolute -top-40 -right-0 w-80 h-80 border-4 rounded-full border-opacity-30 border-t-8" />
-        <div className="absolute -top-20 -right-20 w-80 h-80 border-4 rounded-full border-opacity-30 border-t-8" />
+        <div className='absolute -bottom-32 -left-40 w-80 h-80 border-4 rounded-full border-opacity-30 border-t-8' />
+        <div className='absolute -bottom-40 -left-20 w-80 h-80 border-4 rounded-full border-opacity-30 border-t-8' />
+        <div className='absolute -top-40 -right-0 w-80 h-80 border-4 rounded-full border-opacity-30 border-t-8' />
+        <div className='absolute -top-20 -right-20 w-80 h-80 border-4 rounded-full border-opacity-30 border-t-8' />
       </div>
-      <div className="flex flex-col md:w-1/2 justify-center py-10 items-center bg-white">
-        <div className="worm">
-          {showPass ? (
-            <Image
-              src="/images/worm.svg"
-              alt="Worm"
-              width={300}
-              height={300}
-              placeholder="blur"
-              blurDataURL={"/images/worm.svg"}
-            />
-          ) : (
-            <Image
-              src={"/images/worm1.svg"}
-              alt="Worm"
-              width={300}
-              height={300}
-              placeholder="blur"
-              blurDataURL={"/images/worm1.svg"}
-            />
-          )}
-        </div>
-        <form className="bg-white">
-          <h1 className="text-gray-800 font-bold text-2xl mb-1">Giriş Yap!</h1>
-          <p className="text-sm font-normal text-gray-600 mb-7">
+      <div className='flex flex-col md:w-1/2 justify-center py-10 items-center bg-slate-200 h-screen sm:h-auto sm:bg-white'>
+        <form className='bg-white flex flex-col items-center p-10 rounded-md shadow-lg sm:shadow-none'>
+          <div className='worm'>
+            {showPass ? (
+              <Image
+                src='/images/worm.svg'
+                alt='Worm'
+                width={300}
+                height={300}
+                placeholder='blur'
+                blurDataURL={"/images/worm.svg"}
+              />
+            ) : (
+              <Image
+                src={"/images/worm1.svg"}
+                alt='Worm'
+                width={300}
+                height={300}
+                placeholder='blur'
+                blurDataURL={"/images/worm1.svg"}
+              />
+            )}
+          </div>
+          <h1 className='text-gray-800 font-bold text-2xl mb-1'>Giriş Yap!</h1>
+          <p className='text-sm font-normal text-gray-600 mb-7'>
             Aşağıdaki bilgileri eksiksiz doldurun.
           </p>
 
-          <div className="flex items-center border-2 py-2 px-3 rounded-2xl mb-4">
+          <div className='flex items-center border-2 py-2 px-3 rounded-2xl mb-4 w-full'>
             {studentIdIcon(!schoolNumber)}
 
             <input
-              className="pl-2 outline-none border-none"
-              type="text"
-              name="schoolNumber"
-              placeholder="Öğrenci Numarası"
+              className='pl-2 outline-none border-none w-full'
+              type='text'
+              name='schoolNumber'
+              placeholder='Öğrenci Numarası'
               value={schoolNumber}
               onChange={(e) => loginHandler(e)}
             />
           </div>
 
-          <div className="flex items-center border-2 py-2 px-3 rounded-2xl mb-4 relative">
+          <div className='flex items-center border-2 py-2 px-3 rounded-2xl mb-4 relative w-full'>
             {!showPass ? lockIcon() : unLockIcon(!password)}
 
             <input
-              className="pl-2 outline-none border-none"
+              className='pl-2 outline-none border-none w-full'
               type={showPass ? "password" : "text"}
-              name="password"
-              id="password"
-              placeholder="Şifrenizi Girin"
+              name='password'
+              id='password'
+              placeholder='Şifrenizi Girin'
               value={password}
               onChange={(e) => loginHandler(e)}
             />
-            <div id="show-password" onClick={() => showPassword()}>
+            <div id='show-password' onClick={() => showPassword()}>
               {showPass ? (
-                <AiFillEye className="h-5 w-5 text-gray-400" />
+                <AiFillEye className='h-5 w-5 text-gray-400' />
               ) : (
-                <AiFillEyeInvisible className="h-5 w-5" />
+                <AiFillEyeInvisible className='h-5 w-5' />
               )}
             </div>
           </div>
-
+          <div className='hidden sm:block flex-1 w-full'>
+            <button
+              type='button'
+              className='block w-full bg-rose-500 mt-4 py-2 rounded-2xl text-white font-semibold mb-2'
+              onClick={() => loginSender()}
+            >
+              Giriş Yap
+            </button>
+            <div className='flex content-center'>
+              {/* <span className="text-sm ml-2 hover:text-blue-500 cursor-pointer">
+              Şifremi Unuttum ?
+            </span> */}
+              <Link
+                href='/register'
+                className='w-full bg-emerald-500 py-2 rounded-2xl text-white font-semibold mb-2 flex justify-center items-center'
+              >
+                Kayıt Ol
+              </Link>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div className='fixed bottom-0 flex w-screen sm:hidden h-12'>
+        <div className='flex-1 flex '>
           <button
-            type="button"
-            className="block w-full bg-rose-500 mt-4 py-2 rounded-2xl text-white font-semibold mb-2"
+            type='button'
+            className='block w-full bg-rose-500 py-2 text-white font-semibold '
             onClick={() => loginSender()}
           >
             Giriş Yap
           </button>
-          <div className="flex content-center">
-            {/* <span className="text-sm ml-2 hover:text-blue-500 cursor-pointer">
-              Şifremi Unuttum ?
-            </span> */}
-            <Link
-              href="/register"
-              className="w-full bg-emerald-500 py-2 rounded-2xl text-white font-semibold mb-2 flex justify-center items-center"
-            >
-              Kayıt Ol
-            </Link>
-          </div>
-        </form>
+        </div>
+        <div className='flex content-center flex-1 '>
+          <Link
+            href='/register'
+            className='w-full bg-emerald-500 py-2  text-white font-semibold flex justify-center items-center'
+          >
+            Kayıt Ol
+          </Link>
+        </div>
       </div>
-      <ToastContainer position="bottom-right" />
+      <ToastContainer position='top-right' />
     </div>
   );
 }
