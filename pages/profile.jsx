@@ -136,6 +136,7 @@ const Profile = () => {
   const [opened, { open, close }] = useDisclosure(false);
 
   const [openEdit, setOpenEdit] = useState(false);
+  const [showButton, setShowButton] = useState(false);
   const [avatar, setAvatar] = useState(null);
   const [editValue, setEditValue] = useState({
     name: "",
@@ -268,7 +269,7 @@ const Profile = () => {
               )}
             </div>
             <div className='info mt-2 w-full flex flex-col md:flex-row justify-start items-center'>
-              <div className='relative'>
+              <div className='relative'  onMouseLeave={() => setShowButton(false)}>
                 <Image
                   src={
                     avatar
@@ -282,14 +283,26 @@ const Profile = () => {
                   alt={`avatar ${avatar ? avatar : myInfo?.avatar}`}
                 />
                 {openEdit && (
-                  <>
+                  <div>
                     <span
-                      className='absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white/80 w-20 h-20 rounded-full flex justify-center items-center text-rose-600 cursor-pointer hover:shadow-xl'
+                      className={`absolute bg-white h-8 transition-all flex justify-center items-center text-rose-600 cursor-pointer hover:shadow-xl bottom-1 ${
+                        showButton
+                          ? "left-0 w-[200px]"
+                          : "right-1 w-8 rounded-full rounded-br-none"
+                      }`}
                       onClick={open}
+                      onMouseEnter={() => setShowButton(true)}
                     >
-                      <AiOutlineSelect size={40} className='' />
+                      <AiOutlineSelect
+                        size={20}
+                        className=''
+                        onMouseEnter={() => setShowButton(true)}
+                      />{" "}
+                      {showButton && (
+                        <p className=' bg-white p-1'>Avatarı Değiştir</p>
+                      )}
                     </span>
-                  </>
+                  </div>
                 )}
               </div>
               <div className='ml-5'>
@@ -429,14 +442,17 @@ const Profile = () => {
         </div>
       </div>
       {/* Avatar Modal */}
-      <Modal opened={opened} onClose={close}>
+      <Modal size={"xxl"} opened={opened} onClose={close}>
         <div className='flex justify-center flex-wrap items-start'>
           {avatarList.map((item, index) => {
             return (
               <span
                 key={index}
                 className='m-2'
-                onClick={() => setAvatar((index + 1).toString())}
+                onClick={() => {
+                  setAvatar((index + 1).toString());
+                  close();
+                }}
               >
                 <Image
                   src={item.default.src}

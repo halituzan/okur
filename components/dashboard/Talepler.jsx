@@ -1,12 +1,7 @@
 import React, { useEffect, useState } from "react";
-import {
-  GetAvailableBooks,
-  GetBookRequests,
-  GetBooksIRead,
-} from "../../helpers/books.helpers";
-import BooksTable from "./booktable/BooksTable";
-import RequestBookTable from "./RequestedList/RequestBookTable";
 import { useSelector } from "react-redux";
+import { GetBookRequests, GetBooksIRead } from "../../helpers/books.helpers";
+import RequestBookTable from "./RequestedList/RequestBookTable";
 
 const Talepler = () => {
   const [requestsBookList, setRequestsBookList] = useState([]);
@@ -18,7 +13,7 @@ const Talepler = () => {
       const response = await GetBookRequests();
       setRequestsBookList(response);
       const res = await GetBooksIRead();
-      setBooksIRead(res.data);
+      setBooksIRead(res);
     } catch (error) {}
   };
 
@@ -27,8 +22,8 @@ const Talepler = () => {
     requestsBooksHandler();
   }, []);
   return (
-    <div className="p-4 dark:border-gray-700 mt-14">
-      <div className="flex mb-2">
+    <div className='p-4 dark:border-gray-700 mt-14'>
+      <div className='flex mb-2'>
         <button
           className={`p-1 border-b-2  ${
             activeTab === 1 ? "border-pink-600" : "border-transparent"
@@ -54,9 +49,10 @@ const Talepler = () => {
           Okunan Kitaplar
         </button>
       </div>
-      <div className="book-list">
+      <div className='book-list'>
         {requestsBookList && activeTab === 2 ? (
           <RequestBookTable
+            mount={requestsBooksHandler}
             tableHead={[
               { id: 1, name: "Kitap Adı" },
               { id: 2, name: "Yazar" },
@@ -71,6 +67,7 @@ const Talepler = () => {
           />
         ) : requestsBookList && activeTab === 1 ? (
           <RequestBookTable
+            mount={requestsBooksHandler}
             tableHead={[
               { id: 1, name: "Kitap Adı" },
               { id: 2, name: "Yazar" },
@@ -83,6 +80,7 @@ const Talepler = () => {
           />
         ) : (
           <RequestBookTable
+            mount={requestsBooksHandler}
             tableHead={[
               { id: 1, name: "Kitap Adı" },
               { id: 2, name: "Yazar" },

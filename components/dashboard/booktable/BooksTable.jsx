@@ -2,20 +2,31 @@ import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import Modals from "../Modals/Modals";
 import { RequestBook } from "../../../helpers/books.helpers";
+import Swal from "sweetalert2";
 
-export default function BooksTable({ bookList, tableHead }) {
+export default function BooksTable({ bookList, tableHead, mount }) {
   const myInformation = useSelector((state) => state.users.userInformation);
 
   const [showRequestModal, setShowRequestModal] = useState(false);
   const [currentItem, setCurrentItem] = useState({});
-  const requestBook = async (id) => {
-    try {
-      const res = await RequestBook(id);
-
-      setShowRequestModal(false);
-    } catch (error) {
-      setShowRequestModal(false);
-    }
+  const requestBook = async (book) => {
+    Swal.fire({
+      title: `${book.name}`,
+      text: "Bu kitabı talep etmek üzeresiniz. Emin misiniz?",
+      showDenyButton: true,
+      icon: "warning",
+      confirmButtonText: "Evet",
+      denyButtonText: "Hayır",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        await RequestBook(book.id);
+        await Swal.fire("Talep Oluşturuldu!", "", "success");
+        await mount();
+        setShowRequestModal(false);
+      } else if (result.isDenied) {
+        setShowRequestModal(false);
+      }
+    });
   };
   return (
     <div className='relative overflow-x-auto flex flex-col'>
@@ -52,9 +63,8 @@ export default function BooksTable({ bookList, tableHead }) {
                     type='button'
                     className='px-3 bg-rose-500 text-white text-l mt-4 py-2  font-bold mb-2 flex justify-center items-center '
                     onClick={() => {
-                      setShowRequestModal(true);
+                      requestBook(book);
                       setCurrentItem(book);
-                      // listBookFunc(book.id);
                     }}
                   >
                     Talep Et

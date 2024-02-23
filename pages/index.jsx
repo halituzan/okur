@@ -5,6 +5,7 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import 'sweetalert2/src/sweetalert2.scss'
 
 import store from "../store";
 import { Provider } from "react-redux";

@@ -177,7 +177,13 @@ const Books = () => {
       </div>
 
       <div className='book-list px-4'>
-        {bookList && <BooksTable tableHead={tableHead} bookList={bookList} />}
+        {bookList && (
+          <BooksTable
+            tableHead={tableHead}
+            bookList={bookList}
+            mount={availableBooksHandler}
+          />
+        )}
       </div>
     </div>
   );

@@ -33,7 +33,7 @@ export default function Home() {
 
   return (
     <div className="p-4 border-gray-200 border-dashed rounded-lg mt-14">
-      <div className="grid grid-cols-4 gap-4 mb-4 ">
+      <div className="grid grid-cols-4 gap-4 my-4 ">
         <div className="flex flex-col col-span-1 items-center justify-center text-center h-48 rounded bg-gray-50">
           <span className="mb-2">Kitabın Teslim Tarihi</span>
           <p className="text-2xl text-black  ">{/* <Countdown /> */}</p>

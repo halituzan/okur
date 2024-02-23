@@ -1,29 +1,22 @@
-import React, { useState } from "react";
+import { NativeSelect, Pagination } from "@mantine/core";
+import React, { useEffect, useState } from "react";
+import { AiOutlineExclamationCircle } from "react-icons/ai";
+import { IoIosArrowDown } from "react-icons/io";
+import Swal from "sweetalert2";
 import {
   ActivateStudent,
   DeActivateStudent,
   GetUsersWaitingForApproval,
 } from "../../../helpers/users.helpers";
-import { useEffect } from "react";
-import { useDisclosure } from "@mantine/hooks";
-import { Modal, NativeSelect, Pagination } from "@mantine/core";
-import { IoIosArrowDown } from "react-icons/io";
-import { AiOutlineExclamationCircle } from "react-icons/ai";
 import svgData from "../../../svgData";
 const { searchIcon } = svgData;
 const ApprovelUser = () => {
   const [search, setSearch] = useState("");
-  const [currentUser, setCurrentUser] = useState({
-    user: null,
-    type: "",
-  });
-  const [opened, { close, open }] = useDisclosure(false);
   const [pagination, setPagination] = useState({
     totalPage: 0,
     currentPage: 0,
     perPage: 10,
   });
-
   const [userList, setUserList] = useState([]);
   const [tableHead, setTableHead] = useState([
     { id: 1, name: "Öğrenci Adı" },
@@ -83,21 +76,45 @@ const ApprovelUser = () => {
 
   const approveUser = async (student, type) => {
     if (type === "approve") {
-      await ActivateStudent({ studentId: student.userId }).then(async () => {
-        await approvalUserHandler().then(async () => {
-          approvalUsersPaginationHandler();
-          setPagination({ ...pagination, currentPage: 0 });
-        });
-        close();
+      Swal.fire({
+        title: "Onaylamak İstediğinize Emin Misiniz?",
+        showDenyButton: true,
+        icon: "warning",
+        confirmButtonText: "Evet",
+        denyButtonText: "Hayır",
+      }).then(async (result) => {
+        if (result.isConfirmed) {
+          await ActivateStudent({ studentId: student.userId }).then(
+            async () => {
+              await approvalUserHandler().then(async () => {
+                approvalUsersPaginationHandler();
+                setPagination({ ...pagination, currentPage: 0 });
+              });
+            }
+          );
+          await Swal.fire("Öğrenci Onaylandı!", "", "success");
+        }
       });
     }
     if (type === "decline") {
-      await DeActivateStudent({ studentId: student.userId }).then(async () => {
-        await approvalUserHandler().then(async () => {
-          approvalUsersPaginationHandler();
-          setPagination({ ...pagination, currentPage: 0 });
-        });
-        close();
+      Swal.fire({
+        title: "Reddetmek İstediğinize Emin Misiniz?",
+        showDenyButton: true,
+        icon: "warning",
+        confirmButtonText: "Evet",
+        denyButtonText: "Hayır",
+      }).then(async (result) => {
+        if (result.isConfirmed) {
+          await DeActivateStudent({ studentId: student.userId }).then(
+            async () => {
+              await approvalUserHandler().then(async () => {
+                approvalUsersPaginationHandler();
+                setPagination({ ...pagination, currentPage: 0 });
+              });
+            }
+          );
+          await Swal.fire("Öğrenci Reddedildi!", "", "success");
+        }
       });
     }
   };
@@ -214,12 +231,7 @@ const ApprovelUser = () => {
                         type='button'
                         className='px-3 bg-gray-500 text-white text-l mt-4 py-2  font-bold mb-2 flex justify-center items-center mr-2'
                         onClick={() => {
-                          open();
-                          setCurrentUser({
-                            ...currentUser,
-                            user: user,
-                            type: "decline",
-                          });
+                          approveUser(user, "decline");
                         }}
                       >
                         Reddet
@@ -228,12 +240,7 @@ const ApprovelUser = () => {
                         type='button'
                         className='px-3 bg-rose-500 text-white text-l mt-4 py-2  font-bold mb-2 flex justify-center items-center '
                         onClick={() => {
-                          open();
-                          setCurrentUser({
-                            ...currentUser,
-                            user: user,
-                            type: "approve",
-                          });
+                          approveUser(user, "approve");
                         }}
                       >
                         Onayla
@@ -253,34 +260,6 @@ const ApprovelUser = () => {
           </div>
         )}
       </div>
-
-      {currentUser.user && (
-        <Modal opened={opened} onClose={close} title='Kitap Onayı'>
-          <div className='text-center'>
-            <span className='font-bold'>
-              {" "}
-              {currentUser?.user?.name + " " + currentUser?.user?.surname}
-            </span>{" "}
-            {currentUser?.type === "approve"
-              ? "adlı öğrenciyi onaylamak istediğinize emin misiniz?"
-              : "adlı öğrenciyi reddetmek istediğinize emin misiniz?"}
-          </div>
-          <div className='flex justify-center'>
-            <button
-              className='p-2 bg-gray-600 rounded-lg mx-2 w-20 my-2 text-white hover:bg-gray-700'
-              onClick={close}
-            >
-              Hayır
-            </button>
-            <button
-              className='p-2 bg-rose-600 rounded-lg mx-2 w-20 my-2 text-white hover:bg-rose-700'
-              onClick={() => approveUser(currentUser?.user, currentUser?.type)}
-            >
-              Evet
-            </button>
-          </div>
-        </Modal>
-      )}
     </div>
   );
 };
