@@ -12,6 +12,7 @@ const nextConfig = {
       },
     ],
   },
+  "output": "export",
   async rewrites() {
     return [
       {
