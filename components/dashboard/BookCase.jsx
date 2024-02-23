@@ -25,9 +25,8 @@ export default function BookCase() {
   const mountData = async () => {
     await GetMyBooks()
       .then((res) => {
-        if (res.success) {
-          setUserBookList(res.data);
-        }
+
+        setUserBookList(res);
       })
       .catch((err) => console.log(err));
   };
@@ -40,9 +39,8 @@ export default function BookCase() {
     }
     try {
       const res = await PostAddBook({ name, author });
-      if (res.success) {
-        mountData();
-      }
+
+      await mountData();
     } catch (err) {
       console.log(err);
     }
@@ -57,14 +55,14 @@ export default function BookCase() {
   }, [token]);
 
   return (
-    <div className="p-4 dark:border-gray-700 mt-14">
-      <div className="flex justify-end items-center px-3 ml-2 lg:col-span-3 col-span-5 mb-2">
+    <div className='p-4 dark:border-gray-700 mt-14'>
+      <div className='flex justify-end items-center px-3 ml-2 lg:col-span-3 col-span-5 mb-2'>
         <button
-          type="button"
-          className=" w-auto px-3 bg-rose-500 text-white text-l mt-0 py-2 font-bold mb-2 flex justify-center items-center self-end"
+          type='button'
+          className=' w-auto px-3 bg-rose-500 text-white text-l mt-0 py-2 font-bold mb-2 flex justify-center items-center self-end'
           onClick={() => setShowModal(true)}
         >
-          <AiOutlineAppstoreAdd className="text-2xl mr-2" />
+          <AiOutlineAppstoreAdd className='text-2xl mr-2' />
           Kitap Ekle
         </button>
       </div>

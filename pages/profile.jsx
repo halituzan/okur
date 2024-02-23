@@ -136,6 +136,7 @@ const Profile = () => {
   const [opened, { open, close }] = useDisclosure(false);
 
   const [openEdit, setOpenEdit] = useState(false);
+  const [showButton, setShowButton] = useState(false);
   const [avatar, setAvatar] = useState(null);
   const [editValue, setEditValue] = useState({
     name: "",
@@ -152,21 +153,18 @@ const Profile = () => {
   const myInfoHandler = async () => {
     try {
       const res = await GetMyInformation();
-      dispatch(userInfoReducer(res.data));
-      setMyInfo(res.data);
+      dispatch(userInfoReducer(res));
+      setMyInfo(res);
     } catch (error) {}
   };
   const changePasswordHandler = async () => {
     if (!oldPassword || !newPassword || !newPasswordAgain) {
-      console.log("first1");
-
       toast.error("Lütfen tüm alanları doldurunuz.");
       return;
     } else if (newPassword !== newPasswordAgain) {
       toast.error("Yeni parolalar uyuşmuyor");
       return;
     }
-    console.log("first");
 
     try {
       await ChangePassword(editPassword);
@@ -189,7 +187,6 @@ const Profile = () => {
   const editUser = async () => {
     try {
       const res = await EditUser({ ...editValue, avatar });
-      console.log(res);
 
       setOpenEdit(false);
       localStorage.setItem("user", JSON.stringify(res.data));
@@ -202,21 +199,20 @@ const Profile = () => {
   }, []);
 
   return (
-    <div>
-      <Layout
-        teacherButtonList={teacherButtonList}
-        setTeacherButtonList={setTeacherButtonList}
-        setButtonList={setButtonList}
-        buttonList={buttonList}
-      />
-      <div className="p-4 sm:ml-64 h-screen">
-        <div className="p-4 border-gray-200 border-dashed rounded-lg dark:border-gray-700 mt-14 ">
-          <div className="flex flex-col">
-            <div className="border-b-2 border-gray-600 flex justify-between items-center py-2">
-              <h2 className="text-black text-2xl py-2">Kullanıcı Bilgileri</h2>
+    <Layout
+      teacherButtonList={teacherButtonList}
+      setTeacherButtonList={setTeacherButtonList}
+      setButtonList={setButtonList}
+      buttonList={buttonList}
+    >
+      <div className=''>
+        <div className='p-4 border-gray-200 border-dashed rounded-lg dark:border-gray-700'>
+          <div className='flex flex-col'>
+            <div className='border-b-2 border-gray-600 flex justify-between items-center py-2'>
+              <h2 className='text-black text-2xl py-2'>Kullanıcı Bilgileri</h2>
 
               {openEdit ? (
-                <div className="flex justify-end">
+                <div className='flex justify-end'>
                   <button
                     onClick={() => {
                       setEditValue({
@@ -230,7 +226,7 @@ const Profile = () => {
                       });
                       setOpenEdit(false);
                     }}
-                    className="flex items-center w-24 justify-center font-bold px-4 py-2 text-white border bg-gray-500/100 rounded-lg ml-2"
+                    className='flex items-center w-24 justify-center font-bold px-4 py-2 text-white border bg-gray-500/100 rounded-lg ml-2'
                   >
                     İptal
                   </button>
@@ -248,7 +244,7 @@ const Profile = () => {
                       editUser();
                     }}
                     disabled={!surname || !name}
-                    className="flex items-center w-24 justify-center font-bold px-4 py-2 text-white text-sm bg-rose-500 rounded-lg ml-2"
+                    className='flex items-center w-24 justify-center font-bold px-4 py-2 text-white text-sm bg-rose-500 rounded-lg ml-2'
                   >
                     Kaydet
                   </button>
@@ -257,19 +253,22 @@ const Profile = () => {
                 <button
                   onClick={() => {
                     setEditValue({
-                      name: myInfo.name,
-                      surname: myInfo.surname,
+                      name: myInfo?.name,
+                      surname: myInfo?.surname,
                     });
                     setOpenEdit(true);
                   }}
-                  className="flex items-center w-24 justify-center font-bold px-4 py-2 text-white text-sm bg-rose-500 rounded-lg ml-2"
+                  className='flex items-center w-24 justify-center font-bold px-4 py-2 text-white text-sm bg-rose-500 rounded-lg ml-2'
                 >
                   Düzenle
                 </button>
               )}
             </div>
-            <div className="info mt-2 w-full flex flex-col md:flex-row justify-start items-center">
-              <div className="relative">
+            <div className='info mt-2 w-full flex flex-col md:flex-row justify-start items-center'>
+              <div
+                className='relative'
+                onMouseLeave={() => setShowButton(false)}
+              >
                 <Image
                   src={
                     avatar
@@ -280,102 +279,117 @@ const Profile = () => {
                   }
                   width={200}
                   height={200}
-                  alt={`avatar ${avatar ? avatar : myInfo.avatar}`}
+                  alt={`avatar ${avatar ? avatar : myInfo?.avatar}`}
                 />
                 {openEdit && (
-                  <>
+                  <div>
                     <span
-                      className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white/80 w-20 h-20 rounded-full flex justify-center items-center text-rose-600 cursor-pointer hover:shadow-xl"
+                      className={`absolute bg-white h-8 transition-all flex justify-center items-center text-rose-600 cursor-pointer hover:shadow-xl bottom-1 ${
+                        showButton
+                          ? "left-0 w-[200px]"
+                          : "right-1 w-8 rounded-full rounded-br-none"
+                      }`}
                       onClick={open}
+                      onMouseEnter={() => setShowButton(true)}
                     >
-                      <AiOutlineSelect size={40} className="" />
+                      <AiOutlineSelect
+                        size={20}
+                        className=''
+                        onMouseEnter={() => setShowButton(true)}
+                      />{" "}
+                      {showButton && (
+                        <p className=' bg-white p-1'>Avatarı Değiştir</p>
+                      )}
                     </span>
-                  </>
+                  </div>
                 )}
               </div>
-              <div className="ml-5">
-                <div className="my-4 flex w-full justify-start items-center">
+              <div className='ml-5'>
+                <div className='my-4 flex w-full justify-start items-center'>
                   <span className="w-full md:w-[200px] md:flex-0 flex-1 font-bold mr-2 after:content-[':']">
                     Ad
                   </span>
                   {openEdit ? (
                     <input
-                      type="text"
-                      className="block p-1 pl-3 flex-1 w-full text-sm text-gray-900 border border-gray-300  bg-gray-50 focus:ring-rose-500 focus:border-rose-500"
-                      placeholder="Ad"
+                      type='text'
+                      className='block p-1 pl-3 flex-1 w-full text-sm text-gray-900 border border-gray-300  bg-gray-50 focus:ring-rose-500 focus:border-rose-500'
+                      placeholder='Ad'
                       value={name}
                       onChange={(e) => {
                         setEditValue({ ...editValue, name: e.target.value });
                       }}
                     />
                   ) : (
-                    <span className="flex-1 w-full">{myInfo.name}</span>
+                    <span className='flex-1 w-full'>{myInfo?.name}</span>
                   )}
                 </div>
-                <div className="my-4 flex w-full justify-start items-center">
+                <div className='my-4 flex w-full justify-start items-center'>
                   <span className="w-full md:w-[200px] md:flex-0 flex-1 font-bold mr-2 after:content-[':']">
                     Soyad
                   </span>
                   {openEdit ? (
                     <input
-                      type="text"
-                      className="block p-1 pl-3 flex-1 w-full text-sm text-gray-900 border border-gray-300  bg-gray-50 focus:ring-rose-500 focus:border-rose-500"
-                      placeholder="Soyad"
+                      type='text'
+                      className='block p-1 pl-3 flex-1 w-full text-sm text-gray-900 border border-gray-300  bg-gray-50 focus:ring-rose-500 focus:border-rose-500'
+                      placeholder='Soyad'
                       value={surname}
                       onChange={(e) => {
-                        setEditValue({ ...editValue, surname: e.target.value });
+                        setEditValue({
+                          ...editValue,
+                          surname: e.target.value,
+                        });
                       }}
                     />
                   ) : (
-                    <span className="flex-1 w-full">{myInfo.surname}</span>
+                    <span className='flex-1 w-full'>{myInfo?.surname}</span>
                   )}
                 </div>
-                <div className="my-4 flex w-full justify-start items-center">
+                <div className='my-4 flex w-full justify-start items-center'>
                   <span className="w-full md:w-[200px] md:flex-0 flex-1 font-bold mr-2 after:content-[':']">
                     Email
                   </span>
-                  <span className="flex-1 w-full">{myInfo.email}</span>
+                  <span className='flex-1 w-full'>{myInfo?.email}</span>
                 </div>
-                <div className="my-4 flex w-full justify-start items-center">
+                <div className='my-4 flex w-full justify-start items-center'>
                   <span className="w-full md:w-[200px] md:flex-0 flex-1 font-bold mr-2 after:content-[':']">
                     Öğrenci No
                   </span>
-                  <span className="flex-1 w-full">{myInfo.schoolNumber}</span>
+                  <span className='flex-1 w-full'>{myInfo?.schoolNumber}</span>
                 </div>
-                <div className="my-4 flex w-full justify-start items-center">
+                <div className='my-4 flex w-full justify-start items-center'>
                   <span className="w-full md:w-[200px] md:flex-0 flex-1 font-bold mr-2 after:content-[':']">
                     Kullanıcı Tipi
                   </span>
-                  <span className="flex-1 w-full">
-                    {myInfo.userType === 0 ? "Öğretmen" : "Öğrenci"}
+                  <span className='flex-1 w-full'>
+                    {myInfo?.userType === 0 ? "Öğretmen" : "Öğrenci"}
                   </span>
                 </div>
               </div>
             </div>
           </div>
           {openEdit && (
-            <div className="flex flex-col">
-              <div className="border-b-2 border-gray-600 flex justify-between items-center py-2">
-                <h2 className="text-black text-2xl py-2">Şifreyi Değiştir</h2>
+            <div className='flex flex-col'>
+              <div className='border-b-2 border-gray-600 flex justify-between items-center py-2'>
+                <h2 className='text-black text-2xl py-2'>Şifreyi Değiştir</h2>
                 <button
                   onClick={() => {
                     changePasswordHandler();
                   }}
-                  className="flex items-center w-24 justify-center font-bold px-4 py-2 text-white text-sm bg-rose-500 rounded-lg ml-2"
+                  className='flex items-center w-24 justify-center font-bold px-4 py-2 text-white text-sm bg-rose-500 rounded-lg ml-2'
                 >
                   Kaydet
                 </button>
               </div>
-              <div className="flex flex-col md:flex-row justify-between mt-4">
-                <div className="w-full md:w-1/3 flex flex-col mx-2">
-                  <label className="mb-2 font-bold" htmlFor="oldPassword">
+              <div className='flex flex-col md:flex-row justify-between mt-4'>
+                <div className='w-full md:w-1/3 flex flex-col mx-2'>
+                  <label className='mb-2 font-bold' htmlFor='oldPassword'>
                     Güncel Şifreniz
                   </label>
                   <input
-                    type="password"
-                    id="oldPassword"
-                    className="block p-1 pl-3 text-sm text-gray-900 border border-gray-300  bg-gray-50 focus:ring-rose-500 focus:border-rose-500"
-                    placeholder="***********"
+                    type='password'
+                    id='oldPassword'
+                    className='block p-1 pl-3 text-sm text-gray-900 border border-gray-300  bg-gray-50 focus:ring-rose-500 focus:border-rose-500'
+                    placeholder='***********'
                     value={editPassword.oldPassword}
                     onChange={(e) => {
                       setEditPassword({
@@ -385,15 +399,15 @@ const Profile = () => {
                     }}
                   />
                 </div>
-                <div className="w-full md:w-1/3 flex flex-col mx-2">
-                  <label className="mb-2 font-bold" htmlFor="newPassword">
+                <div className='w-full md:w-1/3 flex flex-col mx-2'>
+                  <label className='mb-2 font-bold' htmlFor='newPassword'>
                     Yeni Şifreniz
                   </label>
                   <input
-                    type="password"
-                    id="newPassword"
-                    className="block p-1 pl-3 text-sm text-gray-900 border border-gray-300  bg-gray-50 focus:ring-rose-500 focus:border-rose-500"
-                    placeholder="***********"
+                    type='password'
+                    id='newPassword'
+                    className='block p-1 pl-3 text-sm text-gray-900 border border-gray-300  bg-gray-50 focus:ring-rose-500 focus:border-rose-500'
+                    placeholder='***********'
                     value={editPassword.newPassword}
                     onChange={(e) => {
                       setEditPassword({
@@ -403,15 +417,15 @@ const Profile = () => {
                     }}
                   />
                 </div>
-                <div className="w-full md:w-1/3 flex flex-col mx-2">
-                  <label className="mb-2 font-bold" htmlFor="newPasswordAgain">
+                <div className='w-full md:w-1/3 flex flex-col mx-2'>
+                  <label className='mb-2 font-bold' htmlFor='newPasswordAgain'>
                     Yeni Şifrenizi Tekrarlayın
                   </label>
                   <input
-                    type="password"
-                    id="newPasswordAgain"
-                    className="block p-1 pl-3 text-sm text-gray-900 border border-gray-300  bg-gray-50 focus:ring-rose-500 focus:border-rose-500"
-                    placeholder="***********"
+                    type='password'
+                    id='newPasswordAgain'
+                    className='block p-1 pl-3 text-sm text-gray-900 border border-gray-300  bg-gray-50 focus:ring-rose-500 focus:border-rose-500'
+                    placeholder='***********'
                     value={editPassword.newPasswordAgain}
                     onChange={(e) => {
                       setEditPassword({
@@ -427,14 +441,17 @@ const Profile = () => {
         </div>
       </div>
       {/* Avatar Modal */}
-      <Modal opened={opened} onClose={close}>
-        <div className="flex justify-center flex-wrap items-start">
+      <Modal size={"xxl"} opened={opened} onClose={close}>
+        <div className='flex justify-center flex-wrap items-start'>
           {avatarList.map((item, index) => {
             return (
               <span
                 key={index}
-                className="m-2"
-                onClick={() => setAvatar((index + 1).toString())}
+                className='m-2'
+                onClick={() => {
+                  setAvatar((index + 1).toString());
+                  close();
+                }}
               >
                 <Image
                   src={item.default.src}
@@ -447,8 +464,7 @@ const Profile = () => {
           })}
         </div>
       </Modal>
-      <ToastContainer position="bottom-right" />
-    </div>
+    </Layout>
   );
 };
 

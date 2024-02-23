@@ -79,7 +79,7 @@ export default function BookCaseTable({
                       type="button"
                       className="px-3 mr-3 bg-rose-500 text-white text-l mt-4 py-2  font-bold mb-2 flex justify-center items-center "
                       onClick={() => {
-                        console.log("first");
+               
                         setEditModalValue({
                           ...editModalValue,
                           id: book.id,
@@ -95,7 +95,7 @@ export default function BookCaseTable({
                       type="button"
                       className=" px-3 bg-rose-500 text-white text-l mt-4 py-2  font-bold mb-2 flex justify-center items-center "
                       onClick={() => {
-                        console.log("first");
+                    
                         setCurrentBook(book);
                         setOpenDeleteModal(true);
                       }}

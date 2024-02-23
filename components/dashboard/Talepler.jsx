@@ -1,23 +1,19 @@
 import React, { useEffect, useState } from "react";
-import {
-  GetAvailableBooks,
-  GetBookRequests,
-  GetBooksIRead,
-} from "../../helpers/books.helpers";
-import BooksTable from "./booktable/BooksTable";
+import { useSelector } from "react-redux";
+import { GetBookRequests, GetBooksIRead } from "../../helpers/books.helpers";
 import RequestBookTable from "./RequestedList/RequestBookTable";
 
 const Talepler = () => {
   const [requestsBookList, setRequestsBookList] = useState([]);
   const [booksIRead, setBooksIRead] = useState([]);
   const [activeTab, setActiveTab] = useState(1); // 1 ise Talep Ettiklerim, 2 ise Talep edilenler, 3 ise okunanlar
-  const myInformation = JSON.parse(localStorage.getItem("myInformation"));
+  const myInformation = useSelector((state) => state.users.userInformation);
   const requestsBooksHandler = async () => {
     try {
       const response = await GetBookRequests();
-      setRequestsBookList(response.data);
+      setRequestsBookList(response);
       const res = await GetBooksIRead();
-      setBooksIRead(res.data);
+      setBooksIRead(res);
     } catch (error) {}
   };
 
@@ -26,8 +22,8 @@ const Talepler = () => {
     requestsBooksHandler();
   }, []);
   return (
-    <div className="p-4 dark:border-gray-700 mt-14">
-      <div className="flex mb-2">
+    <div className='p-4 dark:border-gray-700 mt-14'>
+      <div className='flex mb-2'>
         <button
           className={`p-1 border-b-2  ${
             activeTab === 1 ? "border-pink-600" : "border-transparent"
@@ -53,9 +49,10 @@ const Talepler = () => {
           Okunan Kitaplar
         </button>
       </div>
-      <div className="book-list">
+      <div className='book-list'>
         {requestsBookList && activeTab === 2 ? (
           <RequestBookTable
+            mount={requestsBooksHandler}
             tableHead={[
               { id: 1, name: "Kitap Adı" },
               { id: 2, name: "Yazar" },
@@ -63,25 +60,27 @@ const Talepler = () => {
             ]}
             bookList={requestsBookList.filter((item) => {
               return (
-                item.ownerId !== myInformation.userId && item.reqStatus !== 5
+                item.ownerId !== myInformation?.userId && item.reqStatus !== 5
               );
             })}
             listBookFunc={() => {}}
           />
         ) : requestsBookList && activeTab === 1 ? (
           <RequestBookTable
+            mount={requestsBooksHandler}
             tableHead={[
               { id: 1, name: "Kitap Adı" },
               { id: 2, name: "Yazar" },
               { id: 3, name: null },
             ]}
             bookList={requestsBookList.filter((item) => {
-              return item.ownerId === myInformation.userId;
+              return item.ownerId === myInformation?.userId;
             })}
             listBookFunc={() => {}}
           />
         ) : (
           <RequestBookTable
+            mount={requestsBooksHandler}
             tableHead={[
               { id: 1, name: "Kitap Adı" },
               { id: 2, name: "Yazar" },
