@@ -29,7 +29,7 @@ export default function Home() {
   return (
     <>
       <Head>
-        <title>Anasayfa - booky.com.tr</title>
+        <title>Anasayfa - okurapp.com</title>
       </Head>
 
       <HomePage />

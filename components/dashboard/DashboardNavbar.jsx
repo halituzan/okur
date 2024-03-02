@@ -62,7 +62,7 @@ export default function DashboardNavbar({ children }) {
   }, []);
 
   useEffect(() => {
-    if (token && user.userId) {
+    if (token && user?.userId) {
       userInfoHandler();
     }
   }, [token, user]);

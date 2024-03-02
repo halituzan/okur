@@ -64,7 +64,7 @@ export default function login() {
   return (
     <div className='h-screen md:flex'>
       <Head>
-        <title>Booky Üye Giriş Sayfası - booky.com.tr</title>
+        <title>OkurApp Üye Giriş Sayfası - okurapp.com</title>
       </Head>
 
       <div className='home-provider relative overflow-hidden md:flex w-1/2  from-rose-500 to-purple-700 i justify-around items-center hidden book-auth'>
