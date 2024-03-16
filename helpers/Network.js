@@ -2,13 +2,17 @@ import { toast } from 'react-toastify';
 const network = class NETWORK {
   constructor(axios) {
 
-    this.network = axios.create({ baseURL: process.env.NEXT_PUBLIC_BASE_URL });
+    this.network = axios.create({ baseURL: "https://api.okurapp.com/" });
 
     this.network.interceptors.request.use(async (config) => {
       const token = localStorage.getItem("token");
 
       if (token) {
         config.headers.authorization = `Bearer ${token}`;
+        // config.headers["Content-Type"] = `application/json`;
+        // config.headers["Accept"] = `application/json; charset=utf8`;
+
+
       }
       return config;
     });

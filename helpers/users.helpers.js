@@ -2,12 +2,14 @@ import { toast } from "react-toastify";
 import Network from "./Network";
 ////// ! Auth Sevices //////
 const LoginHandler = async (body) => {
+
   try {
     const res = await Network.post("api/User/login", body);
     toast.success(res.message);
     return res;
   } catch (error) {
-    
+    console.log(error);
+
   }
 };
 const RegisterHandler = async (body) => {
@@ -16,7 +18,7 @@ const RegisterHandler = async (body) => {
     toast.success(res.data.message);
     return res.data;
   } catch (error) {
-   
+
   }
 };
 ////// ! Auth Sevices //////
@@ -27,7 +29,7 @@ const GetMyInformation = async () => {
     const res = await Network.get("/api/User/GetMyInformation");
     return res.data;
   } catch (error) {
-   
+
   }
 };
 ////// ! User Info Sevices //////
@@ -40,8 +42,7 @@ const GetUsersWaitingForApproval = async (
 ) => {
   try {
     const res = await Network.get(
-      `api/User/GetUsersWaitingForApproval${
-        search !== null ? `?Search=${search}&` : "?"
+      `api/User/GetUsersWaitingForApproval${search !== null ? `?Search=${search}&` : "?"
       }Pagination.PageNumber=${page}&Pagination.PageSize=${size}`
     );
     toast.success(res.data.message);
@@ -84,8 +85,7 @@ const AddTeacherHandler = async (body) => {
 const GetAllUsers = async (search = null, page = 0, size = 10) => {
   try {
     const res = await Network.get(
-      `/api/User/GetAllUsers${
-        search !== null ? `?Search=${search}&` : "?"
+      `/api/User/GetAllUsers${search !== null ? `?Search=${search}&` : "?"
       }Pagination.PageNumber=${page}&Pagination.PageSize=${size}`
     );
     toast.success(res.data.message);

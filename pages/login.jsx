@@ -42,7 +42,7 @@ export default function login() {
   const loginSender = async () => {
     try {
       const res = await LoginHandler(login);
-      if (!res.token) {
+      if (!res?.token) {
         return;
       }
 
@@ -54,7 +54,9 @@ export default function login() {
       });
       toast.success("Giriş başarılı, yönlendiriliyorsunuz!");
       router.push("/dashboard");
-    } catch (error) {}
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const showPassword = () => {
