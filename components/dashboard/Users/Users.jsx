@@ -4,6 +4,10 @@ import { AddTeacherHandler, GetAllUsers } from "../../../helpers/users.helpers";
 
 import { IoIosArrowDown } from "react-icons/io";
 import { BsPersonAdd } from "react-icons/bs";
+import { MdOutlineEmail } from "react-icons/md";
+import { FaRegAddressCard } from "react-icons/fa";
+import { PiPasswordBold } from "react-icons/pi";
+
 import { PiChalkboardTeacherDuotone } from "react-icons/pi";
 import Modal from "../../Modal";
 import { useDisclosure } from "@mantine/hooks";
@@ -40,8 +44,9 @@ const Users = () => {
     { id: 1, name: "Adı" },
     { id: 2, name: "Soyadı" },
     { id: 3, name: "Email" },
-    { id: 4, name: "Kullanıcı Tipi" },
-    { id: 5, name: null },
+    { id: 4, name: "Okul Numarası" },
+    { id: 5, name: "Kullanıcı Tipi" },
+    { id: 6, name: null },
   ]);
 
   const handleKeyDown = (e) => {
@@ -236,6 +241,7 @@ const Users = () => {
 
                     <td className='px-2'>{user.surname}</td>
                     <td className='px-2'>{user.email}</td>
+                    <td className='px-2'>{user.schoolNumber}</td>
                     <td className='px-2'>
                       {user.userType === 0 ? "Öğretmen" : "Öğrenci"}
                     </td>
@@ -288,7 +294,7 @@ const Users = () => {
           title={"Öğretmen Ekleme"}
         >
           <div className='relative p-6 flex flex-col'>
-            <div className="flex items-start w-full">
+            <div className='flex items-start w-full'>
               <div className='flex items-center border-2 mx-2 py-2 px-3 rounded-2xl mb-4 sm:w-1/2 w-full'>
                 <BsPersonAdd
                   className={
@@ -332,7 +338,7 @@ const Users = () => {
               </div>
               <div className='flex items-center border-2 mx-2 py-2 px-3 rounded-2xl mb-4 sm:w-1/2 w-full'>
                 {/* Yazar İconu */}
-                <BsPersonAdd
+                <MdOutlineEmail
                   className={
                     teacher.email ? "text-2xl fill-green-600" : "text-2xl"
                   }
@@ -352,12 +358,14 @@ const Users = () => {
                 />
               </div>
             </div>
-            <div className="flex items-start">
-            <div className='flex items-center border-2 mx-2 py-4 px-3 rounded-2xl mb-4 sm:w-1/2 w-full'>
+            <div className='flex items-start'>
+              <div className='flex items-center border-2 mx-2 py-4 px-3 rounded-2xl mb-4 sm:w-1/2 w-full'>
                 {/* Yazar İconu */}
-                <BsPersonAdd
+                <FaRegAddressCard
                   className={
-                    teacher.schoolNumber ? "text-2xl fill-green-600" : "text-2xl"
+                    teacher.schoolNumber
+                      ? "text-2xl fill-green-600"
+                      : "text-2xl"
                   }
                 />
                 <input
@@ -376,7 +384,7 @@ const Users = () => {
               </div>
               <div className='flex items-center border-2 mx-2 py-2 px-3 rounded-2xl mb-4 sm:w-1/2 w-full'>
                 {/* Yazar İconu */}
-                <BsPersonAdd
+                <PiPasswordBold
                   className={
                     teacher.password ? "text-2xl fill-green-600" : "text-2xl"
                   }
@@ -395,7 +403,6 @@ const Users = () => {
                   }
                 />
               </div>
-             
             </div>
           </div>
         </Modal>
