@@ -10,8 +10,8 @@ const GetAvailableBooks = async (
   try {
     if (!type) {
       const res = await Network.get(
-        `api/Book/GetAvailableBooks${search !== null ? `?Search=${search}` : "?"
-        }&Pagination.PageNumber=${page}&Pagination.PageSize=${size}`
+        `api/Book/GetAvailableBooks${search !== null ? `?Search=${search}&` : "?"
+        }Pagination.PageNumber=${page}&Pagination.PageSize=${size}`
       );
       return res.data;
     } else {

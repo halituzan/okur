@@ -21,8 +21,6 @@ export default function BooksTable({
   tableHead,
   mount,
 }) {
-  console.log(bookList);
-
   const myInformation = useSelector((state) => state.users.userInformation);
 
   const requestBook = async (book, type) => {
