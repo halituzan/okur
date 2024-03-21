@@ -1,13 +1,12 @@
 import Head from "next/head";
 import Image from "next/image";
 import Link from "next/link";
-import React, { useEffect, useState } from "react";
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { useRouter } from "next/router";
-import Network from "../helpers/Network";
+import Terms from "../components/Terms";
 import { RegisterHandler } from "../helpers/users.helpers";
-
 export default function Register() {
   const router = useRouter();
   const [registerValues, setRegisterValues] = useState({
@@ -161,7 +160,7 @@ export default function Register() {
           <p className='text-sm font-normal text-gray-600 mb-7'>
             Aşağıdaki bilgileri eksiksiz doldurun.
           </p>
-          <div className='flex items-center border-2 py-2 px-3 rounded-2xl mb-4'>
+          <div className='flex items-center  w-full border-2 py-2 px-3 rounded-2xl mb-4'>
             {peopleIcon(registerValues.firstName)}
             <input
               className='pl-2 outline-none border-none'
@@ -172,7 +171,7 @@ export default function Register() {
               onChange={(e) => registerHandler(e)}
             />
           </div>
-          <div className='flex items-center border-2 py-2 px-3 rounded-2xl mb-4'>
+          <div className='flex items-center  w-full border-2 py-2 px-3 rounded-2xl mb-4'>
             {peopleIcon(registerValues.lastName)}
             <input
               className='pl-2 outline-none border-none'
@@ -183,7 +182,7 @@ export default function Register() {
               onChange={(e) => registerHandler(e)}
             />
           </div>
-          <div className='flex items-center border-2 py-2 px-3 rounded-2xl mb-4'>
+          <div className='flex items-center  w-full border-2 py-2 px-3 rounded-2xl mb-4'>
             {studenIdIcon(registerValues)}
             <input
               className='pl-2 outline-none border-none'
@@ -199,8 +198,8 @@ export default function Register() {
           <div
             className={
               emailCheck || registerValues.email === ""
-                ? "flex items-center border-2 py-2 px-3 rounded-2xl mb-4"
-                : "flex items-center border-2 py-2 px-3 rounded-2xl mb-4 border-rose-500"
+                ? "flex items-center  w-full border-2 py-2 px-3 rounded-2xl mb-4"
+                : "flex items-center  w-full border-2 py-2 px-3 rounded-2xl mb-4 border-rose-500"
             }
           >
             {emailIcon(registerValues)}
@@ -217,8 +216,8 @@ export default function Register() {
           <div
             className={
               passwordCheck || registerValues.password === ""
-                ? "flex items-center border-2 py-2 px-3 rounded-2xl mb-4 relative"
-                : "flex items-center border-2 py-2 px-3 rounded-2xl mb-4 border-rose-500 relative"
+                ? "flex items-center  w-full border-2 py-2 px-3 rounded-2xl mb-4 relative"
+                : "flex items-center  w-full border-2 py-2 px-3 rounded-2xl mb-4 border-rose-500 relative"
             }
           >
             {lockIcon(registerValues.password)}
@@ -238,8 +237,8 @@ export default function Register() {
           <div
             className={
               isPassCorrect || registerValues.passwordConfirm === ""
-                ? "flex items-center border-2 py-2 px-3 rounded-2xl"
-                : "flex items-center border-2 py-2 px-3 rounded-2xl border-rose-500"
+                ? "flex items-center  w-full border-2 py-2 px-3 rounded-2xl"
+                : "flex items-center  w-full border-2 py-2 px-3 rounded-2xl border-rose-500"
             }
           >
             {lockIcon(registerValues.passwordConfirm)}
@@ -252,7 +251,7 @@ export default function Register() {
               onChange={(e) => registerHandler(e)}
             />
           </div>
-          <div className='hidden sm:flex flex-1 flex-col w-full' >
+          <div className='hidden sm:flex flex-1 flex-col w-full'>
             <button
               type='button'
               className='block bg-rose-500 mt-4 py-2 rounded-2xl text-white font-semibold mb-2 flex-1 w-full'
@@ -269,7 +268,9 @@ export default function Register() {
               </Link>
             </div>
           </div>
+          <Terms />
         </form>
+       
       </div>
       <div className='fixed bottom-0 flex w-screen sm:hidden h-12'>
         <div className='flex-1 flex '>

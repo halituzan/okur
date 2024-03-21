@@ -10,6 +10,7 @@ import { GetMyInformation, LoginHandler } from "../helpers/users.helpers";
 import svgData from "../svgData";
 import { useDispatch } from "react-redux";
 import { userInfoReducer } from "../store/slices/userSlice";
+import Terms from "../components/Terms";
 export default function login() {
   const dispatch = useDispatch();
   const router = useRouter();
@@ -64,7 +65,7 @@ export default function login() {
   };
   const { studentIdIcon, lockIcon, unLockIcon } = svgData;
   return (
-    <div className='h-screen md:flex'>
+    <div className='h-screen md:flex '>
       <Head>
         <title>OkurApp Üye Giriş Sayfası - okurapp.com</title>
       </Head>
@@ -180,6 +181,7 @@ export default function login() {
             </div>
           </div>
         </form>
+        <Terms />
       </div>
       <div className='fixed bottom-0 flex w-screen sm:hidden h-12'>
         <div className='flex-1 flex '>
@@ -200,6 +202,7 @@ export default function login() {
           </Link>
         </div>
       </div>
+
       <ToastContainer position='top-right' />
     </div>
   );

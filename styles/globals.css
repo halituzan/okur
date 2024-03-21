@@ -179,6 +179,9 @@
 .book-table::-webkit-scrollbar {
   width: 0;
 }
+.terms::-webkit-scrollbar {
+  width: 0;
+}
 
 .isRequested:focus {
   outline: none;
